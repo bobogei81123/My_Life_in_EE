@@ -1,0 +1,274 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{color}
+\usepackage{unicode-math}
+\usepackage{float}
+\usepackage{hhline}
+\usepackage{comment}
+\usepackage[abbreviations]{siunitx}
+\usepackage{csvsimple}
+\usepackage{subcaption}
+\usepackage{cleveref}
+\usepackage{listings}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\lstset{
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true,
+  keywordstyle=\color{blue},
+  numbers=left,
+  numberstyle=\tiny\color{mygray},
+  commentstyle=\color{mygreen}, 
+}
+
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage[siunitx]{circuitikz}
+\usepackage{wrapfig}
+\usepackage{sourcecodepro}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+\setmonofont{Source Code Pro}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\huge{\fontsize{20}{30}\selectfont}
+
+\newtheorem{lemma}{Lemma}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\arabic{subsection}.}{12pt}{}
+%\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=24pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\unit}[1]{\:(\text{#1})}
+\newcommand{\df}[1]{\mathop{}\!\mathrm{d^#1}}
+\newcommand{\img}{\mathrm{i}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+
+\title{ \bf {\Huge Signal and System}\\ MATLAB Homework \#3}
+\author{B02901178 江誠敏}
+
+\begin{document}
+
+\maketitle
+
+\section{Problem 1}
+\begin{enumerate}[label=(\alph*)]
+    \addtocounter{enumi}{1}
+  \item {\bf Find the frequency response $H(e^{\img\omega})$ in (a). 
+      Plot the magnitude response and the phase response (in degrees) of the filter.
+    } \\[12pt]
+
+    \begin{figure}[H]
+      \centering
+      \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{fig1-1.eps}
+        \caption{Magnitude response}
+      \end{subfigure}%
+      \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{fig1-2.eps}
+        \caption{Phase response}
+      \end{subfigure}
+      \caption{Plots of the frequency response}
+    \end{figure}
+
+    \clearpage
+  \item {\bf Find and plot the filtered signal of $x[n]$.} \\[12pt]
+
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.6\textwidth]{fig1-3.eps}
+      \caption{Plot of filtered $x[n]$.}
+    \end{figure}
+
+
+  \item {\bf Please repeat parts (a)--(c) with $L = 7, f_c = 0.1 \text{ and } f_s = 10$.} \\[12pt]
+    \begin{figure}[H]
+      \centering
+      \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{fig2-1.eps}
+        \caption{Magnitude response}
+      \end{subfigure}%
+      \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{fig2-2.eps}
+        \caption{Phase response}
+      \end{subfigure}
+      \caption{Plots of the frequency response}
+    \end{figure}
+
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.5\textwidth]{fig2-3.eps}
+      \caption{Plot of filtered $x[n]$.}
+    \end{figure}
+
+  \item {\bf Please repeat parts (a)--(c) with $L = 3, f_c = 0.5 \text{ and } f_s = 10$.} \\[12pt]
+    \begin{figure}[H]
+      \centering
+      \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{fig3-1.eps}
+        \caption{Magnitude response}
+      \end{subfigure}%
+      \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{fig3-2.eps}
+        \caption{Phase response}
+      \end{subfigure}
+      \caption{Plots of the frequency response}
+    \end{figure}
+
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.5\textwidth]{fig3-3.eps}
+      \caption{Plot of filtered $x[n]$.}
+    \end{figure}
+
+  \item {\bf What is the effect of increasing $L$? What about increasing $f_c$?}\\[12pt]
+    Increasing $L$ makes the cutoff sharper.
+    Increasing $f_c$ shift the cutoff frequency to higher frequency.
+
+\section{Problem 2}
+\begin{enumerate}[label=(\alph*)]
+  \addtocounter{enumi}
+  \item {\bf Plot the magnitude response, phase response and impulse response of the filter.}    \\[12pt]
+  \begin{center}
+    \begin{figure}[H]
+      \centering
+      \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{fig4-1.eps}
+        \caption{Magnitude response}
+      \end{subfigure}%
+      \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{fig4-2.eps}
+        \caption{Phase response}
+      \end{subfigure}
+      \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{fig4-3.eps}
+        \caption{Impulse response}
+      \end{subfigure}
+      \caption{Plots of the responses}
+    \end{figure}
+  \end{center}
+
+\item {\bf Change the filter type as ``Chebyshev II" and repeat parts (a)--(b), what is the
+  difference?}    \\[12pt]
+  \begin{center}
+    \begin{figure}[H]
+      \centering
+      \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{fig5-1.eps}
+        \caption{Magnitude response}
+      \end{subfigure}%
+      \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{fig5-2.eps}
+        \caption{Phase response}
+      \end{subfigure}
+      \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{fig5-3.eps}
+        \caption{Impulse response}
+      \end{subfigure}
+      \caption{Plots of the responses}
+    \end{figure}
+  \end{center}
+
+  Chebyshev II seems smoother than elliptic filter, and their
+  impulse response is different.
+\end{enumerate}
+
+\section{Problem 3}
+\begin{enumerate}[label=(\alph*)]
+  \item {\bf Design a 16-order lowpass filter such that
+    \[ y[n] \approx \cos \left( 2 \pi (n-1) T_s \right), \; n = 1, 2, \cdots ,M}, \]
+    when $T_s = 0.002, f_1 = 100 \text{ and } M = 1000$. Write down the filter coefficients and plot the
+  output signal in your report.}    \\[12pt]
+  The coefficients are
+
+  \begin{equation*}
+  \begin{split}
+    B = [& \num{5.8242e-10},   \num{9.3187e-09},   \num{6.9890e-08}, 
+         \num{3.2616e-07},   \num{1.0600e-06}, \\
+         & \num{2.5440e-06}, \num{4.6640e-06},   \num{6.6629e-06}, 
+         \num{7.4957e-06}, \num{6.6629e-06}, \\
+         &\num{4.6640e-06},   \num{2.5440e-06}, 
+         \num{1.0600e-06},   \num{3.2616e-07},   \num{6.9890e-08},\\
+         &\num{9.3187e-09},   \num{5.8242e-10} ] 
+  \end{split}
+  \end{equation*}
+
+  \begin{equation*}
+  \begin{split}
+    A = [&\num{1.0000e+00},  \num{-9.5922e+00},   \num{4.3995e+01},  \num{-1.2779e+02},   \num{2.6265e+02},\\
+         &\num{-4.0445e+02}, \num{4.8212e+02},  \num{-4.5335e+02},   \num{3.3956e+02},  \num{-2.0310e+02},\\
+         &\num{9.6627e+01},  \num{-3.6160e+01}, \num{1.0429e+01},  \num{-2.2398e+00},   \num{3.3768e-01},\\
+         &\num{-3.1918e-02},   \num{1.4244e-03} ]
+  \end{split}
+  \end{equation*}
+  
+
+  \begin{center}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\textwidth]{fig6.eps}
+        \caption{Plot of signal after filter}
+    \end{figure}
+  \end{center}
+
+  \item {\bf Design a 16-order bandpass filter such that
+    \[ y[n] \approx \cos \left( 2 \pi f_s (n-1) T_s \right), \; n = 1, 2, \cdots ,M}, \]
+    when $T_s = 0.002, f_1 = 100 \text{ and } M = 1000$. Write down the filter coefficients and plot the
+  output signal in your report.}    \\[12pt]
+  The coefficients are
+
+  \begin{equation*}
+  \begin{split}
+    B = [& \num{1.1637e-01}, \num{-2.5839e-16}, \num{-1.1507e+00}, \num{-4.7545e-15}, \num{5.7994e+00}, \\
+         &\num{-3.2248e-14}, \num{-1.9555e+01}, \num{2.0837e-13}, \num{4.9048e+01}, \num{-9.4593e-13}, \\
+         &\num{-9.6595e+01}, \num{3.2545e-12}, \num{1.5406e+02}, \num{-9.5254e-13}, \num{-2.0258e+02},  \\
+         &\num{7.4087e-12}, \num{2.2171e+02}, \num{-6.1386e-12}, \num{-2.0258e+02}, \num{7.4219e-12},  \\
+         &\num{1.5406e+02}, \num{-2.1432e-12}, \num{-9.6595e+01}, \num{2.2491e-13}, \num{4.9048e+01},  \\
+         &\num{1.3561e-13}, \num{-1.9555e+01}, \num{4.1343e-14}, \num{5.7994e+00}, \num{-3.3074e-15}, \\
+         &\num{-1.1507e+00}, \num{-1.2920e-16}, \num{1.1637e-01} ]
+  \end{split}
+  \end{equation*}
+
+  \begin{equation*}
+  \begin{split}
+    A = [ &\num{1.0000e+00}, \num{-3.8858e-15}, \num{-6.6622e+00}, \num{-1.3234e-13}, \num{2.4075e+01},  \\
+          & \num{-3.6238e-13}, \num{-6.0089e+01}, \num{-1.5952e-11}, \num{1.1397e+02}, \num{-9.3806e-11}, \\
+          & \num{-1.7227e+02}, \num{-2.9684e-10}, \num{2.1318e+02}, \num{-8.6462e-10}, \num{-2.1919e+02}, \\
+          & \num{-1.0678e-09}, \num{1.8858e+02}, \num{-3.6786e-10}, \num{-1.3590e+02}, \num{3.3623e-11}, \\
+          & \num{8.1627e+01}, \num{3.8085e-12}, \num{-4.0406e+01}, \num{-1.5429e-11}, \num{1.6158e+01}, \\
+          & \num{-4.6336e-12}, \num{-5.0495e+00}, \num{-3.8525e-13}, \num{1.1647e+00}, \num{-1.1713e-14}, \\
+  & \num{-1.7760e-01}, \num{-1.9429e-16}, \num{1.3542e-02} ]
+  \end{split}
+  \end{equation*}
+
+  I bet you would never ever want to look at these ugly coefficients!
+  \begin{center}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.6\textwidth]{fig7.eps}
+        \caption{Plot of signal after filter}
+    \end{figure}
+  \end{center}
+  
+\end{enumerate}
+
+\end{document}
+

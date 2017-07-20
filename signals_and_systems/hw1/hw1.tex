@@ -1,0 +1,148 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{color}
+\usepackage{unicode-math}
+\usepackage{float}
+\usepackage{hhline}
+\usepackage{comment}
+\usepackage[abbreviations]{siunitx}
+\usepackage{csvsimple}
+\usepackage{subcaption}
+\usepackage{cleveref}
+
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage[siunitx]{circuitikz}
+\usepackage{wrapfig}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\huge{\fontsize{20}{30}\selectfont}
+
+\newtheorem{lemma}{Lemma}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\arabic{subsection}.}{12pt}{}
+%\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=24pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\unit}[1]{\:(\text{#1})}
+\newcommand{\df}[1]{\mathop{}\!\mathrm{d^#1}}
+\newcommand{\img}{\mathrm{i}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+
+\title{ \bf {\Huge Signal and System}\\ Homework \#1}
+\author{B02901178 江誠敏}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+  \item Suppose the output signal of a system is expressed as
+    \[ y(t) = \cos \left( \omega_c t + \int_{-\infty}^{t} x(\tau) \dD \tau \right) \]
+    where $x(t)$ denotes the input signal and $\omega_c$ is a real-valued constant.
+    \begin{enumerate}
+      \item Is this system linear? You have to justify your answer. \\[12pt] 
+        No. First We proof a lemma.
+        \begin{lemma} \label{l1}
+          For a linear system $f$, $y = \mathbf{0}$ if $x = \mathbf{0}$,  where
+          $\mathbf{0}$ is the zero function $\mathbf{0}(t) = 0 ,\; \forall t$.
+          \begin{proof}
+            If $x = \mathbf{0}$, by definition, $y(t) = f(x)(t) = f(0x)(t) = 0f(x)(t) = 0, \; \forall t$.
+            So $y = \mathbf{0}$.
+          \end{proof}
+        \end{lemma}
+        Now consider the system in the statement. Notice that if $x = \mathbf{0}$, 
+        then $y(0) = \cos( \omega_c \cdot 0 + 0 ) = \cos(0) = 1 \neq 0$.
+        Hence by \cref{l1}, the system is not linear.
+      \item Is this system time-invariant? You have to justify your answer. \\[12pt]
+        Case 1: $\omega_c \neq 0$ \\
+        No. Consider $x$ to be the zero function $\mathbf{0}$, and let
+        $y = f(x)$, where $f$ is the system in the statement. But for any $\tau$, 
+        the function $x'$ define by $x'(t) = x(t + \tau)$ is still the zero function,
+        so if the system is time-invariant, $y(t+\tau) = f(x')(t) = f(x)(t) = y(t)$ since
+        $x' = x = \mathbf{0}$. Hence $y(\tau) = y(0), \; \forall \tau$. That is, $y$ is
+        constant. But $y(t) = \cos(\omega_c t + 0) = \cos(\omega_c t)$ isn't a constant
+        function if $\omega_c \neq 0$. Hence the system isn't time invariant. \\[10pt]
+        Case 2: $\omega_c = 0$ \\
+        In this case \[ y(t) = \cos \left( \int_{-\infty}^{t} x(\tau) \dD \tau \right) \],
+        for any time-shift function of $x$, say $x',\; x'(t) = x(t+\delta)$, we have
+        \begin{align*} 
+          f(x')(t) &= \cos \left( \int_{-\infty}^{t} x'(\tau) \dD \tau \right) \\
+                   &= \cos \left( \int_{-\infty}^{t} x(\tau+\delta) \dD \tau \right) \\
+                   &\stackrel{\tau'= \tau + \delta}{=} \cos \left( \int_{-\infty}^{t+\delta} x(\tau') \dD \tau' \right) \\
+                   &= f(x)(t+\tau) = y(t+\tau)
+        \end{align*}
+
+      \item Is this system causal? You have to justify your answer.
+        The system is causal, since the only thing that is affected by the input is the integral,
+        and the integral range satisfied $\tau \leq t$, so the system is casual.
+    \end{enumerate}
+  \item Determine the signals below as periodic or aperiodic. If periodic identify the 
+        fundamental period. You have to justify your answer.
+    \begin{enumerate}
+      \item $f(t) = \sin(\frac{\pi}{2} t) + \cos(\frac{3\pi}{4} t)$ \\[12pt]
+        Let $\alpha = \pi / 2, \beta = 3 \pi / 4$, if $T$ is a period. 
+        Since $f(0) = f(0+T) $,
+        \begin{align*}
+          &\Rightarrow 1 = f(0) = f(T) = \sin(\alpha T) + \cos(\beta T) \\
+          &\Rightarrow 1 - \cos(\beta T) = \sin(\alpha T) 
+        \end{align*}
+        Notice that if a function has period $T$, its derivative would also has period $T$.
+        By some calculation, we obtain $f''(t) = -\alpha^2 \sin(\alpha t) - \beta^2 \cos(\beta t)$.
+        So by $f''(0) = f''(T) $, 
+        \begin{align*} & \Rightarrow -\beta^2 \cos(0 \cdot \beta) = -\beta^2 =
+          -\alpha^2 \sin(\alpha T) - \beta^2 \cos(\beta T) \\
+          & \Rightarrow \beta^2 ( 1 - \cos(\beta T)) = \alpha^2 \sin(\alpha T) \\
+          & \Rightarrow \beta^2 \sin(\alpha T) = \alpha^2 \sin(\alpha T)
+        \end{align*}
+        Since $\alpha^2 \neq \beta^2$ we have $\sin(\alpha T) = 0$. That is $\alpha T \in \pi \mathbb{N}$.
+        \[ T = 2, 4, 6, 8, 10, \cdots \]
+        But then by $1 = \sin(\alpha T) + \cos(\beta T) = \cos(\beta T)$, $\beta T \in 2\pi \mathbb{N}$.
+        \[ T = 8/3, 16/3, 8, 32/3 \cdots \]
+        So the smallest possible $T$ is $8$. Now we only need to check that $8$ is indeed the answer.
+        Since 
+        \begin{align*}
+          f(t+8) &= \sin( (t + 8) \pi/2) + \cos(3 (t + 8) \pi/4) \\ 
+                 &= \sin(\pi t/2 + 4\pi) + \cos(3 \pi/4 + 6 \pi)  \\
+                 &=  \sin \left(\frac{\pi}{2} t \left) + \cos \left( \frac{3\pi}{4} t \right) \\
+                 &= f(t)
+        \end{align*}
+        So the fundamental period is $T = 8$.
+      \item $f(t) = \cos(2 \pi t) + \cos(2 \sqrt{2} \pi t)$ \\[12pt]
+        Assume that $T$ is its period. Notice that 
+        \[ f(t) \leq \abs{ \cos(2 \pi t) } 
+        + \abs{ \cos(2 \sqrt{2} \pi t) } \leq 1 + 1 = 2\]
+        and $f(0) = 2$. So $f(T) = 2$ too. Hence the two cosines has to be one at $t = T$
+        \[ \Rightarrow a = \frac{T}{2\pi} \in \mathbb{N} ,\quad b = \frac{T}{2\sqrt{2}\pi} \in \mathbb{N} 
+        \quad \quad \Rightarrow \quad \frac{2\sqrt{2}\pi}{2\pi} = \frac{a}{b} \in \mathbb{N}\]
+        but $ a / b = \sqrt{2} $, which leads to a contradiction since $\sqrt{2}$ is clearly
+        irrational.
+        
+
+    \end{enumerate}
+\end{enumerate}
+
+
+\end{document}
+
