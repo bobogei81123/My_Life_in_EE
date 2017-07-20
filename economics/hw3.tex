@@ -1,0 +1,96 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{color, unicode-math, float, hhline}
+
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usepackage{systeme}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\arabic{subsection}.}{12pt}{}
+%\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=24pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\img}{\mathsf{i}}
+\newcommand{\ex}{\mathsf{e}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+\usetikzlibrary{intersections, calc}
+
+\title{\vspace{-1.5cm} 經濟學 HW \#3}
+\author{b02902072 王鼎皓 \quad b03201001 楊松翰 \quad b02901178 江誠敏}
+
+\begin{document}
+\maketitle
+{
+  \bf 假設需求函數和供給函數分別如下
+  \begin{description}[labelindent*=0cm, itemsep=0cm]
+    \item[需求：] $ Q = 100 - 0.5 P $
+    \item[供給：] $ Q = 10 + P $
+  \end{description}
+}
+
+
+\begin{enumerate}[label=(\arabic*)]
+  \item {\bf 求出均衡價格 ($P$) 及均衡數量 ($Q$)。}
+
+    解
+    \[
+      \left\{
+    \begin{align*}
+      Q_0 + 0.5 P_0 &= 100 \\
+      Q_0 - P_0 &= 10
+    \end{align*}
+      \right.
+    \]
+    得到均衡價格 $P_0 = 60$，均衡數量 $Q_0 = 70$。
+
+  \item {\bf 若政府對供給方課徵 $15$ 元的從量稅，請問供給函數變成怎樣？
+      （用供給方的願受價格 ($P=Q-10$) 的概念表達從量稅的影響。）
+      均衡的價格和數量各是多少？消費者（需求）和廠商（供給）各分擔多少稅？}
+
+    課徵 $15$ 元的從量稅後，價格必須要多 $15$ 廠商才願意供給相同的量，因此供給函數
+    變成 $P = Q - 10 + 15 = Q + 5$，也就是 $P - Q = 5$。
+
+    解
+    \[
+      \left\{
+    \begin{align*}
+      0.5 P_1 + Q_1 &= 100 \\
+      P_1 - Q_1 &= 5
+    \end{align*}
+      \right.
+    \]
+    得到新的均衡價格 $P_1 = 70$，均衡數量 $Q_1 = 65$。
+    
+    這 $15$ 元的稅收裡，消費者分擔了 $P_1 - P_0 = 10 \; (\text{元})$，
+    廠商分擔了 $P_0 - (P_1 - 15) = 5 \; (\text{元})$。
+
+
+\end{enumerate}
+
+\end{document}
+

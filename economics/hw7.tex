@@ -1,0 +1,124 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{color, unicode-math, float, hhline}
+
+\usepackage[abbreviations, per-mode=symbol]{siunitx}
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{circuitikz}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\arabic{subsection}.}{12pt}{}
+%\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=0pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\img}{\mathsf{i}}
+\newcommand{\ex}{\mathsf{e}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\;\mathrm{d}}
+
+\title{\vspace{-1.5cm} 經濟學 HW \#7}
+\author{b02902072 王鼎皓 \quad b03201001 楊松翰 \quad b02901178 江誠敏}
+\begin{document}
+\maketitle
+
+\begin{enumerate}[label={\bf 8.\arabic*}]
+  \setcounter{enumi}{16}
+  \item {\bf 當 $a$ 為何時，$A$ 與 $A'$ 方為優勢策略？\\}
+    以下用 $f(x, y)$ 表示甲選 $x$ 策略，乙選 $y$ 策略下甲的報酬。\\
+    對甲來說，若乙選 $B'$，則因 $f(A, B') = 0 > -1 = f(B, B')$，$A$ 已是最佳策略。\\
+    而如果乙選 $A'$，則 $A$ 是優勢策略的條件是 $f(A, A') = a > -10 = f(B, A')$，
+    也就是 $a > -10$。\\
+    對乙來說，因為此賽局是對稱的，同樣的我們會得到 $A'$ 是優勢策略的條件是 $a > -10$，
+    因此結論即是 $a > -10$。
+
+  \item {\bf $a$ 值為多少才是耐許均衡。\\}
+    對甲來說，如果乙選 $A'$，則 $A$ 是最適策略的條件是 $f(A, A') = a > -10 = f(B, A')$，
+    即 $a > -10$。\\
+    而因賽局對稱，對乙來說也一樣，因此結論還是 $a > -10$。
+    
+  \item {\bf 當 $a = -11$ 時，$(B, B')$ 是否為一耐許均衡？\\}
+    不是，因為對甲來說 $f(A, B') = 0 > -1 = f(B, B')$，因此如果乙選擇 $B'$，
+    $A$ 才是甲的最適策略而非 $B$，因此 $(B, B')$ 並非耐許均衡。
+  \item[{\bf 9.17}] 
+    \begin{enumerate}[label={\bf (\arabic*)}]
+      \item {\bf 請計算出在各勞動投入下，邊際產量是多少？}
+      \item {\bf 如果該產出的單位價格是 10 元，請計算各勞動投入量下的邊際產值。} 
+        \begin{table}[H]
+          \centering
+          \begin{tabular}{c|c|c|c|c}
+            投入 & 產出量 & {\bf (1)}邊際產量 & {\bf (2)}邊際產值($P = 10$) & 邊際產值($P = 12.5$) \\
+            \hline
+            0 & 0 & - & - \\
+            \hline
+            1 & 5 & 5 & 50 & 62.5 \\
+            \hline
+            2 & 11 & 6 & 60 & 75.0 \\
+            \hline
+            3 & 18 & 7 & 70 & 87.5 \\
+            \hline
+            4 & 26 & 8 & 80 & 100.0 \\
+            \hline
+            5 & 33 & 7 & 70 & 87.5 \\
+            \hline
+            6 & 39 & 6 & 60 & 75.0 \\
+            \hline
+            7 & 44 & 5 & 50 & 62.5 \\
+            \hline
+            8 & 48 & 4 & 40 & 50.0 \\
+            \hline
+            9 & 51 & 3 & 30 & 37.5 \\
+            \hline
+            10 & 53 & 2 & 20 & 25.0 \\
+            \hline
+            11 & 54 & 1 & 10 & 12.5 \\
+            \hline
+            12 & 54 & 0 & 0 & 0.0 \\
+            \hline
+            13 & 53 & -1 & -10 & -12.5 \\
+            \hline
+          \end{tabular}
+        \end{table}
+      \item {\bf 如果每單位勞動投入的工資是 50 元，請問最適雇用量是多少？
+          在該雇用量下，產出是多少？資本報酬是多少？。\\[10pt]} 
+        在最適報酬下有
+        \[ \text{邊際產值} = \text{工資} = 50 \]
+        可知最適雇用量為 $7$ 。(事實上 $6$ 也是最佳解。)\\
+        此時產出為 $44$，資本報酬為
+        \[ 10 \cdot 44 - 50 \cdot 7 = 90 \;\text{(元)}\]
+      \item {\bf 如果雇主所雇用的勞工數比第 (3) 項所算出的答案多 1 人，請重新計算資本
+          報酬是多少？這個資本報酬是否比第 (3) 項所算出的為低？。\\[10pt]} 
+        在雇用量為 $8$ 時，產出為 $48$
+        資本報酬為
+        \[ 10 \cdot 48 - 50 \cdot 8 = 80 \;\text{(元)}\]
+        確實較 (3) 來的低。
+      \item {\bf 如果產品價格上升為 12.5 元，請重新計算最適投入量。\\[10pt]} 
+        與 (3) 同理，在最適報酬下有
+        \[ \text{邊際產值} = \text{工資} = 50 \]
+        可知新的最適雇用量為 $8$ 。\\
+    \end{enumerate}
+\end{enumerate}
+\end{document}
+

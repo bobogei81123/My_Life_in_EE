@@ -1,0 +1,108 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{color, unicode-math, float, hhline}
+
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{circuitikz}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\arabic{subsection}.}{12pt}{}
+%\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=24pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\img}{\mathsf{i}}
+\newcommand{\ex}{\mathsf{e}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+\usetikzlibrary{intersections, calc}
+
+\title{\vspace{-1.5cm} 經濟學 HW \#2}
+\author{b02902072 王鼎皓 \quad b03201001 楊松翰 \quad b02901178 江誠敏}
+
+\begin{document}
+\maketitle
+{\bf 台灣每年用電量（需求）約2266億度（平均每人每年用1萬度電）
+  ，其中約有408億度（約占18\%）為核能電廠所發的。}
+
+
+\begin{enumerate}[label=(\arabic*)]
+  \item {\bf 如果要廢止核電，又不開發新電源，就必須每年減少408億度電的需求，若民眾對需求的（自身）價格彈性為0.3，而目前電價為每度3元，請問電費要調升到多少元才能達到此目的？（請以點彈性計算）}
+
+  假設需求數量對價格的函數為 $Q(p)$，且當 $p_0 = 3$ 時，$q_0 = Q(p_0) = 2266$。
+  \[
+    \frac{Q(p) - Q(p_0)}{p - p_0} \cdot \frac{p_0}{q_0} \approx -(\text{需求價格彈性})
+  \]
+  因此
+  \[ p \approx p_0 + \frac{q_0 - Q(p)}{q_0} p_0 \cdot \frac{1}{\text{需求價格彈性}} \]
+  若希望減少 $408$ 億度的電，也就是 $q_0 - Q(p) = 408$，計算後可以得到
+  \[ p \approx 3 + \frac{408}{2266} \cdot 3 \cdot \frac{1}{0.3} \approx 4.8 \,(\text{元}) \]
+
+  或者可以把「價格彈性變化」看作是「價格變化比例」和「數量變化比例」的比值，
+  要減少 $18 \%$ 的數量，計算可知價格的增加比率為
+  \[ 18 \% / 0.3 = 60 \% \]
+  因此新的價格大約是
+  \[ 3 + 3 \cdot 60 \% = 4.8 \, (元) \]
+
+  \clearpage
+
+  \item {\bf 如果不調整電價，而以鼓勵再生能源發電來彌補廢核的缺口，以目前再生能源發電量約 50 億度，每度收購電費約 5 元
+      ，若供給的自身價格彈性為 1.2，政府將收購價格提高 $50\%$ 到 
+      $7.5$ 元，請問再生能源發電的供給量會增加到多少？（請以點彈性計算）}
+
+    由 \footnote{第一式左的最後一項應為 $(p_1+p_2) / (q_1+q_2)$，但因為這兩題都把供給/需求曲線
+    近似為直線，所以沒有差別}
+    \begin{align*}
+      & (供給價格彈性) \approx \frac{q_2 - q_1}{p_2 - p_1} \cdot \frac{p_1}{q_1}  \quad \\
+      \Rightarrow & \ \left(\frac{p_2}{p_1} - 1\right) \cdot (供給價格彈性) \approx \frac{q_2}{q_1} - 1 \\
+      \Rightarrow & \ q_2 \approx q_1 + \left(\frac{p_2}{p_1} - 1\right) \cdot (供給價格彈性) \cdot q_1
+    \end{align*}
+
+    代入 $p_2 / p_1 - 1 = 0.5, q_1 = 50$ 計算後得到
+    \[ q_2 \approx 50 + 0.5 \cdot 1.2 \cdot 50 \approx 80 \, (億度) \]
+
+
+  \item {\bf 由 (1) 和 (2) 可知，節省用電比增加再生能源發電效果大。
+      電力需求彈性愈高，提高電價愈可抑制用電需求。有什麼辦法可以提高用電的需求彈性？}
+
+    電力需求彈性一般來說應該不高，因為電力幾乎可說是日常生活的必需品，難以被替代。
+    且台灣電價便宜，對一般家庭而言電費應在所得比例上不占太多。\footnote{103 年每戶家庭電費支出佔消費支出比率約
+      $1.36 \%$，來源：台電網站。}
+
+		若要增加需求彈性，可能有以下方法：
+    \begin{enumerate}[label=\arabic*.]
+      \item 推擴、補助節能家電：
+        這樣當電價上漲時，可能對消費者而言，購買更省電的電子產品來減低
+        電費可能會比較划算，因此彈性會增加。
+      \item 提早預告漲價：如果突然宣佈漲價，因為電力在生活中難以取代，
+        民眾難以在一時之間因應，調整空間不大，彈性自然不高，因此如果
+        提早預告漲價，大家才會有時間思考如何省電並執行，彈性才會高。
+    \end{enumerate}
+
+
+\end{enumerate}
+
+\end{document}
+

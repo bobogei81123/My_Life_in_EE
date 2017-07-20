@@ -1,0 +1,132 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{color, unicode-math, float, hhline}
+
+\usepackage[abbreviations, per-mode=symbol]{siunitx}
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{circuitikz}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\arabic{subsection}.}{12pt}{}
+%\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=0pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\img}{\mathsf{i}}
+\newcommand{\ex}{\mathsf{e}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\;\mathrm{d}}
+
+\title{\vspace{-1.5cm} 經濟學 HW \#6}
+\author{b02902072 王鼎皓 \quad b03201001 楊松翰 \quad b02901178 江誠敏}
+\begin{document}
+\maketitle
+
+若廠商生產稻米之生產函數為 $Q = 5 K \sqrt{L}$ ， 短期之資本量為$K=1$，
+工資率$w=5$， 資本租金為$r=5$。
+
+\begin{enumerate}[label={\bf 6.\arabic*}]
+    \setcounter{enumi}{2}
+    \item {\bf 廠商之 AVC, SAC, SMC 函數各是多少?\\}
+      因 $Q = 5 K \sqrt{L} \implies L = \left( Q/(5K) \right) ^2$，計算可得
+      \begin{alignat*}{3}
+        \text{AVC} & = \frac{w L}{Q} && = \frac{Q}{5} \\
+        \text{SAC} & = \frac{w L + r K}{Q} && = \frac{Q}{5} + \frac{5}{Q} \\
+        \text{SMC} & = \frac{\partial w L}{\partial Q} && = \frac{2Q}{5}\\
+      \end{alignat*}
+    \item {\bf 廠商之短期供給曲線為何？\\}
+      短期供給曲線即為 SMC 高於 AVC 的部份。
+      而因為 \[ \text{SMC} = 2Q / 5 \geq Q/5 = \text{AVC}, \; \forall Q \geq 0 \]
+      因此供給曲線就是 SMC ，即 $ 2Q / 5 $。
+    \item {\bf 若 $P = 20$，則廠商之最適產量為何？\\}
+      \[ P = 2Q / 5 \implies Q = 2.5P = 50. \]
+    \item {\bf 在短期，價格低到什麼程度，廠商才會退出市場？\\}
+      當 SMC 低於 AVC 時廠商會退出市場，但因 SMC 恆高於 AVC，
+      所以廠商在短期上不論價格都不會退出市場。
+    \setcounter{enumi}{8}
+    %\item {\bf 當 $P = 20$ 時，廠商的生產者剩餘是多少？\\}
+      %\begin{align*}
+        %\text{生產者剩餘} &= P^* Q^* - \int_{0}^{Q^*} P(Q) \dI Q \\
+        %&= P^* Q^* - \int_{0}^{Q^*} \frac{2Q}{5} \dI Q \\
+        %&= P^* Q^* - \left. \frac{Q^2}{5} \right|_{0}^{Q^*} = 500.
+      %\end{align*}
+    \item {\bf 若 $P = 20$，且老闆種米之機會成本為 $150$，則其短期經濟利潤是多少？\\}
+      \[ PQ - (wL + rK + 150) = PQ - \left( w \frac{Q^2}{25K} + rK + 150 \right) = 345. \]
+
+    \item {\bf 若整個經濟共有 $100$ 家相同的廠商，社會的總供給是多少？\\}
+      每一家廠當的供給曲線都是 $P = 2Q / 5$ 也就是 $Q = 5P / 2$，而 $100$ 家廠商
+      即數量為 $100$ 倍，因此總供給為
+      \[ Q = 250P \]
+
+    \item {\bf 若社會的總需求是 $Q = 252 - 2P$，則均衡之市場價格是多少？\\}
+      解
+      \[
+        \left\{
+          \begin{align*}
+            Q^* &= 250P^* \\
+            Q^* &= 252 - 2P^* \\
+          \end{align*}
+        \right.
+      \]
+      得到 $P^* = 1$。
+
+    \item{\bf 若 $P = 1$，則廠商的最適供給量為何？}
+      \[ P = 2Q / 5 = 2.5 \]
+
+    \item{\bf 若 $P = 1$，則廠商的利潤值為何？\\}
+      此時 $L = Q^2 / (25K) = 0.25$，則
+      \[ \text{利潤} = PQ - (wL + rK) = -3.75 \]
+
+    \item{長期而言，$P$ 會大於或小於 $1$ ？}
+      因為利潤值為負，長期而言會有廠商退出，而使供給量下跌，最終使價格上升，
+      因此長期而言 $P$ 因該會大於 $1$。
+\end{enumerate}
+
+\begin{enumerate}[label={\bf 7.\arabic*}]
+    \setcounter{enumi}{1}
+    \item {\bf 某書局敦南店對附近居民而言是獨占，其書藉需求公式如下：
+        \[ Q = 20-2P, \]
+      式中 $Q$ 為需求量、$P$ 為價格。假設每本書的成本都是 $5$ 元，且無固定成本。請問
+      老闆可以賺多少錢？最適定價為多少？會賣出多少本？}
+
+    先計算出 MR，因為 $P = 10 - Q/2$，
+    \[ \text{MR} = \frac{\partial (PQ)}{\partial Q} = \frac{\partial P}{\partial Q}Q + P
+      = 10 - Q \]
+    而 SMC 恰好為 $5$，因此在最適定價時，
+    \[ \text{MR} = \text{SMC} \implies 10 - Q = 5 \implies Q = 5 \]
+    此時價格為 $10 - 5/2 = 7.5$，總共可賺 $(7.5 - 5) \cdot 5 = 12.5$。\\
+    總結以上，老闆可以賺 $12.5$ 元，最適定價為 $7.5$ 元，會賣出 $5$ 本。
+    
+    \item {\bf 上題的消費者剩餘有多少？\\}
+      若需求曲線為 $P(Q)$，
+      \begin{align*}
+        \text{消費者剩餘} &= \int_{0}^{Q^*} P(Q) \dI Q - P^* Q^*\\
+        &= \int_{0}^{Q^*} \left(10 - \frac{Q}{2} \right) \dI Q - P^* Q^*\\
+        &= \left. \left( 10Q - \frac{Q^2}{4} \right) \right|_{0}^{Q^*} - P^* Q^* = 6.25.
+      \end{align*}
+ 
+  \end{enumerate}
+\end{document}
+

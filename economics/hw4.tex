@@ -1,0 +1,274 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{color, unicode-math, float, hhline, subcaption}
+
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{circuitikz}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\arabic{subsection}.}{12pt}{}
+%\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=24pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\img}{\mathsf{i}}
+\newcommand{\ex}{\mathsf{e}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+\usetikzlibrary{intersections, calc}
+
+\title{\vspace{-1.5cm} 經濟學 HW \#4}
+\author{b02902072 王鼎皓 \quad b03201001 楊松翰 \quad b02901178 江誠敏}
+
+\begin{document}
+\maketitle
+假設消費者只消費兩種商品：衣服和食物，衣服每單位價格 20 元，食物每單位價格 5 元，消費者的預算是 1,000 元。
+
+\begin{enumerate}[label=(\arabic*)]
+  \item {\bf 請繪出消費者的預算線。}
+
+    以下都令 $(X_1, X_2)$ 代表食物和衣服分別買 $X_1$, $X_2$ 單位的消費組合。\\
+    並令 $P_1 = 5, P_2 = 20$ 分別代表食物和衣服的單位價格。
+
+    預算線為 
+    \[ P_1 X_1 + P_2 X_2 = 1000, \]
+    如下圖所示。
+
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[
+          scale=2,
+          bl/.style={blue, very thick},
+          S/.style={red, thick},
+          axis/.style={very thick, ->, >=stealth', line join=miter},
+          dl/.style={dashed, thick, black!50!gray},
+          every node/.style={color=black},
+          dot/.style={circle,fill=black,minimum size=5pt,inner sep=0pt,
+            outer sep=-1pt},
+        ]
+        \draw[axis,<->] (3,0) node(xline)[right] {$X_1$} -|
+        (0,2) node(yline)[above] {$X_2$};
+
+        \draw[bl] 
+        (0, 1) node[dot]{} node[left]{$(0, 50)$} -- (2, 0) node[dot]{} node[below]{$(200, 0)$};
+      \end{tikzpicture}
+    \end{figure}
+
+  \item {\bf 若消費者選擇的消費點是（100 單位食物, 25 單位衣服），請繪出無異曲線和預算線相切的樣子。}
+
+    可知兩曲線需相切於 $(100, 25)$。
+
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[
+          scale=2,
+          bl/.style={blue, very thick},
+          rl/.style={red, very thick},
+          axis/.style={very thick, ->, >=stealth', line join=miter},
+          dl/.style={dashed, thick, black!50!gray},
+          every node/.style={color=black},
+          dot/.style={circle,fill=black,minimum size=5pt,inner sep=0pt,
+            outer sep=-1pt},
+        ]
+        \draw[axis,<->] (3,0) node(xline)[right] {$X_1$} -|
+        (0,2) node(yline)[above] {$X_2$};
+
+        \draw[bl] 
+        (0, 1) node[dot]{} node[left]{$(0, 50)$} -- (2, 0) node[dot]{} node[below]{$(200, 0)$};
+        \draw (1, 0.5) node[dot] node[below left]{$(100, 25)$};
+        \draw[domain=0.26:2.5, samples=100, rl, latex-latex] plot[id=x] function{1 / (2*x)} coordinate(v1);
+        \draw (v1) ++(0, 0.2) node{\footnotesize $U = U_0$};
+      \end{tikzpicture}
+    \end{figure}
+
+  \item {\bf 政府擔心消費者吃不飽，因此送給每個消費者 50 單位食物券，憑券可免費購買 50 單位食物，但不能做他用。請繪出消費者新的預算線及消費均衡點。食物券的發放能否保證消費者一定會吃超過 100 單位的食物？}
+
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[
+          scale=2,
+          bl/.style={blue, line width=0.25mm},
+          rl/.style={red, line width=0.25mm},
+          axis/.style={very thick, ->, >=stealth', line join=miter},
+          dl/.style={dashed, thick, black!50!gray},
+          every node/.style={color=black},
+          dot/.style={circle,fill=black,minimum size=5pt,inner sep=0pt,
+            outer sep=-1pt},
+        ]
+        \draw[axis,<->] (3.3,0) node(xline)[right] {$X_1$} -|
+        (0,2) node(yline)[above] {$X_2$};
+
+        \draw[bl] 
+        (0, 1) node[dot]{} node[left]{$(0, 50)$} -- (2, 0) node[dot]{};
+        \draw[bl, very thick, dotted]
+        (0.5, 1) -- (0, 1) ;
+        \draw[bl, very thick]
+        (0.5, 1) node[dot]{} node[left]{} -- (2.5, 0) node[dot]{} node[below]{$(250, 0)$};
+        \draw[domain=0.26:2.5, samples=100, rl, latex-latex] plot[id=x] function{1 / (2*x)} coordinate(v1);
+        \draw[domain=0.33:2.5, samples=100, rl, very thick, latex-latex] plot[id=x] function{25 / (32*x)}
+        node[above]{\footnotesize $U = U_1$};;
+        \draw (2.5, 0.15) node[right]{\footnotesize $U = U_0$};
+        \draw[very thick, -latex] (0.43, 0.5) node[below]{$(50, 50)$} -- (0.5, 1);
+        \draw (1, 0.5) node(c0)[dot]{} node[below]{$C_0$};
+        \draw (1.25, 0.625) node(c1)[dot]{} node[above right]{$C_1$};
+        \draw[-latex, thick, green!60!black] (c0) -- (c1);
+      \end{tikzpicture}
+      \caption{食物為正常財}
+    \end{figure}
+
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[
+          scale=2,
+          bl/.style={blue, line width=0.25mm},
+          rl/.style={red, line width=0.25mm},
+          axis/.style={very thick, ->, >=stealth', line join=miter},
+          dl/.style={dashed, thick, black!50!gray},
+          every node/.style={color=black},
+          dot/.style={circle,fill=black,minimum size=5pt,inner sep=0pt,
+            outer sep=-1pt},
+        ]
+        \draw[axis,<->] (3.3,0) node(xline)[right] {$X_1$} -|
+        (0,2) node(yline)[above] {$X_2$};
+
+        \draw[bl] 
+        (0, 1) node[dot]{} node[left]{$(0, 50)$} -- (2, 0) node[dot]{};
+        \draw[bl, very thick, dotted]
+        (0.5, 1) -- (0, 1) ;
+        \draw[bl, very thick]
+        (0.5, 1) node[dot]{} node[left]{} -- (2.5, 0) node[dot]{} node[below]{$(250, 0)$};
+        \draw[domain=0.26:2.5, samples=100, rl, latex-latex] plot[id=x] function{1 / (2*x)} coordinate(v1);
+        \draw[domain=0.33:2.5, samples=100, rl, very thick, latex-latex] plot[id=x] function{0.71616 / (x**0.3) + 3.5*exp(-4.5*x)}
+        node[above]{\footnotesize $U = U_2$};;
+        \draw (2.5, 0.15) node[right]{\footnotesize $U = U_0$};
+        \draw[very thick, -latex] (0.43, 0.5) node[below]{$(50, 50)$} -- (0.5, 1);
+        \draw (1, 0.5) node(c0)[dot]{} node[below]{$C_0$};
+        \draw (0.91343, 0.79329) node(c1)[dot]{} node[above right]{$C_2$};
+        \draw[-latex, thick, green!60!black] (c0) -- (c1);
+      \end{tikzpicture}
+      \caption{食物為劣等財}
+    \end{figure}
+
+    不一定，如上兩圖所示，新的最適選擇點可能為 $C_1, C_2$ ，且在 $C_2$ 的時候買食物的量
+    反而比沒有發食物券前的 $100$ 單位還少。
+
+    \clearpage
+
+  \item {\bf 如果政府不發食物券，而以等值現金250元發給消費者，則預算線有何不同？消費者的滿足水準會變高還是變低？}
+
+    \begin{figure}[H]
+      \centering
+      \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \begin{tikzpicture}[
+            scale=1.6,
+            bl/.style={blue, very thick},
+            S/.style={red, thick},
+            axis/.style={very thick, ->, >=stealth', line join=miter},
+            dl/.style={dashed, thick, black!50!gray},
+            every node/.style={color=black},
+            dot/.style={circle,fill=black,minimum size=5pt,inner sep=0pt,
+              outer sep=-1pt},
+          ]
+          \draw[axis,<->] (3,0) node(xline)[right] {$X_1$} -|
+          (0,2) node(yline)[above] {$X_2$};
+
+          \draw[bl] 
+          (0.5, 1) node[dot]{} node[above right]{$(50, 50)$} -- (2.5, 0) node[dot]{} node[below]{$(200, 0)$};
+          \draw[bl, dotted] 
+          (0.5, 1) -- (0, 1) node[dot]{} node[left]{$(0, 50)$};
+        \end{tikzpicture}
+        \caption{食物券}
+      \end{subfigure}%
+      \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \begin{tikzpicture}[
+            scale=1.6,
+            bl/.style={blue, very thick},
+            S/.style={red, thick},
+            axis/.style={very thick, ->, >=stealth', line join=miter},
+            dl/.style={dashed, thick, black!50!gray},
+            every node/.style={color=black},
+            dot/.style={circle,fill=black,minimum size=5pt,inner sep=0pt,
+              outer sep=-1pt},
+          ]
+          \draw[axis,<->] (3,0) node(xline)[right] {$X_1$} -|
+          (0,2) node(yline)[above] {$X_2$};
+
+          \draw[bl] 
+          (0, 1.25) node[dot]{} node[above right]{$(0, 62.5)$} -- (2.5, 0) node[dot]{} node[below]{$(200, 0)$};
+        \end{tikzpicture}
+        \caption{等值現金}
+      \end{subfigure}
+    \end{figure}
+
+    如上圖所示，因為食物券不能做他用，所以即使食物買的再少，可以買衣服的數量不會變，還是 $1000/20 = 50$ 單位。
+    而等值現金就沒有這個問題，因此食物券不會有 $(0, 62.5)$ 到 $(50, 50)$ ，也就是衣服數量超過 $50$ 的那一段。
+
+    而假設在等值現金的狀況下，最適選擇點為 $(x_1, x_2)$。如果 $y_1 \leq 50$，那麼在食物券的
+    情況下，因為此時預算線重合，最適選擇點是相同的，自然滿足水準也相同。
+
+    但如果 $x_1 > 50$，那麼就有可能在食物券的情況下無法達到這個最適選擇點，滿足水準就會比等值現金低。
+
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[
+          scale=2,
+          bl/.style={blue, line width=0.25mm},
+          rl/.style={red, line width=0.25mm},
+          axis/.style={very thick, ->, >=stealth', line join=miter},
+          dl/.style={dashed, thick, black!50!gray},
+          every node/.style={color=black},
+          dot/.style={circle,fill=black,minimum size=5pt,inner sep=0pt,
+            outer sep=-1pt},
+        ]
+        \draw[axis,<->] (3.3,0) node(xline)[right] {$X_1$} -|
+        (0,2) node(yline)[above] {$X_2$};
+
+        \draw[bl, very thick, dotted]
+        (0.8, 0.85) -- (0, 0.85) node[dot]{} node[left]{$(0, 50)$};
+        \draw[bl, very thick]
+        (0, 1.25) node[dot]{} node[left]{$(0, 62.5)$} -- (0.8, 0.85) node[dot]{} 
+        node[left]{} -- (2.5, 0) node[dot]{} node[below]{$(250, 0)$};
+        \draw[domain=0.05:2.5, samples=100, rl, very thick, -latex] plot[id=x] function{-(1.0/6)*log(x)+0.81281}
+        node[below]{\footnotesize $U = U_1$};
+        \draw[domain=0.05:2.5, samples=100, rl, very thick, -latex] plot[id=x] function{-(1.0/6)*log(x)+0.90023}
+        node[above]{\footnotesize $U = U_2$};
+        \draw[very thick, -latex] (0.43, 0.5) node[below]{$(50, 50)$} -- (0.8, 0.85);
+        \draw (0.8, 0.85) node(c1)[dot]{} node[below]{$C_1$};
+        \draw (0.33333, 1.08333) node(c2)[dot]{} node[above right]{$C_2$};
+      \end{tikzpicture}
+    \end{figure}
+
+    如上圖所示，假如在等值現金下的最適選擇點為 $C_2 = (x_1, x_2)$ 且 $x_2 > 50$ ，那在
+    食物券下的最適選擇點就會是一個角點解 $C_1 = (50, 50)$。此時食物卷下的滿足水準就會比
+    等值現金低，也就是說換成等值現金後滿足水準會提高。這是合理的，因為兩者價值相同，且
+    等值現金的自由度較高，消費者可以依自己的喜好做更多的調整。
+    
+
+\end{enumerate}
+
+\end{document}
+
