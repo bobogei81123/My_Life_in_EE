@@ -1,0 +1,460 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{color, float, hhline}
+
+\usepackage[abbreviations, per-mode=symbol]{siunitx}
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{csquotes}
+\usepackage{algorithm2e}
+\usepackage{circuitikz}
+\usepackage{parskip}
+\usepackage{bm}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\arabic{subsection}.}{12pt}{}
+%\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=0pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\newtheorem{lemma}{Lemma}
+\newcommand{\img}{\mathsf{i}}
+\newcommand{\ex}{\mathsf{e}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+\newcommand{\defeq}{\triangleq}
+\DeclareMathOperator*{\ord}{\mathcal{O}}
+\setlength{\droptitle}{-1.5cm} %title 與上緣的間距
+\title{Algorithm HW\#1}
+\author{B02901178 江誠敏}
+
+\begin{document}
+\maketitle
+\section{Problem 1.}
+
+In the following, $v_i$ and $w_i$ will represent the value and the weight of the $i$-th gift respectively,
+$W$ be the weight limit, and let $V \defeq \sum v_i$. Also, let $V^*$ be the total value of optimal solution.
+Assume that $w_i \leq W$ for all $i$ (or else the gift is useless), so $V^* \geq \max v_i$.
+
+First we summarize some result we learned in lecture 1 and HW 0.5. \medskip
+
+\begin{lemma} \hfill \label{lemma:recap}
+  \begin{enumerate}
+    \item There is an algorithm that solves the knapsack problem in $\ord(n V^*)$, where
+      $V^*$ is the total value of the optimal solution.
+    \item Fixing a problem instance, if we choose $b$ to be our rounding factor,
+      then the time complexity is $\ord(n V^* / b)$,
+      and we get an $(1 + 2nb / V^*)$-approximation algorithm. \label{lemma:ks-approx-algo}
+    \item There is an $\ord(n \log n)$ greedy 2-approximation algorithm for the knapsack problem.
+      Simply sort the gifts by $v_i / w_i$, so assume $v_i / w_i \geq v_{i+1} / w_{i+1}$, then choose \\
+      $\max(v_1 + \dots + v_k, v_{k+1})$, where $k$ is the smallest indices
+      letting $w_1 + \dots + w_{k+1} \geq W$.
+  \end{enumerate}
+\end{lemma}
+
+So if we can choose $b = \epsilon V^* / (2n)$, then we would get an $(1+\epsilon)$-approximation algorithm
+which runs in $\ord(n^2 \epsilon^{-1})$. Let $\tilde{V}$ be the solution given by the greedy algorithm
+in 3., then $V^* / 2 \leq \tilde{V} \leq V^*$. So if we let $b = \epsilon
+\tilde{V} / (4n)$, it would still be an $(1+\epsilon)$-approximation algorithm, and the running time
+is $\ord(n^2 \epsilon^{-1})$.
+
+Notice that the problem could also be solved without the greedy 2-approximation algorithm.
+First we need a lemma. \medskip
+
+\begin{lemma} \label{lemma:criteria}
+  Let $\bar{V}$ be the optimal solution after rounding, and let $\hat{V}$ be the corresponding
+  solution in the original problem. If $\bar{V} \leq (1 + \epsilon) \hat{V}$ then $\hat{V}$
+  is an $(1+\epsilon)$ approximation algorithm.
+
+  \begin{proof}
+    This is because $V^* \leq \bar{V} \leq (1+\epsilon) \hat{V}$, so $\hat{V}$ is
+    an $(1+\epsilon)$ approximation algorithm.
+  \end{proof}
+\end{lemma}
+
+So we propose an algorithm as following:
+
+\RestyleAlgo{boxruled}
+\LinesNumbered
+\begin{algorithm}[H]
+  \DontPrintSemicolon
+  $V \defeq \sum v_i$ \;
+  $b \gets \epsilon V / (2n)$ \;
+  \While{true}{
+    $\hat{V} \gets$ an approximation solution using the algorithm in
+    lemma~\ref{lemma:recap}-\ref{lemma:ks-approx-algo} with rounding factor $b$. \tcc*[r]{Cost $\ord(n V^*/ b)$}
+    Check if $\hat{V}$ gives a solution good enough by lemma~\ref{lemma:criteria}. \tcc*[r]{Cost $\ord(n)$}
+    \lIf{$\hat{V}$ is good enough}{\Return $\hat{V}$}
+    \lElse{$b \gets b / 2$}
+  }
+  \caption{An $\ord(n^2 \epsilon^{-1})$ FPTAS for the knapsack problem}
+\end{algorithm}
+
+Notice that $V^* \leq V = \sum v_i$, so initially $b \geq \epsilon V^* / (2n)$. And once $b \leq \epsilon V^* / (2n)$,
+$\hat{V}$ is then an $(1+\epsilon)$ approximation solution and the algorithm stops. At this moment,
+$b \geq \epsilon V^* / (4n)$. Also, $V^* \geq \max v_i \geq V / n$, so the iteration runs at most $\log n$ times.
+Hence the total running time is
+\[ \ord(\log n) + 4n^2 \epsilon^{-1} + 2n^2 \epsilon^{-1} + n^2 \epsilon^{-1} + \dots = \ord(\log n) + \ord(n^2 \epsilon^{-1})
+= \ord(n^2 \epsilon^{-1}) \]
+
+{\bf Collaborators}:
+\begin{itemize}[topsep=-5pt]
+  \item B02901085 徐瑞陽: Reminds me that there is already a $2$-approximation algorithm mentioned in class.
+\end{itemize}
+
+\section{Problem 2.}
+
+We consider a slightly different problem: Each gift $g_i$ has two value $(u_i, v_i)$, and could be
+assigned to child $A$, or to child $B$, or to none of them. Let $S_A$ be the gifts assigned to 
+child $A$, and $S_B$ be the gifts assigned to child $B$, and $S_A, S_B \neq \varnothing$ should be satisfied.
+Define $\mathcal{U} \defeq \sum_{i \in S_A} u_i$, $\mathcal{V} \defeq \sum_{i \in S_B} v_i$,
+The goal is to minimize $\max(\mathcal{U}, \mathcal{V}) /
+\min(\mathcal{U}, \mathcal{V})$. We use $(\mathcal{U}, \mathcal{V})$ to denote the corresponding solution.
+
+The original problem could be reduced to this problem simply by setting $u_i = v_i$. \medskip
+
+\newcommand*{\oU}{\mathcal{U}^*}
+\newcommand*{\oV}{\mathcal{V}^*}
+\newcommand*{\Zb}{\mathbb{Z}}
+\newcommand*{\true}{\texttt{true}}
+\newcommand*{\false}{\texttt{false}}
+\begin{lemma} \label{lemma:dp-alg}
+  If we know that the optimal solution $(\oU, \oV)$ satisfied $\oU \leq U$ and $\oV \leq V$, then
+  the problem mention above could be solved in $\ord(n U V)$.
+
+  \begin{proof}
+    Consider the function $f :: (\Zb, \Zb, \Zb) \to \{ \true, \false \} $ such that
+    $f(k, u, v)$ means that if there exist a assignment such that $\mathcal{U} = u$ and $\mathcal{V} = v$,
+    considering only the first $k$ gifts.
+    Then we could write the recursive formula as
+    \[
+      f(k, u, v) = 
+      \begin{cases}
+        \true, & \text{if } k = 0 \text{ and } u = v = 0 \\
+        \false, & \text{if } k = 0 \text{ and one of } u, v \neq 0 \\
+        \false, & \text{if } u < 0 \text{ or } v < 0 \\
+        \begin{split} 
+          f(k-1, u, v) \lor f(k-1, u-u_k, v) \\ \lor f(k-1, u, v-v_k)
+        \end{split}, & \text{otherwise}
+      \end{cases}
+    \]
+    Using memorization (i.e., dynamic programming), since we only need to consider the states $(k, u, v)$
+    which satisfied $0 \leq k \leq n, 0 \leq u \leq U, 0 \leq v \leq V$, and each state only
+    depends on $\ord(1)$ states, thus a dynamic programming could calculate all possible pairs $(u, v)$ in $\ord(nUV)$,
+    and we could then output $\min\limits_{f(n, u, v) = \true} \max(u, v) / \min(u, v)$.
+  \end{proof}
+\end{lemma}
+
+Notice that if we require that $g_t$ should be assigned to a child, say child $A$.
+Then we only need to make a small modification on this recursive formula: When $k = t$,
+then $f(k, u, v) = f(k, u-u_t, v)$, and the other remain unchanged. The time complexity
+is still $\ord(nUV)$.
+
+Now we give a FPTAS to this problem. Since each child is assigned to at least one gift,
+let $\alpha = \argmax_{i \in S_A} u_i,\  \beta = \argmax_{i \in S_B} v_i$ for a solution.
+we could enumerate through possible pairs of $(\alpha, \beta)$. The $\ord(n^2)$ possible pairs are
+$\{ (i, j) : 1 \leq i, j \leq n \text{ and } i \neq j \}$.
+
+Now, for a pair $(\alpha, \beta)$, we find an $(1+\epsilon)$-approximation optimal solution
+under the restriction that $\argmax_{i \in S_A} u_i = \alpha,\  \argmax_{i \in S_B} v_i = \beta$.
+
+Let $b_u = \epsilon u_\alpha / (2n), b_v = \epsilon v_\beta / (2n)$. Round the value of the gifts
+to $\tilde{g}_i = (\tilde{u}_i, \tilde{v}_i) \defeq ( \ceil{u_i / b_u}, \ceil{v_i / b_v})$.
+\newcommand*{\tU}{\tilde{\mathcal{U}}}%
+\newcommand*{\tV}{\tilde{\mathcal{V}}}%
+Let $(\tU, \tV)$ be the optimal solution in the rounded version with the same restriction.
+Since rounding preserves ``$\leq$'', i.e., $x \leq y \implies \ceil{x/b} \leq \ceil{y/b}$,
+so we know that $\tU \leq \sum_{i = 1}^{\alpha} \tilde{u}_i \leq n u_\alpha / b_u$, similarly,
+$\tV \leq n v_\beta / b_v$, then using the algorithm in lemma~\ref{lemma:dp-alg},
+the optimal solution could be calculate in $\ord\big(n (2 n u_\alpha / b_u) (2 n v_\beta / b_v) \big)
+= \ord(n^5 \epsilon^{-2})$, which is polynomial in $n, \epsilon$.
+
+After we find the optimal solution in $\{\tilde{g}_i\}$, we take this assignment as
+an approximation solution of the original problem. Let this assignment to be $(\tilde{S}_A, \tilde{S}_B)$,
+and the optimal assignment of the original problem to be $(S^*_A, S^*_B)$. Notice that for both assignment
+(call the one we're considering $(S_A, S_B)$),
+\[ \sum_{i \in S_A} b \tilde{u}_i - b \leq \sum_{i \in S_A} u_i \leq \sum_{i \in S_A} b_u \tilde{u}_i
+  \implies (1 - \epsilon/2) \sum_{i \in S_A} \tilde{u}_i \leq \sum_{i \in S_A} u_i \leq \sum_{i \in S_A} b \tilde{u}_i \]
+Since we restrict that $\alpha \in S_A$, $\sum_{i \in S_A} {u}_i \geq u_\alpha$, so $nb = \epsilon u_\alpha /2
+\leq \sum_{i \in S_A} u_i$. Similarly,
+\[ (1 - \epsilon/2) \sum_{i \in S_B} \tilde{v}_i \leq \sum_{i \in S_A} v_i \leq \sum_{i \in S_A} b \tilde{v}_i \]
+Thus without loss of generality, assume $\oU \geq \oV$, then
+\begin{align*}
+  \frac{\max(\oU, \oV)}{\min(\oU, \oV)}
+  &= \frac{\oU}\oV = \sum_{i \in S^*_A} u_i\, \Big/ \sum_{i \in S^*_B} v_i \\
+  &\geq (1 - \epsilon/2) \sum_{i \in S^*_A} \tilde{u}_i \Big/ \sum_{i \in S^*_B} \tilde{v}_i \\ 
+  &\geq (1 - \epsilon/2) \sum_{i \in \tilde{S}_A} \tilde{u}_i \Big/ \sum_{i \in \tilde{S}_B} \tilde{v}_i \\ 
+  &\geq (1 - \epsilon/2)^2 \sum_{i \in \tilde{S}_A} u_i \Big/ \sum_{i \in \tilde{S}_B} v_i \\
+  &\geq (1 - \epsilon)  \sum_{i \in \tilde{S}_A} u_i \Big/ \sum_{i \in \tilde{S}_B} v_i
+\end{align*}
+Hence it is an $(1+\epsilon)$ approximation algorithm. \footnote{Notice that $1/(1-\epsilon) = 1 + \ord(\epsilon)$ when $\epsilon$ small.}
+
+Finally, enumerate through all possible pair $(\alpha, \beta)$, then we get an $(1+\epsilon)$ approximation algorithm
+with time complexity $\ord(n^2) \ord(n^5 \epsilon^{-2}) = \ord(n^7 \epsilon^{-2})$.
+
+%\[ \oU = \sum_{i \in S^*_A} u_i \leq \sum_{i \in S^*_A} b_u \tilde{u}_i
+  %\leq \sum_{i \in \tilde{S}_A} b_u \tilde{u}_i \leq \sum_{i \in \tilde{S}_A} ({u}_i + b_u)
+  %\leq nb_u + \sum_{i \in \tilde{S}_A} {u}_i \]
+%But since we restrict that $\alpha \in \tilde{S}_A$, $\sum_{i \in \tilde{S}_A} {u}_i \geq u_\alpha$,
+%thus
+%\[ n b_u + \sum_{i \in \tilde{S}_A} {u}_i = \epsilon u_\alpha + \sum_{i \in \tilde{S}_A} {u}_i
+  %\leq (1 + \epsilon) \sum_{i \in \tilde{S}_A} {u}_i \]
+%\newcommand*{\hU}{\hat{\mathcal{U}}}%
+%\newcommand*{\hV}{\hat{\mathcal{V}}}%
+%So if $\hU = \sum_{i \in \tilde{S}_A} \tilde{u}_i,\, \hV = \sum_{i \in \tilde{S}_A} \tilde{v}_i$,
+%we have $\oU \leq (1+\epsilon) \hU, \, \oV \leq (1+\epsilon) \hV$,
+%Thus
+%\[ \max(\oU, \oV) / \min(\oU, \oV) \geq 
+
+{\bf Collaborators}:
+\begin{itemize}[topsep=-5pt]
+  \item B02901085 徐瑞陽: Mentioned that the problem could also be solved by rounding,
+    since the algorithm could be polynomial in $\ord(\log W)$.
+\end{itemize}
+
+\section{Problem 3.}
+
+We shall assume that $k \geq 2$, since if $k = 1$ then there is no edge and the solution is trivial.
+
+Recall that the corresponding relaxed LP of the weighted set cover is:
+\begin{equation} \label{eq:lp}
+  \begin{array}{*3{>{\displaystyle}l}}
+    \text{minimize} & \bm{w}^\intercal \bm{x} \defeq \sum_{i = 1}^m w_i x_i & \\
+    \text{s.t.} & x_u + x_v \geq 1, &\forall (u, v) \in E \\
+    & x_v \geq 0, &\forall v \in V
+  \end{array}
+\end{equation}
+For convenience we shall assume $V = \{1, 2, \dots, n\}$.
+
+First we site a result proved in class: \medskip
+
+\begin{lemma}
+  The relaxed LP corresponded to the weighted vertex cover problem has a half integer solution.
+  \begin{proof}
+    Assume that there is no half integer solution, then pick
+    $\bm{x} = (x_v)_{v \in V}$ to be an optimal solution to equation~\ref{eq:lp} with the most half integer $x_v$
+    (i.e., $\# \big\{x_v : x_v \in \{0, 0.5, 1\}\big\}$ is maximized),
+    consider
+    $\bm{x}^+ = (x_v^+)_{v \in V}, \bm{x}^- = (x_v^-)_{v \in V}$, where
+    \begin{equation*}
+      x_v^\pm = \begin{cases}
+        x_v, & \text{If } x_v \in \{0, 0.5, 1\} \\
+        x_v \pm \epsilon, & \text{If } 0 < x_v < 0.5 \\
+        x_v \mp \epsilon, & \text{If } 0.5 < x_v < 1 \\
+      \end{cases}
+    \end{equation*}
+    It could be easily seen that $\bm{x}^\pm$ are two solutions to equation~\ref{eq:lp}
+    if $\epsilon$ small enough. Notice that $(\bm{w}^\intercal \bm{x}^+ + \bm{w}^\intercal \bm{x}^-)/2
+    = \bm{w} (\bm{x}^+ + \bm{x}^-)/2 = \bm{w}^\intercal \bm{x}$, so one of $\bm{x}^\pm$ is a solution
+    no worse than $\bm{x}$. Choose a suitable $\epsilon$ then we will obtain an solution with more
+    half integer entries which leads to a contradiction.
+  \end{proof}
+\end{lemma}
+
+Next we prove a simple lemma:
+
+\begin{lemma} \label{lemma:kcolor}
+  Given a proper $k$-coloring of the graph, then:
+  \begin{enumerate}[topsep=-2pt, label=(\arabic*)]
+    \item $V_t = \{ v : v \text{ is not colored } t\}$ is a vertex cover.
+    \item There is a vertex cover with cost (total weight) no more then $W (k-1) / k$,
+      where $W \defeq \sum_{v \in V} w_v$ is the sum of the weight of all the vertices.
+  \end{enumerate}
+
+  \begin{proof}
+    If $V_t$ doesn't cover $e = (u, v)$, then we must have both $u, v$ is colored $t$, which
+    is impossible since it is a proper coloring. This proves (1).
+
+    To prove (2), Notice that
+    \[ \sum_{1 \leq t \leq k} \sum_{v \in V_t} w_v = k \sum_{v \in V} w_v - \sum_{v \in V} w_v = (k-1) W\]
+    Thus the some of cost of these $k$ vertex covers is $(k-1)W$, so one vertex cover must have cost
+    no more then the averge, $W (k-1)/k$.
+  \end{proof}
+\end{lemma}
+
+Now, let $\bm{x}$ be an half integer optimal solution of equation~\ref{eq:lp}.
+Define $V_\alpha \defeq \{ v \in V : x_v = \alpha \}$, then $V = V_0 \cup V_{0.5} \cup V_1$.
+Let $W_{0.5} = \sum_{v \in V_{0.5}} w_v$, by lemma~\ref{lemma:kcolor}, there is a vertex
+cover $C$ with cost no more then $W_{0.5} (k-1) / k$. We claim that $C \cup V_1$ is a vertex
+cover, since if it does not cover an edge $e = (u, v)$, then either $u, v$ are both in $V_0$,
+or one of them is in $V_0$ and the other is in $V_{0.5}$. But both cases are impossible,
+since then $\bm{x}$ won't satisfied $x_u + x_v \geq 1$.
+Now, let $S_C$ be the cost of this vertex cover, $S_{\text{OPT}}$ be the cost of the optimal vertex cover,
+and $S_{\text{LP}} \defeq \bm{w}^\intercal \bm{x}$ be the optimal cost of $\bm{x}$ in the relaxed LP, then
+\[ \Big(2 - \frac{2}{k}\Big) S_{\text{OPT}}
+  \stackrel{(1)}{\geq} 2 \frac{k-1}{k} S_{\text{LP}}
+  \stackrel{(2)}{\geq} 2 \frac{k-1}{k} \sum_{v \in V_{0.5}} 0.5 w_v + \sum_{v \in V_1} w_v
+  \geq \frac{k-1}{k} W + \sum_{v \in V_1} w_v
+  \geq S_C \]
+Where (1) is because the optimal vertex cover is also a solution to the relaxed LP, and
+(2) is because $k \geq 2 \implies 2(k-1)/k \geq 1$.
+
+{\bf Collaborators}: None.
+
+\section{Problem 4.}
+
+Consider the following LP formulation:
+\begin{equation} \label{eq:ilp}
+  \begin{array}{>{\displaystyle}l>{\displaystyle}r>{\displaystyle}c*3{>{\displaystyle}l}}
+    \text{minimize} & \multicolumn{4}{l}{C} & \text{\small (The maximum congestion)}\\[10pt]
+    \text{s.t.} & \sum_{i = 1}^k f_i (g_i(u, v) + g_i(v, u)) & \leq & C, & \forall u, v \in V &
+    \text{\small ($C$ is the maximum congestion)} \\[5pt]
+
+    \text{and } \forall i, & g_i(u, v) & = & 0, & \forall (u, v) \not\in E & \text{\small (Edge contraints)} \\[5pt]
+
+    & \sum_v g_i(u, v) - g_i(v, u) & = & 0, & \forall u \in V \setminus \{s_i, t_i\} & \text{\small (Flow conservation)} \\[5pt]
+
+    & \sum_v g_i(s_i, v) - g_i(v, s_i) & = & 1, &  & \text{\small (Flow conservation at $s_i$)} \\[5pt]
+    & \sum_v g_i(t_i, v) - g_i(u, t_i) & = & -1, &  & \text{\small (Flow conservation at $t_i$)} \\[5pt]
+    & f_i(u, v) & \geq & 0, & \forall u, v \in V & \text{\small (Each flow is non-negative)}
+  \end{array}
+\end{equation}
+
+Notice that each $g_i$ would be a valid $s_i$-$t_i$ flow with flow $1$.
+
+We now give the following lemma:
+
+\begin{lemma} \label{lemma:decomp}
+  If $g$ is an $s$-$t$ flow with size $\abs{g}$. Let $P = \{p_1, p_2, \cdots, p_n\}$ be all
+  the simple paths from $s$ to $t$, then $g$ could be decomposed to
+  $g = a_1 q_1 + a_2 q_2 + \dots + a_n q_n + \mathcal{C}$, where each $q_i$ is an $s$-$t$
+  flow along path $p_i$ with size $1$, $\mathcal{C}$ is a circular flow (i.e., feasible flow
+  without $s$, $t$) and $\sum a_i = \abs{g}$.
+
+  \begin{proof}
+    Assume that $\abs{g} > 0$. Consider the graph $G' = (V, E')$ such that
+    $(u, v) \in E' \iff g(u, v) > 0$. If there is a simple cycle $\mathcal{C}$ in this graph,
+    then we could subtract $q$ flow
+    from each edge in $C$, where $q = \min_{e \in C} g(e)$,
+    then the new flow network is still a valid flow with equal size, and the cycle disappeared in $C$.
+    Since there are only finite simple cycle,
+    we could assume that $G'$ doesn't have loop (The circular flow decomposed in this stage
+    would be collected in $\mathcal{C}$).
+
+    Now, we claim that $s$ could reach $t$ in $G'$.
+    If not, let $S$ be all the vertices that could be reached by $s$, and $T \defeq V \setminus S$,
+    then $\sum_{u \in S, v \in T} g(u, v) = 0$. Then by the conservation of flow,
+    \[ 0 \geq \sum_{u \in S, v \in T} g(u, v) - g(v, u) = \sum_{u \in S, v \in V} g(u, v) - g(v, u)
+      = \sum_{v \in V} g(s, v) - g(v, s) = \abs{g} > 0 \]
+    which leads to a contradiction. Thus there is a simple path, say $p_1$, such that each edge on $p_1$
+    has positive flow. Let $a_1 \defeq \min_{e \in p_1} g(e)$, and consider $g' \gets g - a q_1$.
+    Then $p_1$ disappeared in the corresponding graph $G'$. Repeat this process,
+    and since there are only finite paths,
+    eventually the procedure ended. And by the fact that $G'$ has no cycle and the conservation of flow,
+    we know that $f(u, v) = 0$ for all $u, v$ and the decomposition is completed.
+  \end{proof}
+\end{lemma}
+
+By lemma~\ref{lemma:decomp} we also know that if we restrict that $g_i(u, v) \in \{0, 1\}, \, \forall i, u, v$
+in linear programming \eqref{eq:ilp},
+then each flow $g_i$ is a single path from $s_i$ to $t_i$ (if there is circular flow, then remove these
+flow gives a better solution). Thus the problem in the statement correspond to the ILP of \eqref{eq:ilp}.
+And if the solution of the ILP is $C_{\text{ILP}}$, and the solution of the LP is $C_{\text{LP}}$,
+then $C_{\text{ILP}} \geq C_{\text{LP}}$.
+
+Now we need another lemma:
+\begin{lemma}
+  If there are at most $r$ simple path from $s$ to $t$, then there is a simple path $p$
+  such that $\min\limits_{e \in p} g(e) \geq \abs{g} / d$, where $g$ is any $s$-$t$ flow.
+
+  \begin{proof}
+    By lemma~\ref{lemma:decomp}, we could decompose $g = a_1 q_1 + a_2 q_2 + \dots + a_n q_n + \mathcal{C}$,
+    where each $q_i$ is a flow along a simple path $p_i$. Since $n \leq d$ and $\sum a_i = \abs{g}$,
+    there is an $a_i$, say $a_1$ such that $a_1 \geq \abs{g} / d$.
+    Then every edge $(u, v)$ in $p_1$ will satisfied $g(u, v) \geq a_1 \geq \abs{g} / d$. Thus $p_1$
+    is the desired path.
+  \end{proof}
+\end{lemma}
+Notice that this edge could be easily find in polynomial time. Simply remove edges $(u, v)$ with
+flow $g(u, v)$ less then $\abs{g}/d$ and preform a DFS from $s$ to $t$.
+
+Finally we round a solution of LP to an approximation solution of the original problem as following:
+If $\{g_i\}$ is the solution of the linear programming \eqref{eq:ilp}, then let $p_i$ be the path
+such that each edge in it has flow no less then $\abs{g_i} / r = 1 / r$. Then set $\hat{g}_i(u, v) = 1$
+if $(u, v) \in p_i$, or else $\hat{g}_i(u, v) = 0$. It is easy to check that $\{\hat{g}_i\}$ is
+indeed a solution to the original problem. Notice that $\hat{g}_i(u, v) / g_i(u, v) \leq 1 / r^{-1} \leq r$,
+so the congestion of an edge $e = (u, v)$ satisfied
+\[ \hat{C}(e) = \sum \hat{g}_i(u, v) + \hat{g}_i(v, u) \leq r \sum \left( g_i(u, v) + g_i(v, u) \right) = rC_{\text{LP}}(e) \]
+Thus
+\[ \hat{C} \leq r C_{\text{LP}}(e) \leq r C_{\text{ILP}} \]
+and hence the rounding gives an $r$-approximation algorithm which has running time polynomial in $k, \abs{V}, \abs{E}$.
+
+Notice that this algorithm has time complexity independent of $r$.
+
+{\bf Collaborators}: None.
+
+\section{Problem 5.}
+
+Recall that the corresponding relaxed LP of the non-metric uncapacitated facility location problem is:
+\begin{equation} \label{eq:lp}
+  \begin{array}{>{\displaystyle}l>{\displaystyle}r>{\displaystyle}c*2{>{\displaystyle}l}}
+    \text{minimize} & \multicolumn{3}{l}{\displaystyle \sum c_i y_i + \sum d_{i,j} x_{i,j}} \\[10pt]
+    \text{s.t.} & \sum_i x_{i, j} & \geq & 1, & \forall j \\
+    & y_i & \geq & x_{i, j}, & \forall i, j \\
+    & x_{i, j} & \geq & 0, & \forall i, j
+  \end{array}
+\end{equation}
+
+Now, for a solution $(x_{i, j})_{i, j}, (y_i)_i$ for this LP, we preform a randomize rounding procedure
+as following:
+\newcommand*{\hx}{\hat{x}}
+\newcommand*{\hy}{\hat{y}}
+\begin{itemize}[itemsep=-5pt]
+  \item For each $i$, set $\hat{y}_i = 1$ with probability $\min(1, \lambda y_i)$, else set $\hat{y}_i = 0$.
+  \item For each $j$, set $\hx_{i, j} = 1$ if $i$ is the one with $\hy_i = 1$ and smallest $d_{i, j}$.
+    Also define $\hat{i}_j$ to be this $i$ and $\hat{d}_j \defeq d_{\hat{i}_j, j}$.
+\end{itemize}
+
+\newcommand{\Expect}{{\rm I\kern-.3em E}}
+We say this rounding procedure ``failed'' if no facility is opened or there is a $j$ such that
+$\hat{d}_j \geq 2 D_j$, where $D_j \defeq \sum_i d_{i, j} x_{i, j}$.
+Notice that
+\[ \sum_{i: d_{i, j} \leq 2D_j} x_{i, j} \geq 0.5 \]
+by Markov inequality, so the event $\hat{d}_j \geq 2 D_j$ has probability
+\[ \prod_{i \in I} (1 - \lambda y_i)
+  \leq \prod_{i \in I} (1 - \lambda x_{i, j})
+  \leq \exp\left( \sum_{i \in I} - \lambda x_{i, j} \right)
+  \leq \mathrm{e}^{-0.5 \lambda} \]
+Where $I \defeq \{ i: d_{i, j} \leq 2D_j\}$.
+has probabililty $\prod (1 - \min(1, \lambda y_i))$. Also if $\hat{d}_j \leq 2D_j$
+we must have some facility opened. So by uniform bound, if we choose $\lambda = 2 \log n + \log 4$, then
+\[ \mathbb{P}(\text{failed}) \leq \sum_{j} \mathbb{P}(\hat{d}_j \geq 2 D_j )
+  \leq n \mathrm{e}^{-0.5 \lambda} \geq \frac{n}{4n} = \frac{1}{4} \]
+Hence the algorithm ``success'' with probability as least $3 / 4 = \ord(1)$.
+And in this situation, the expect cost $\Expect[C]$ is
+\begin{align*}
+  \Expect[C] &= \Expect\left[ \sum_i \mathbb{P}(\hat{y}_i = 1) c_i \right]
+  + \Expect\left[ \sum_j \hat{d}_j \right] \\
+  &\leq \sum_i c_i \lambda y_i + \sum_j 2 D_j  \\
+  &\leq \ord(\log n) \sum_i c_i y_i + \sum_{i, j} d_{i, j} x_{i, j} \\
+  &\leq \ord(\log n) C_{\text{LP}}
+\end{align*}
+Since $C_{\text{OPT}} \geq C_{\text{LP}}$, randomize rounding produce an $\ord(\log n)$ approximation
+algorithm.
+
+{\bf Collaborators}: None.
+\end{document}
+

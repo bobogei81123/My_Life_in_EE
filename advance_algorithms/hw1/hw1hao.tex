@@ -1,0 +1,124 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{color, unicode-math, float, hhline}
+
+\usepackage[abbreviations, per-mode=symbol]{siunitx}
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{csquotes}
+\usepackage{algorithm2e}
+\usepackage{circuitikz}
+\usepackage{parskip}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\arabic{subsection}.}{12pt}{}
+%\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=0pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\newtheorem{lemma}{Lemma}
+\newcommand{\img}{\mathsf{i}}
+\newcommand{\ex}{\mathsf{e}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+\newcommand{\defeq}{\triangleq}
+\DeclareMathOperator*{\ord}{\mathcal{O}}
+\setlength{\droptitle}{-1.5cm} %title 與上緣的間距
+\title{Algorithm HW\#1}
+\author{B02901178 江誠敏}
+
+\begin{document}
+\maketitle
+Collaborators: B02901027 茅耀文
+\section{Problem 1.}
+
+In the following, $v_i$ and $w_i$ will represent the value and weight of the $i$-th gift respectively,
+$W$ be the weight limit, and let $V \defeq \sum v_i$. Also, let $V^*$ be the total value of optimal solution.
+Assume that $w_i \leq W$ for all $i$ (or else the gift is useless), so $V^* \geq \max v_i$.
+
+First we summarize some result we learned in lecture 1 and HW 0.5. \medskip
+
+\begin{lemma} \hfill \label{lemma:recap}
+  \begin{enumerate}
+    \item There is an algorithm that solves the knapsack problem in $\ord(n V^*)$, where
+      $V^*$ is the total value of the optimal solution.
+    \item Fixing a problem instance, if we choose $b$ to be our rounding factor,
+      then the time complexity is $\ord(n V^* / b)$,
+      and we get an $(1 + 2nb / V^*)$-approximation algorithm. \label{lemma:ks-approx-algo}
+    \item There is an $\ord(n \log n)$ greedy 2-approximation algorithm for the knapsack problem.
+      Simply sort the gifts by $v_i / w_i$, so assume $v_i / w_i \geq v_{i+1} / w_{i+1}$, then choose \\
+      $\max(v_1 + \dots + v_k, v_{k+1})$, where $k$ is the smallest indices
+      letting $w_1 + \dots + w_{k+1} \geq W$.
+  \end{enumerate}
+\end{lemma}
+
+So if we can choose $b = \epsilon V^* / (2n)$, then we would get an $(1+\epsilon)$-approximation algorithm
+which runs in $\ord(n^2 \epsilon^{-1})$. Let $\tilde{V}$ be the solution given by the greedy algorithm
+in 3., then $V^* / 2 \leq \tilde{V} \leq V^*$. So if we let $b = \epsilon
+\tilde{V} / (4n)$, it would still be an $(1+\epsilon)$-approximation algorithm, and the running time
+is $\ord(n^2 \epsilon^{-1})$.
+
+Notice that the problem could also be solved without the greedy 2-approximation algorithm.
+First we need a lemma. \medskip
+
+\begin{lemma} \label{lemma:criteria}
+  Let $\bar{V}$ be the optimal solution after rounding, and let $\hat{V}$ be the corresponding
+  solution in the original problem. If $\bar{V} \leq (1 + \epsilon) \hat{V}$ then $\hat{V}$
+  is an $(1+\epsilon)$ approximation algorithm.
+
+  \begin{proof}
+    This is because $V^* \leq \bar{V} \leq (1+\epsilon) \hat{V}$, so $\hat{V}$ is
+    an $(1+\epsilon)$ approximation algorithm.
+  \end{proof}
+\end{lemma}
+
+So we propose an algorithm as following:
+
+\RestyleAlgo{boxruled}
+\LinesNumbered
+\begin{algorithm}[H]
+  \DontPrintSemicolon
+  $V \defeq \sum v_i$ \;
+  $b \gets \epsilon V / (2n)$ \;
+  \While{true}{
+    $\hat{V} \gets$ an approximation solution using the algorithm in
+    lemma~\ref{lemma:recap}-\ref{lemma:ks-approx-algo} with rounding factor $b$. \tcc*[r]{Cost $\ord(n V^*/ b)$}
+    Check if $\hat{V}$ gives a solution good enough by lemma~\ref{lemma:criteria}. \tcc*[r]{Cost $\ord(n)$}
+    \lIf{$\hat{V}$ is good enough}{\Return $\hat{V}$}
+    \lElse{$b \gets b / 2$}
+  }
+  \caption{An $\ord(n^2 \epsilon^{-1})$ FPTAS for the knapsack problem}
+\end{algorithm}
+
+Notice that $V^* \leq V = \sum v_i$, so initially $b \geq \epsilon V^* / (2n)$. And once $b \leq \epsilon V^* / (2n)$,
+$\hat{V}$ is then an $(1+\epsilon)$ approximation solution and the algorithm stops. At this moment,
+$b \geq \epsilon V^* / (4n)$. Also, $V^* \geq \max v_i \geq V / n$, so the iteration runs at most $\log n$ times.
+Hence the total running time is
+\[ \ord(\log n) + 4n^2 \epsilon^{-1} + 2n^2 \epsilon^{-1} + n^2 \epsilon^{-1} + \dots = \ord(\log n) + \ord(n^2 \epsilon^{-1})
+= \ord(n^2 \epsilon^{-1}) \]
+
+\end{document}
+

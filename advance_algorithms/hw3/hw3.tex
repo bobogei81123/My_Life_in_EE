@@ -1,0 +1,260 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{color, float, hhline}
+
+\usepackage[abbreviations, per-mode=symbol]{siunitx}
+%\usepackage{luatexja-fontspec}
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{csquotes}
+\usepackage{algorithm2e}
+\usepackage{circuitikz}
+\usepackage{parskip}
+\usepackage{bm}
+\usepackage{breqn}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\arabic{subsection}.}{12pt}{}
+%\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=0pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\newtheorem{lemma}{Lemma}
+\newcommand{\img}{\mathsf{i}}
+\newcommand{\ex}{\mathsf{e}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+\newcommand{\defeq}{\triangleq}
+\DeclareMathOperator{\Expect}{{\rm I\kern-.3em E}}
+\DeclareMathOperator*{\ord}{\mathcal{O}}
+\providecommand\given{}
+% can be useful to refer to this outside \Set
+\newcommand*\SetSymbol[1][]{%
+  \nonscript\:#1\vert
+  \allowbreak
+  \nonscript\:
+\mathopen{}}
+\DeclarePairedDelimiterX\Set[1]\{\}{%
+  \renewcommand\given{\SetSymbol[\delimsize]}
+  \,#1\,
+}
+
+\setlength{\droptitle}{-1.5cm} %title 與上緣的間距
+\title{Algorithm HW\#2}
+\author{B02901178 江誠敏}
+
+\begin{document}
+\maketitle
+\section{Problem 1.}
+
+Consider the boolean expression
+\[ (x_1 \lor x_2) \land (\lnot x_1 \lor x_2)
+  \land (x_1 \lor \lnot x_2) \land (\lnot x_1 \lor \lnot x_2) \]
+
+The corresponding linear programming is:
+\begin{equation*}
+  \begin{array}{>{\displaystyle}l>{\displaystyle}r>{\displaystyle}c*2{>{\displaystyle}l}}
+    \text{maximize} & \multicolumn{4}{l}{z_1 + z_2 + z_3 + z_4} \\
+    \text{s.t.} & z_1 & \leq & y_1 & \\
+    & z_1 & \leq & y_2 & \\
+    & z_2 & \leq & 1 - y_1 & \\
+    & z_2 & \leq & y_2 & \\
+    & z_3 & \leq & y_1 & \\
+    & z_3 & \leq & 1 - y_2 & \\
+    & z_4 & \leq & 1 - y_1 & \\
+    & z_4 & \leq & 1 - y_2 & \\
+    & z_j & \leq & 1 & \forall j \\
+    & y_i, z_j & \geq & 0 & \forall i, j
+  \end{array}
+\end{equation*}
+It is easy to check that $(y_1, y_2, z_1, z_2, z_3, z_4) = (0.5, 0.5, 1, 1, 1, 1)$ is
+a solution with $z_1 + z_2 + z_3 + z_4 = 4$. But obviously at most $3$ clauses could
+be satisfied, since exactly one of $x_1, \lnot x_1$ would be false, say $x_1$.
+Similarly, assume $x_2$ is false, then $x_1 \lor x_2$ is false.
+Thus the integrality gap is $3/4$.
+
+\section{Problem 2.}
+First we prove two simple lemmas: \smallskip
+\begin{lemma} \label{lemma:ineq-1}
+  $1 - 4^{y - 1} \leq 4^{-y}$.
+  \begin{proof}
+    Since
+    \[ 4^{-y} - 1 + 4^{y-1} = (2^{-y} - 2^{y-1})^2 \geq 0 \implies 1 - 4^{y-1} \leq 4^y \]
+  \end{proof}
+\end{lemma}
+
+\begin{lemma}\label{lemma:ineq-2}
+  $1 - 4^{-z} \geq 3 z / 4$.
+  \begin{proof}
+    $f = z \mapsto 1 - 4^{-z}$ is concave since $f'' = - 4^{-z} (\log 4)^2 < 0$.
+    \[ 4^{-y} - 1 + 4^{y-1} = (2^{-y} - 2^{y-1})^2 \geq 0 \implies 1 - 4^{y-1} \leq 4^y \]
+    Thus
+    \[ 1 - 4^{-z} f(z) = f((1-z) \cdot 0 + z \cdot 1) \geq (1 - z) f(0) + z f(1) = \frac{3z}{4} \]
+  \end{proof}
+\end{lemma}
+
+Now, for each clause, let $z_i$ be the corresponding variable in the LP,
+$A \defeq \Set{ i: x_i \text{ appears} \allowbreak \text{ in the clause}}$ and
+$B \defeq \{ i: \lnot x_i \text{ appears} \allowbreak \text{ in the clause}\}$ (Notice
+that $A, B$ might intersect). Then we have
+\[ z_i \leq \sum_{i \in A} y_i + \sum_{i \in B} 1 - y_i \]
+For each $i \in A$, $x_i$ would be assigned ``\texttt{True}'' with probability $4^{y_i-1}$,
+and thus ``failed'' with probability $1 - 4^{y_i-1}$. Similarly, for each $i \in B$,
+$x_i$ would be assigned ``\texttt{False}'' with probability $1 - 4^{y_i-1}$,
+and thus ``failed'' (i.e., $\lnot x_i = \texttt{False}$) with probability $4^{y_i-1}$.
+Thus the overall probability of ``success'' (i.e., the clause evaluate to ``\text{True}'')
+is
+\begin{align*} 1 - \prod_{i \in A} (1 - 4^{y_i-1}) \prod_{i \in B} 4^{y_i-1}
+  &\stackrel{\scriptstyle\text{(a)}}{\geq} 1 - \prod_{i \in A} 4^{-y_i} \prod_{i \in B} 4^{y_i - 1} \\
+  &\geq 1 - 4^{\left( \sum_{i \in A} -y_i + \sum_{i \in B} - (1 - y_i) \right)} \\
+  & \geq 1 - 4^{-z_i} \\
+  &\stackrel{\scriptstyle\text{(b)}}{\geq} \frac{3z_i}{4}
+\end{align*}
+Where Lemma~\ref{lemma:ineq-1} and \ref{lemma:ineq-2} is directly used in (a) and (b).
+Thus the expected weights of clause that is satisfied is greater then $3 \sum w_i z_i / 4$,
+hence the rounding provides an $4/3$-approximation algorithm.
+
+\section{Problem 3.}
+If $(S_1, S_2)$ are a partition of vertices such that $S_1 \cup S_2 = V$ and $S_1 \cap S_2 = \varnothing$,
+Define the cut (edges) as $C = \Set{ (u, v) : u \in S_1 \text{ and } v \in S_2}$.
+
+Consider the following randomized algorithm: Simply place each $u$ randomly into $\tilde{S}_1$
+or $\tilde{S}_2$ with equal probability and independently, then output $(\tilde{S}_1, \tilde{S}_2)$.
+If $C_{\text{opt}}$ is the optimal cut, for each $(u, v) \in C_{\text{opt}}$,
+$\Pr\Set*{ u \in \tilde{S}_1 \text{ and } v \in \tilde{S}_2} = 1/4$, thus
+$\Expect \abs{\tilde{C}} \geq 1/4 \abs{C_{\text{opt}}}$, where $\tilde{C}$ is the
+cut induced by $(\tilde{S}_1, \tilde{S}_2)$. \smallskip
+
+\begin{lemma} \label{lemma:calc-expected-cut-size}
+  If some vertices is already assigned, then the expected size of the cut
+  if the remaining vertices are assigned to $S_1$ or $S_2$ randomly could be
+  calculated in $\ord(\abs{E})$.
+
+  \begin{proof}
+    We simply examinate each cases carefully, for each edge $e = (u, v)$, the probability $p$
+    of $e$ be in the cut is:
+    \begin{enumerate}
+      \item If both $u, v$ are already assigned: If $u \in S_1$ and $v \in S_2$, then $p = 1$.
+        Otherwise, $p = 0$.
+      \item If $u$ is already assigned: If $u \in S_1$, then $p = 0.5$.  Otherwise, $p = 0$.
+      \item If $v$ is already assigned: If $v \in S_2$, then $p = 0.5$.  Otherwise, $p = 0$.
+      \item Else, $p = 0.25$.
+    \end{enumerate}
+    Now, by the additivity of expectation, $\Expect \abs{C} = \sum_{e \in E} \Pr\Set{ e \in C }$.
+    Thus we could compute $\Expect \abs{C}$ by running through all edges, which obviously cost $\ord(\abs{E})$.
+  \end{proof}
+\end{lemma}
+
+Now, we derandomize the algorithm by following: For $i$ from $1$ to $\abs{V}$,
+\begin{enumerate}
+  \item Calculate the expected value $E_{i, 1}, E_{i, 2}$
+    by lemma~\ref{lemma:calc-expected-cut-size}, where $E_{i, j}$
+    is the expected cut size when $v_i$ is assigned to $S_j$.
+  \item Let $E_{i, j}$ be the greater one, then assign $v_i$ to $S_j$.
+\end{enumerate}
+Let $x_i$ be the expected cut size after $v_i$ is assigned,
+then in the very beginning, $x_0 = \Expect \abs{\tilde{C}} \geq \abs{C_{\text{opt}}} / 4$.
+Now, if $x_{i-1} \geq \abs{\tilde{C}}$, then when assigning $v_i$,
+we must have $x_{i-1} = 0.5 E_{i, 1} + 0.5 E_{i, 2}$, thus one of them must
+be greater then $x_{i-1}$, thus $x_{i} \geq x_{i-1} \geq \Expect \abs{\tilde{C}} \geq \abs{C_{\text{opt}}} / 4$
+by induction, hence derandomizing gives a deterministic $4$-approximation algorithm.
+Since we iterate through all the vertices, and each time applying Lemma~\ref{lemma:calc-expected-cut-size}
+cost $\ord(\abs{E})$, the overall running time is $\ord(\abs{E} \abs{V})$.
+Notice that the ``type'' of an edge (listed 1.--- 4. above) changed at most $2$
+time (once $u, v$ are assigned). It is surely possible to reduce the
+running time to $\ord(\abs{E} + \abs{V})$ by calculating only the edge
+which type changed in Lemma~\ref{lemma:calc-expected-cut-size}.
+
+\section{Problem 4.}
+
+Let $m, s$ be the current number of elements and the size of the hash table, respectivily
+(so $s = 4k^2$ , where we rebuilt the hash table while inserting the $k$-th element from the statement).
+Define the potential function as $\Phi \defeq 2m - \sqrt{s} = 2m - 2k$. Since $k$
+is the last time we rebuilt the hash table, $m \geq k = \sqrt{s}/2$ and hence $\Phi = 2m - \sqrt{s} \geq 0$
+at any moment.
+
+Let $m', s'$ be the value of $m, s$ after an insertion, there are two cases.
+\begin{enumerate}
+  \item No collision happened, then $\Delta \Phi = 2 \Delta m = 2(m' - m) = \ord(1)$,
+    thus the amortized cost is $\tilde{c} = c + \Delta \Phi = \ord(1) + \ord(1) = \ord(1)$.
+  \item A collision occurred. Since the hash function is chosen from a 2-universal hash family,
+    this happened with probability no more then $m / s$. After rebuilding, $s' = 4{k'}^2 = 4m^2$.
+    Thus we have
+    \[ \Delta \Phi = 2 \Delta m - \Delta s = \ord(1) + \sqrt{s'} - \sqrt{s} = \ord(1) + 2k - 2m \]
+    Hence the amortized cost is
+    \[ \tilde{c} = c + \Delta \Phi = m + \ord(1) + 2k - 2m = 2k - m + \ord(1) \]
+\end{enumerate}
+Now, let $C$ be the amortized cost of an insertion, by the discussion above, we have
+\[ \Expect C = \ord(1) + \frac{m}{s} (2k - m) = \ord(1) + \frac{m (2k - m)}{4k^2} \]
+If $m > 2k$, then $2k - m$ is negative, so $\Expect C = \ord(1)$. Thus assume
+$m \leq 2k$, then
+\[ \frac{m (2k-m)}{4k^2} \leq \frac{2km}{4k^2} \leq \frac{4k^2}{4k^2} = \ord(1) \implies \Expect C = \ord(1) \]
+Thus no matter what, $\Expect C = \ord(1)$. Hence the expected cost of inserting $n$ elements
+is $n \ord(1) = \ord(n)$.
+
+\section{Problem 5}
+Assuming $n$ is the number of $a_i$s.
+
+Divide the interval $[0, 1)$ into $[0, m), [m, 2m), \dots, [km, (k+1)m), \dots, [(1/m-1)m, 1)$
+where $m = 1/n^2$. Let $I_k \defeq [km, (k+1)m)$. Now,
+\begin{align*}
+  &\Pr\Set{ \text{the smallest interval} \leq 1/n^2 = m} \\
+  &= \Pr\Set{ \text{exists one interval} \leq m} \\
+  &\geq
+  \Pr\Set{ \exists\, i \neq j \text{ s.t. } a_i \text{ and } a_j \text{ are both in } I_k \text{ for some } k } \\
+  &=
+  1 - \Pr\Set{ \forall\, k, I_k \text{ contains no more then one } a_i } \defeq 1 - p
+\end{align*}
+So we shall calculate $p$, which is the probability of every $I_k$ is occupied by
+at most one $a_i$. Since these $a_i$s are picked uniformly and independently at random,
+and each of them has size $m$, $\Pr\Set{a_i \in I_k} = m = 1/n^2$.
+Notice that
+\begin{align*}
+  p &= \prod_{i = 1}^n \Pr\Set{a_i \text{ is inserted into an empty sub-interval}} \\
+  &= \prod_{i=1}^n \left( 1 - \frac{i-1}{n^2} \right) = \prod_{i = 0}^{n-1} \left( 1 - \frac{i}{n^2} \right)
+\end{align*}
+Since before $a_i$ is inserted, $i-1$ sub-intervals are already occupied by the previous $a_j$s,
+provided that no collision occurred before. \medskip
+
+\begin{lemma} \label{lemma:1-x-less-then-exp--x}
+  $e^{-x} \geq 1 - x,\, \forall x \in \mathbb{R}$.
+
+  \begin{proof}
+    Let $f = e^{-x} - (1-x)$, then $f(0) = 0$ and $f'(x) = 1 - e^{-x} \lessgtr 0$ as $x \lessgtr 0$.
+    We conclude that $e^{-x} \geq 1 - x$.
+  \end{proof}
+\end{lemma}
+
+By lemma~\ref{lemma:1-x-less-then-exp--x},
+\[ p \leq \prod_{i = 0}^{n-1} \exp\left(- \frac{i}{n^2} \right)
+= \exp\left( -\sum_{i = 0}^{n-1} \frac{i}{n^2} \right) = \exp\left( - \frac{n  (n-1)}{2n} \right)
+= \exp\left( - \frac{1}{2} + \frac{1}{2n} \right) \]
+If $n \geq 2$, $-1/2 + 1/(2n) \leq 1/4$, thus
+\[ p \leq \exp\left( - \frac{1}{2} + \frac{1}{2n} \right) \leq e^{-1/4} = \Omega(1), \ \text{ as } n \geq 2.\]
+Thus the size of the smallest interval is less then $1/n^2$ has probability no less then $e^{-1/4} = \Omega(1)$.
+
+\end{document}
+

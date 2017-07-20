@@ -1,0 +1,262 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{color, unicode-math, float, hhline}
+
+\usepackage[abbreviations, per-mode=symbol]{siunitx}
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{csquotes}
+\usepackage{circuitikz}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\arabic{subsection}.}{12pt}{}
+%\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=24pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\newcommand{\img}{\mathsf{i}}
+\newcommand{\ex}{\mathsf{e}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+\setlength{\droptitle}{-1.5cm} %title 與上緣的間距
+\title{Algorithm HW\#0.5}
+\author{B02901178 江誠敏}
+
+\begin{document}
+\maketitle
+Collaborators: B02901027 茅耀文
+\section{Problem 1.}
+
+We claim that the approximation ratio $R = 3$.
+Let $S = \sum g_i$, We prove this by examine two cases:
+\begin{enumerate}[label=Case \arabic*:]
+  \item $g_i \leq S/2, \, \forall g_i$.
+
+    Let $\Delta_i$ be the difference of the sum of the values between child A and child B
+    after the $i$-th gift is assigned.
+    We claim that $\abs{\Delta_i} \leq S/2, \, \forall i$. Let $k$ be the one which let $\abs{\Delta_k}$
+    obtain the maximum. Then after the $k$-th gift is assigned, the one who receive the gift, say child A,
+    has the greater total value (or else $\abs{\Delta_{k-1}}$ is bigger). And right before the gift is assigned,
+    child A has less total value (so he received the gift). So $\Delta_k, \Delta_{k-1}$ have different sign
+    (or possibly $0$), hence $\abs{\Delta_k} = g_k - \abs{\Delta_{k-1}} \leq g_k$. Thus $\abs{\Delta_k} \leq S/2$.
+
+\end{enumerate}
+
+\section{Problem 2.}
+\[ n^n > n! > 2^{3n} > 2^n > (\log_2(n))! > 3n^3 + 1 > \sqrt{n} + 3 = 2^{log_4(n)} > n^{0.01} > \log_2 n = \ln n \]
+Here $f(n) > g(n)$ means that $g(n) \in o(f(n))$ and $f(n) = g(n)$ means that $f(n) = \Theta(g(n))$.
+Notice that in both case $f(n) = \Omega(g(n))$.
+
+\section{Problem 3.}
+\begin{enumerate}
+  \item We shall assume that $\inf_{1 \leq n \leq 3} T(n) > 0$, or else there exists a function $T(n)$ 
+    such that $T(n) \notin \Theta(f(n)), \forall f$.
+
+    We shall prove that $T(n) \in \Theta\left(n (\log n)^2 \right)$ by induction. \\
+    Let \[ c_1 = \min\left(\frac{1}{9 (\log 9)^2} \inf_{3 \leq n \leq 9} T(n),\; \frac{1}{2 \log 3} \right), \quad
+    c_2 = \max\left(\frac{1}{3(\log 3)^2}\sup_{3 \leq n \leq 9} T(n),\; \frac{1}{\log 3}\right). \] 
+    Then $c_1 > 0$, since $T(n) = 3T(n/3) + n \log n > T(n/3)$, so \\
+    $\inf_{3 \leq n \leq 9} T(n) > \inf_{1 \leq n \leq 3} T(n) > 0$.
+    Now for $3 \leq n \leq 9$
+    \begin{align*}
+      T(n) &\geq \frac{n (\log n)^2}{9 (\log 9)^2} T(n) 
+      \geq n (\log n)^2 \frac{1}{9 (\log 9)^2} \inf_{3 \leq n \leq 9}T(n)
+      \geq c_1 n (\log n)^2 \\
+      T(n) &\leq \frac{n (\log n)^2}{3(\log 3)^2} T(n) \leq n (\log n)^2 \left(\frac{1}{3 (\log 3)^2} 
+        \sup_{3 \leq x \leq 9} T(n) \right) 
+      \leq c_2 n (\log n)^2
+    \end{align*}
+    So $c_1 n (\log n)^2 \leq T(n) \leq c_2 n (\log n)^2$ for $3 \leq n \leq 9$.
+
+    Assume now $n > 9$ and for all $3 \leq k < n$, $T(k) \leq ck$. Then since $n/3 \geq 3$, we have
+    \begin{align*}
+      T(n) &= 3 T(n/3) + n \log n \geq c_1 n (\log n/3)^2 + n \log n \\
+      &= c_1 n (\log n - \log 3)^2 + n \log n \\
+      &= c_1 n (\log n)^2 + \left(  c_1 n (\log 3)^2 + n \log n  - 2c_1 n (\log n) (\log 3)\right) \\
+      &\geq c_1 n (\log n)^2 + \left(  n \log n  - 2c_1 n (\log n) (\log 3)\right) \\
+      &\geq c_1 n (\log n)^2 + \left(  n \log n  - \frac{2 \log 3}{2 \log 3} n (\log n) \right) \\
+      &= c_1 n (\log n)^2
+    \end{align*} and
+    \begin{align*}
+      T(n) &= 3 T(n/3) + n \log n \leq c_2 n (\log n/3)^2 + n \log n \\
+      &= c_2 n (\log n - \log 3)^2 + n \log n \\
+      &= c_2 n (\log n)^2 - \left( 2c_2 n (\log n) (\log 3) - c_2 n (\log 3)^2 - n \log n \right) \\
+      &= c_2 n (\log n)^2 - \left(c_2 n (\log n) (\log 3) - c_2 n (\log 3)^2 \right) - 
+      \left(c_2 (\log 3) n (\log n) - n \log n \right) \\
+      & \leq c_2 n (\log n)^2
+    \end{align*}
+    because $\log n \geq \log 3$ and $c_2 \geq 1 / \log 3 \implies c_2 \log 3 \geq  1$.
+
+    So $c_1 n (\log n)^2 \leq T(n) \leq c_2 n (\log n)^2$. 
+    Hence by induction, we prove that \\ $T(n) \in \Theta(n (\log n)^2)$.
+
+  \item We shall prove that $T(n) \in \Theta(n^3)$ by induction. \\
+    Assume for all $1 \leq k < n$, $T(k) \leq ck^3$. Then
+    \begin{align*}
+      T(n) &= 4 T(n/2) + n^3 \\
+      &\leq 4 c (n/2)^3 + n^3 \\
+      &= c n^3/2 + n^3 \\
+      &= n^3 + n^3 \\
+      &= 2 n^3 = c n^3
+    \end{align*}
+    Hence by induction, we prove that $T(n) \in O(n^3)$. \\
+    Notice also that $T(n) = 4T(n/2) + n^3 \geq n^3$, 
+    so $T(n) \in \Omega(n^3)$, hence $T(n) \in \Theta(n^3)$.
+\end{enumerate}
+\section{Problem 4}
+\begin{enumerate}
+  \item True. For all $c$, let $c' = \frac{1}{2c}$. 
+    Since $f(n) \in o(n^2)$, exists $N$ such that $n > N \implies f(n) \leq c'n^2$.
+    Then $n^2 - cf(n) \geq n^2 - n^2/2 = n^2 / 2$. So for $c_0 = 1/2$ and $N_0 = N$, 
+    $n \geq N_0 \implies c_0n^2 \leq n^2 - c f(n)$, hence $n^2 - cf(n) \in o(n^2)$.
+  \item False. Let $f(n) = n^2 / 2$ and $c = 2$, then
+    \begin{itemize}
+      \item $2^{f(n)} \in o(2^{n^2})$, since for any $c' > 0$, if $c' \geq 1$ then $2^{f(n)} \leq 2^{n^2}$
+        for all $n \geq 0$, so assume that $0 < c' < 1$, then choose $N = \sqrt{2 \log_2 (1/c)}$, for
+        $n \geq N$, 
+        \[ 2^{n^2/2} \geq 2^{\log_2(1/c)} \geq \frac{1}{c} \implies 2^{f(n)} = 2^{n^2/2} \leq c 2^{n^2} \]
+        hence $2^{f(n)} \in o(2^{n^2})$.
+      \item If $c = 2$, then $n^2 - cf(n) = n^2 - 2 n^2/2 = 0$, and obviously $0 \notin \Omega(n^2)$.
+    \end{itemize}
+    Hence we disprove the statement by giving a counter example.
+\end{enumerate}
+
+\section{Problem 5}
+\begin{enumerate}
+  \item Let $f(n) = n^{2n}$, Then 
+    \[ T(n) = 2^n n^n T(n/2) \implies T(n) = \frac{n^{2n}}{(n/2)^n} T(n/2) \implies 
+      \frac{T(n)}{f(n)} = \frac{T(n/2)}{f(n/2)} = c\] 
+    where $c$ is a constant. Let $c'$ be such constant that $c' = c \frac{T(1)}{f(1)}$,  \\
+    so $T(n) = c\frac{T(1)}{f(1)} f(n) = c' f(n)$, hence $T(n) \in \Theta(f(n)) = \Theta(n^{2n})$.
+  \item The original recursive formula is equivalent to
+    \[ T(n) = \frac{n^2}{(n/2)^2} T(n/2) + \frac{n^2}{2 \log_2 n} \implies 
+      \frac{T(n)}{n^2} = \frac{T(n/2)}{(n/2)^2} + \frac{1}{2 \log_2 n} \]
+    Let $k = \log_2 n$, so
+    \[ \frac{T(2^k)}{4^k} = \frac{T(2^{k-1})}{4^{k-1}} + \frac{1}{2k} \]
+    If we let $f(k) = T(2^k) / 4^k$, then $f(k) = f(k-1) + 1 / 2k$, with initial condition $f(0) = 
+    T(1) = 1$. (or $C_1 \leq f(k) \leq C_2$ if $1 \leq k < 2$.) Hence 
+    \[ f(k) = C \sum_{m = 1}^{k} \frac{1}{2m} = 2C \sum_{m = 1}^{k} \frac{1}{m} \]
+    and notice that since $1/x$ monotonic decrease, 
+    \[ \log(k+1) - \log 2 \leq \int_{2}^{k+1} \frac{1}{x} \dI x \leq \sum_{m = 2}^{k} \frac{1}{m} 
+      \leq \int_1^{k} \frac{1}{x} \dI x = \log(k) \]
+    and by the fact that $\log(k+1) \leq \log(2k) = \log(k) + \log 2$, 
+    so $\sum\limits_{m=1}^{k} 1/m \in \Theta(\log m)$.
+
+    Hence $f(k) \in \Theta(\log k)$ and $T(2^k) = 4^k f(k) \in \Theta(4^k \log k)$. Thus
+    \[ T(n) = 4^{\log_2 n} \log (\log_2 n) = n^2 \log \log_2 n \in \Theta(n^2 \log \log n). \]
+\end{enumerate}
+
+\section{Problem 5}
+\begin{enumerate}
+  \item True, $T(n) = \Theta(f(n)) \iff T(n) = \Theta(n^2)$ since $f(n) = \Theta(n^2)$.
+
+    Again since $f(n) = \Theta(n^2)$, then exists $N_1, c_1, N_2, c_2$, $n \geq N_1 \implies f(n) \geq c_1 n^2$
+    and $n \geq N_2 \implies f(n) \leq c_2 n^2$, let $N = \max( N_1, N_2 )$, and let 
+    \[ d_1 = \min \left( \frac{1}{(2N)^2} \inf_{N \leq n < 2N} f(n), \; 2c_1 \right), \quad 
+      d_2 = \max \left( \frac{1}{N^2} \sup_{N \leq n < 2N} f(n), \; 2c_2 \right) \]
+    Then for $N \leq n < 2N, d_1 n^2 \leq f(n) \leq d_2 n^2$.
+
+    Now we shall prove that the inequality also holds for any $n \geq 2N$.
+    If for $k = n/2$, $d_1 k^2 \leq f(k) \leq d_2 k^2$ holds. Then 
+    \[ f(n) \geq 2 d_1 k^2 + c_1 n^2 \geq \frac{1}{2} d_1 n^2 + \frac{1}{2} d_1 n^2 = d_1 n^2 \]
+    and
+    \[ f(n) \leq 2 d_2 k^2 + c_2 n^2 \geq \frac{1}{2} d_2 n^2 + \frac{1}{2} d_2 n^2 = d_2 n^2 \]
+    So $d_1 n^2 \leq f(n) \leq d_2 n^2$. Hence by induction, $f(n) \in \Theta(n^2)$ and the proof is complete.
+  \item False, Let $f(n)$ be the function such that $f(2^t) = 4^{k^2}$ if $(k-1)^2 < t \leq k^2$ for all $k \in \mathbb{N}$.
+    Then $f(n) \in \Omega(n^2)$, since $f(2^t) = 4^{k^2} > 4^{t} > (2^t)^2$ and hence $f(n) > n^2$.
+    Then for any $k \in \mathbb{N}$, we have
+    \begin{align*}
+      T\left(2^{k^2}\right) &= 2T\left(2^{k^2}/2\right) +
+      f\left(2^{k^2}\right) = 2T\left(2^{k^2-1}\right) + f\left(2^{k^2}\right) \\
+      &= 4T\left(2^{k^2-2}\right) + 2f\left(2^{k^2 - 1}\right) + f\left(2^{k^2}\right) \\
+      &\vdots \\
+      &= 2^k T\left(2^{k^2-k}\right) + \sum_{t = 0}^{k} 2^t f\left(2^{k^2-t}\right)
+    \end{align*}
+    Notice that $(k-1)^2 \leq (k-1)k = k^2-k \leq k^2$ so
+    $f\left(2^{k^2-t}\right) = 4^{k^2}$ when $t = k$. Thus
+    \[
+      T\left(2^{k^2}\right) 
+      = 2^k T\left(2^{k^2-k}\right) + \sum_{t = 0}^{k} 2^t f\left(2^{k^2-t}\right) \\
+      \geq 2^k 4^{k^2}    \]
+    So $T(n) = 2^{\sqrt{\log n}} n^2$ for all $n = 2^{k^2}$. Obviously $2^{\sqrt{\log n}} n^2 \notin O(n^2)$
+    since $2^{\sqrt{\log n}} \to \infty$ as $n \to \infty$. Hence $T(n) \notin O(n^2)$, and we disprove the 
+    statement by giving a counter example.
+\end{enumerate}
+
+\section{Problem 7}
+\begin{enumerate}
+  \item We shall proof that $T(n) \in \Theta(n \log n)$ by induction. Choose $c'_1, c'_2$ so that
+    $c'_1 n \log n \leq T(n) \leq c'_2 n \log n$ for $n \leq 4$, and let
+    \[ c_1 = \min\left(c'_1, \frac{2}{\log 4} \right), \quad c_2 = \max\left(c'_2, \frac{2}{\log 4/3} \right) \]
+    So $c_1 n \log n \leq T(n) \leq c_2 n \log n$ for all $n \leq 4$.
+    
+    Now if $n > 4$, Assume that for $k = n/2$, $c_1 k \log k \leq T(k) \leq c_2 k \log k$. Then
+    \begin{align*}
+      T(n) &= T(a) + T(b) + 2n  \\
+      & \geq c_1 a \log a + c_1 b \log b + 2n = c_1 a \log a + c_1 b \log b + 2(a + b)  \\
+      & = c_1 a \left( \log(a/n) + \log n + \frac{2}{c_1} \right) + 
+      c_1 b \left( \log(b/n) + \log n + \frac{2}{c_2} \right) \\
+      &= c_1 (a + b) \log n + \left(\frac{2}{c_1} - \log(n/a) \right) + \left(\frac{2}{c_1} - \log(n/b) \right) \\
+      &\geq c_1 n \log n
+    \end{align*}
+    since $\log(n/a), \log(n/b) \leq \log 4 \leq 2/c_2$.
+
+    Similarly, 
+    \begin{align*}
+      T(n) &= T(a) + T(b) + 2n  \\
+      & \leq c_2 a \log a + c_2 b \log b + 2n \\
+      &= c_2 (a + b) \log n - \left(\log(n/a) - \frac{2}{c_2} \right) - \left(\log(n/b) - \frac{2}{c_2}\right) \\
+      &\leq c_2 n \log n
+    \end{align*}
+    since $\log(n/a), \log(n/b) \leq \log(4/3) \leq 2/c_2$.
+    Hence by induction, $c_1 n \log n \leq T(n) \leq c_2 n \log n$ and thus $T(n) \in \Theta(n \log n)$.
+
+  \item We shall proof that $T(n) \in \Theta(n^2)$.
+
+    First we show that $a^2 + b^2 \leq 8 n^2 / 9 $. WLOG, assume $a \geq b$. If $a \leq 2n / 3$, then 
+    $a^2 + b^2 \leq 2a^2 \leq 8n^2 / 9$. If $a > 2n / 3$, then $b < n/3$, hence $a^2 + b^2 
+    \leq (3n/4)^2 + (1/3)^2 = 97n / 144 \leq 8n^2/9$.
+
+    Now Choose $c'$ so that
+    $T(n) \leq c' n^2$ for $n \leq 4$, and let $ c = \max(c', 9 ) $
+    
+    If $n > 4$, Assume that for $k = n/2$, $T(k) \leq c k^2$. Then
+    \begin{align*}
+      T(n) &= T(a) + T(b) + n^2  \\
+      & \leq c a^2 + c b^2 + n^2 = c (a^2 + b^2) + n^2 \\
+      & \leq c\left(8n^2 / 9\right) + n^2 \\
+      & = cn^2 \left(\frac{8 + 9/c}{9}\right) \\
+      & \leq c n^2
+    \end{align*}
+    since $c \geq 9$, so $T(n) \in O(n^2)$. Notice that $T(n) = T(a) + T(b) + n^2 \geq n^2$, so
+    $T(n) \in \Omega(n^2)$ hence $T(n) \in \Theta(n^2)$.
+
+
+  
+\end{enumerate}
+
+\end{document}
+

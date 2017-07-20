@@ -1,0 +1,585 @@
+\documentclass[12pt, a4paper]{article}
+
+%%%%%%%%%%%%%%%紙張大小設定%%%%%%%%%%%%%%%
+% \paperwidth=65cm
+% \paperheight=160cm
+
+%%%%%%%%%%%%%%%引入Package%%%%%%%%%%%%%%%
+\usepackage[top=2cm, bottom=3cm, left=2cm, right=2cm]{geometry} % 上下左右距離邊緣2cm
+\usepackage{amsmath}
+\usepackage{mathtools,amsthm,amssymb,wasysym} % 引入 AMS 數學環境
+\usepackage{yhmath}     % math symbol
+\usepackage{graphicx}   % 圖形插入用
+\usepackage{fontspec}   % 加這個就可以設定字體
+\usepackage{type1cm}    % 設定fontsize用
+\usepackage{titlesec}   % 設定section等的字體
+\usepackage{titling}    % 加強 title 功能
+\usepackage{fancyhdr}   % 頁首頁尾
+\usepackage{tabularx}   % 加強版 table
+\usepackage[square, comma, numbers, super, sort&compress]{natbib}
+% cite加強版
+\usepackage[unicode=true, pdfborder={0 0 0}, bookmarksdepth=-1]{hyperref}
+% ref加強版
+\usepackage[usenames, dvipsnames]{color}  % 可以使用顏色
+\usepackage[shortlabels]{enumitem}  % 加強版enumerate
+\usepackage{xpatch}
+%\usepackage{haskell}
+
+% \usepackage{soul}       % highlight
+% \usepackage{ulem}       % 字加裝飾
+% \usepackage{wrapfig}     % 文繞圖
+\usepackage{floatflt}    % 浮動 figure
+\usepackage{float}       % 浮動環境
+\usepackage{caption}    % caption 增強
+\usepackage{subcaption}    % subfigures
+% \usepackage{setspace}    % 控制空行
+% \usepackage{mdframed}   % 可以加文字方框
+\usepackage{multicol}   % 多欄
+\usepackage{siunitx}      % SI unit
+\usepackage{indentfirst}
+% \usepackage{dsfont}     % more mathbb
+
+%%%%%%%%%%%%%%%%%%%TikZ%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{tikz}
+\usetikzlibrary{calc, patterns}
+
+%%%%%%%%%%%%%%中文 Environment%%%%%%%%%%%%%%%
+\usepackage[CheckSingle, CJKmath]{xeCJK}  % xelatex 中文
+\usepackage{CJKulem} % 中文字裝飾
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+\titleformat{\subsubsection}
+{\normalfont\fontsize{13}{22}\bfseries}{}{0em}{\raisebox{1pt}{$\RHD$}\ }
+%\setCJKsansfont[BoldFont=WenQuanYi Zen Hei]{AR PL UMing TW MBE}
+%\setCJKmonofont[BoldFont=WenQuanYi Zen Hei]{AR PL UMing TW MBE}
+% 設定中文為系統上的字型，而英文不去更動，使用原TeX字型
+
+% \XeTeXlinebreaklocale "zh"             %這兩行一定要加，中文才能自動換行
+% \XeTeXlinebreakskip = 0pt plus 1pt     %這兩行一定要加，中文才能自動換行
+
+%%%%%%%%%%%%%%%字體大小設定%%%%%%%%%%%%%%%
+%\def\normalsize{\fontsize{14}{21}\selectfont}
+% \def\large{\fontsize{40}{60}\selectfont}
+% \def\Large{\fontsize{50}{75}\selectfont}
+% \def\LARGE{\fontsize{90}{20}\selectfont}
+% \def\huge{\fontsize{34}{51}\selectfont}
+% \def\Huge{\fontsize{38}{57}\selectfont}
+
+%%%%%%%%%%%%%%%Theme Input%%%%%%%%%%%%%%%%
+% \input{themes/chapter/neat}
+% \input{themes/env/problist}
+
+%%%%%%%%%%%titlesec settings%%%%%%%%%%%%%%
+% \titleformat{\chapter}{\bf\Huge}
+% {\arabic{section}}{0em}{}
+% \titleformat{\section}{\centering\Large}
+% {\arabic{section}}{0em}{}
+% \titleformat{\subsection}{\large}
+% {\arabic{subsection}}{0em}{}
+% \titleformat{\subsubsection}{\bf\normalsize}
+% {\arabic{subsubsection}}{0em}{}
+% \titleformat{command}[shape]{format}{label}
+% {編號與標題距離}{before}[after]
+
+%%%%%%%%%%%%variable settings%%%%%%%%%%%%%%
+% \numberwithin{equation}{section}
+% \setcounter{secnumdepth}{4}  %章節標號深度
+% \setcounter{tocdepth}{1}  %目錄深度
+% \graphicspath{{images/}}  % 搜尋圖片目錄
+
+%%%%%%%%%%%%%%%頁面設定%%%%%%%%%%%%%%%
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\setlength{\headheight}{15pt}  %with titling
+\setlength{\droptitle}{-1.5cm} %title 與上緣的間距
+%\usepackage{parskip}
+\parindent=0pt %設定縮排的距離
+\parskip=1ex  %設定行距
+% \pagestyle{empty}  % empty: 無頁碼
+% \pagestyle{fancy}  % fancy: fancyhdr
+
+% use with fancygdr
+% \lhead{\leftmark}
+% \chead{}
+% \rhead{}
+% \lfoot{}
+% \cfoot{}
+% \rfoot{\thepage}
+% \renewcommand{\headrulewidth}{0.4pt}
+% \renewcommand{\footrulewidth}{0.4pt}
+
+% \fancypagestyle{firststyle}
+% {
+% \fancyhf{}
+% \fancyfoot[C]{\footnotesize Page \thepage\ of \pageref{LastPage}}
+% \renewcommand{\headrule}{\rule{\textwidth}{\headrulewidth}}
+% }
+
+%%%%%%%%%%%%%%%重定義一些command%%%%%%%%%%%%%%%
+% \renewcommand{\contentsname}{目錄}  %設定目錄的標題名稱
+% \renewcommand{\refname}{References}  %設定參考資料的標題名稱
+\renewcommand{\abstractname}{\LARGE Abstract} %設定摘要的標題名稱
+\newcommand{\infig}[3]{
+  \begin{figure}[H]
+    \centering
+    \includegraphics[#3]{#1}
+    \caption{\label{fig:mres}#2}
+  \end{figure}%
+}
+
+%%%%%%%%%%%%%%%特殊功能函數符號設定%%%%%%%%%%%%%%%
+% \newcommand{\citet}[1]{\textsuperscript{\cite{#1}}}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle} % inner product
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclareMathOperator{\adj}{adj}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\csch}{csch}
+\DeclareMathOperator{\arcsec}{arcsec}
+\DeclareMathOperator{\arccot}{arccot}
+\DeclareMathOperator{\arccsc}{arccsc}
+\DeclareMathOperator{\arccosh}{arccosh}
+\DeclareMathOperator{\arcsinh}{arcsinh}
+\DeclareMathOperator{\arctanh}{arctanh}
+\DeclareMathOperator{\arcsech}{arcsech}
+\DeclareMathOperator{\arccsch}{arccsch}
+\DeclareMathOperator{\arccoth}{arccoth}
+\newcommand{\np}[1]{\\[{#1}] \indent}
+\newcommand{\transpose}[1]{{#1}^\mathrm{T}}
+%%%% Geometry Symbol %%%%
+\newcommand{\eu}{\mathrm{e}}
+\newcommand{\degree}{^\circ}
+\newcommand{\Arc}[1]{\wideparen{{#1}}}
+\newcommand{\Line}[1]{\overleftrightarrow{{#1}}}
+\newcommand{\Ray}[1]{\overrightarrow{{#1}}}
+\newcommand{\Segment}[1]{\overline{{#1}}}
+\newcommand{\Intd}[1]{\,\mathrm{d}#1}
+
+\newcommand{\ord}{\operatorname{\mathcal{O}}}
+\newcommand{\defeq}{\triangleq}
+\DeclareMathOperator{\mmod}{\;mod\;}
+\DeclareMathOperator{\Expect}{{\rm I\kern-.3em E}}
+
+\providecommand\given{}
+% can be useful to refer to this outside \Set
+\newcommand*\SetSymbol[1][]{%
+  \nonscript\:#1\vert
+  \allowbreak
+  \nonscript\:
+\mathopen{}}
+\DeclarePairedDelimiterX\Set[1]\{\}{%
+  \renewcommand\given{\SetSymbol[\delimsize]}
+  \,#1\,
+}
+
+\setlist{itemsep=0cm}
+\setlist{topsep=.5em}
+
+
+%%%%%%%%%%%%%%%證明、結論、定義等等的環境%%%%%%%%%%%%%%%
+%\renewcommand{\proofname}{\bf proof:} %修改Proof 標頭
+\newtheoremstyle{mystyle}% 自定義Style
+{6pt}{15pt}%       上下間距
+{}%               內文字體
+{}%               縮排
+{\bf}%            標頭字體
+{.}%              標頭後標點
+{1em}%            內文與標頭距離
+{}%               Theorem head spec (can be left empty, meaning 'normal')
+
+% 改用粗體，預設 remark style 是斜體
+\newtheorem{theorem}{Theorem}
+\newtheorem{formula}{公式}
+\newtheorem{condition}{條件}
+\newtheorem{supposition}{假設}
+\newtheorem{conclusion}{結論}
+\newtheorem{lemma}{Lemma}
+\newtheorem{property}{性質}
+
+\theoremstyle{mystyle} % 定理環境Style
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+
+\begin{document}
+\setcounter{section}{5}
+
+%\setcounter{subsection}{-1}
+%\subsection{Recap}
+%\begin{env}
+  %$
+%\end{env}
+\subsection{Hash table}
+
+\begin{definition}
+  Given each data with a key in $U = \Set{0, 1, \dots, t-1 }$.
+  A {\bf Hash table} is capable of performing the following three operations:
+  \begin{enumerate}
+    \item \texttt{Insert} $k$: Insert a data with key $k$.
+    \item \texttt{Delete} $k$: Delete a data with key $k$.
+    \item \texttt{Search} $k$: Search a data with key $k$.
+  \end{enumerate}
+  And each of them cost $\ord(1)$ time.
+\end{definition}
+
+The simplest way is to allocate an array with size $\abs{U}$, and directly
+store the data with key $k$ in the $k$-th slot.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[scale=0.9, font=\footnotesize]
+    \draw (0, 0) grid (3, 1);
+    \draw[shift={(0.6, 0)}] (4.0, 0) grid (7.0, 1);
+    \node at (3.8, 0.5) {$\dotsm$};
+    \foreach \x in {0, 1, 2}
+    \draw[thick, -latex] (\x, 2.5) ++ (0.5, 0) node[above]{$\x$} -- (\x.5, 1.2);
+
+    \draw (3.8, 2.5) node[above]{$\dotsm$};
+
+    \draw[thick, -latex] (5.1, 2.5) node[above]{$t\!-\!3$} -- (5.1, 1.2);
+    \draw[thick, -latex] (6.1, 2.5) node[above]{$t\!-\!2$} -- (6.1, 1.2);
+    \draw[thick, -latex] (7.1, 2.5) node[above]{$t\!-\!1$} -- (7.1, 1.2);
+  \end{tikzpicture}
+  \caption{The simplest hash table}
+\end{figure}
+
+But then, the space complexity is $\ord(U)$, which is usually intractable
+(e.g., if $U$ is the set of ascii string with length no more than $10$, then
+$U \approx \ord(128)^{10}$).
+
+Thus we shall pick a {\bf hash function} $h :: U \to \Set{0, 1, \dots, m-1}$
+with $m$ be a reasonable size of an array, and store the data with key $k$ in the $h(k)$-th slot.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[scale=0.9, font=\footnotesize]
+    \draw[shift={(0, -.5)}] (1, 0) grid (3, 1);
+    \draw[shift={(0.6, -.5)}] (4.0, 0) grid (6.0, 1);
+    \node at (3.8, 0) {$\dotsm$};
+
+    \fill[black!20] (-.5, 2.6) rectangle (8.1, 3.8);
+    \node at (3.8, 3.2) {\normalsize $h$};
+
+    \foreach \x in {0, 1, 2}
+      \draw (\x, 4) ++ (0.5, 0) node[above]{$\x$};
+
+    \draw (3.8, 4) node[above]{$\dotsm$};
+
+    \draw (5.1, 4) node[above]{$t\!-\!3$};
+    \draw (6.1, 4) node[above]{$t\!-\!2$};
+    \draw (7.1, 4) node[above]{$t\!-\!1$};
+
+    \draw (1.5, 1.8) node {$1$};
+    \draw (2.5, 1.8) node {$2$};
+    \draw (3.8, 1.8) node {$\dotsm$};
+    \draw (5.1, 1.8) node {$m\!-\!2$};
+    \draw (6.1, 1.8) node {$m\!-\!1$};
+
+    \foreach \u/\d in {0.5/2.5, 1.5/5.1, 2.5/2.5, 5.1/3.6, 6.1/4, 7.1/6.1}
+      \draw[thick, -latex] (\u, 4) -- (\u, 2.9) -- (\d, 2.05);
+
+    \foreach \x in {2.4, 5.1, 2.6, 4, 3.6, 5.1, 6.1}
+      \draw[thick, -latex] (\x, 1.5) -- (\x, 0.65);
+
+  \end{tikzpicture}
+  \caption{Hash table with a reasonable hash function}
+\end{figure}
+
+But since $m < t$, $h$ could not be injective, so there would be $k_1 \neq k_2$
+such that $h(k_1) = h(k_2)$. \medskip
+
+\begin{definition}
+  If $h(k_1) = h(k_2)$ but $k_1 \neq k_2$, then a {\bf collision} occurs.
+\end{definition}
+
+\subsubsection{Collision resolution by chaining}
+
+There are several ways to resolve the collision problem.
+``Collision resolution by chaining'' is one of them.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[scale=1, font=\footnotesize]
+    \draw (0, 0) grid (3, 1);
+    \node at (3.8, 0.5) {$\dotsm$};
+    \foreach \x in {0, 1, 2}
+      \fill (\x.5, 0.5) node(v\x){} circle (0.1);
+    \foreach \x/\y in {0/-.5, 0/-3, 1/-.5} {
+      \draw (\x, \y) ++ (0.2, 0) {} rectangle ++(0.6, -2);
+      \draw (\x, \y) ++ (0.2, -1.4) {} -- ++(0.6, 0);
+      \fill (\x, \y) ++ (0.5, -1.7) {} circle (0.08);
+    }
+
+    \draw[very thick, -latex] (v0) -- ++ (0, -1.4);
+    \draw[very thick, -latex] (.5, -2.2) -- ++ (0, -1.2);
+    \draw[very thick, -latex] (v1) -- ++ (0, -1.4);
+  \end{tikzpicture}
+  \caption{An intuition of the chaining method}
+\end{figure}
+
+Instead of using an array, we use an array of link lists to store the data.
+For each operations (\texttt{Insert}/\texttt{Delete}/\texttt{Search})
+with key $k$, we first get the link list in the $k$-th slot of the array,
+and do the correspond operation on the link list.
+
+When analysing the performance below, we shall assume that the chaining
+resolution is used.
+\medskip
+
+Now we define the load factor, which plays an important role in the performance of the hash table. \smallskip
+\begin{definition}
+  We define the {\bf load factor} to be $\alpha \defeq n / m$, where $n$ is the number of elements
+  and $m$ is the number of table slots.
+\end{definition}
+
+\begin{definition}
+  A {\bf uniform hashing function} is a hash function such that
+  \begin{itemize}
+    \item $\Pr(h(k) = x) = 1/m$ for each $0 \leq x < m$.
+    \item $h(K_1), h(K_2), \dots, h(K_q)$ are independent if $K_1, \dots, K_q$ are independent.
+  \end{itemize}
+\end{definition}
+
+A uniform hashing function is an ideal hash function, which has the following property.
+\smallskip
+
+\begin{theorem} \label{thm:uniform-hashing-expected-time}
+  Assume uniform hashing, then the expected time for each operation is $\ord(\alpha)$.
+\end{theorem}
+
+\subsubsection{Expected single operation worst-case time complexity}
+
+Let $n$ be the number of datas to store, and $m$ be the size of the hash table.
+If $m = \ord(n)$, by theorem~\ref{thm:uniform-hashing-expected-time},
+we know that the expected average time complexity of each operation is $\ord(n/m) = \ord(1)$.
+
+Then we ask, what is the expected \emph{worst-case} time complexity?
+
+Consider the following analogous problem. We put $n$ balls in $n$ bins
+uniformly at random and independently, what is the expected number
+of balls in the most loaded bin?
+
+The answer turns out to be $\ord( \log n / \log \log n )$. Sadly, the proof
+is quite complicated, so we shall prove a weaker form. \medskip
+
+\begin{theorem}
+  The event ``The number of balls in all bins are lower then $4 \log n / \log \log n$''
+  has probability at least $1 - 1/n$. (i.e., the answer is $\ord( \log n / \log \log n )$
+  in high probability as $n \to \infty$.)
+
+  \begin{proof}
+    Let $k = 4 \log n / \log \log n$ and $[S]^k \defeq \Set{ A \subseteq S \,:\, \abs{A} = k }$.
+    We have
+    \begin{align*}
+      \Pr\,\Set{ \text{Bin } i \text{ has} \geq k \text{ balls} }
+      &\stackrel{\text{(a)}}{\leq} \sum_{A \in [S]^k} \Pr\,\Set{ \text{Every ball in } A \text{ is in Bin } i } \\
+      &\stackrel{\text{(b)}}{=} {n \choose k} \left( \frac{1}{n} \right)^k \\
+      &= \frac{n!}{k! \, (n-k)!} \, \frac{1}{n^k}  \\
+      &= \frac{1}{k!} \, \frac{n!}{(n-k)! \, n^k}
+      \ \stackrel{\text{(c)}}{\leq} \frac{1}{k!}
+      \ \stackrel{\text{(d)}}{\leq} \frac{1}{n^2} \qedhere
+    \end{align*}
+    Where (a) holds by the uniform bound, and (b) is because there are ${n \choose k}$ such
+    subset $A$, and each corresponded event has probability $(1/n)^k$. (c) holds by the fact
+    that $n (n-1) \dotsm (n-k+1) \leq n^k$.
+
+    To prove (d), we need the help from Stirling's approximation formula.
+    \medskip
+
+    \begin{theorem}[Stirling's approximation formula]
+      \[ k! = \sqrt{2 \pi k} \left( \frac{k}{\eu} \right)^k \left( 1 + \ord\big( \frac{1}{k} \big) \right) \]
+      Also, for each $k$,
+      \[ k! \geq \left( \frac{k}{\eu} \right)^k \]
+    \end{theorem}
+
+    Then we have
+    \begin{align*}
+      \frac{1}{k!} &\stackrel{\text{(a)}}{\leq}
+        \left( \frac{\eu}{k} \right)^k \quad
+        \stackrel{\text{(b)}}{\leq} \left( \frac{ \log \log n }{ \log n} \right)^k \\
+      &= \exp\big( \big( \log (\log \log n / \log n ) \big) \cdot k \big) \\
+      &= \exp\left( \big( \log \log \log n - \log \log n \big) \cdot \frac{4 \log n}{\log \log n} \right) \\
+      &\stackrel{\text{(c)}}{\leq} \frac{1}{n^2}
+    \end{align*}
+  \end{proof}
+\end{theorem}
+
+Where the Stirling's approximation formula is used in (a).
+Since $k = 4 \log n / \log \log n$ and $\eu \leq 4$, (b) holds.
+Finally, (c) holds due to the fact that $\log \log \log n / \log \log n \leq \sup_x \log(x) / x
+= 1 / \eu$ so $4 (\log \log \log n - \log \log n) / \log \log n \leq 4 (1/\eu - 1) \leq -2$.
+
+\subsubsection{Intuition of the Stirling's approximation formula}
+
+We could approximate the integral $\int_1^n \log x \, \Intd{x}$ by $1/2 \log 1 + \log 2 + \dots + 1/2 \log n$.
+See the figure below.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[rect/.style={draw=red}]
+    \fill[blue!15, scale=0.5,domain=1:9,smooth,variable=\x]
+      (1, 0) -- plot ({\x},{2*ln(\x)}) -- (9, 0) -- cycle;
+    \draw[thick, scale=0.5,domain=1:10,smooth,variable=\x,blue] plot ({\x},{2*ln(\x)});
+    \foreach \x/\y in {2/0.693, 3/1.099, 4/1.386, 7/1.950, 8/2.080}
+      \draw[thick, rect] ({\x/2-.25}, 0) rectangle ({\x/2+.25}, \y);
+    \draw[thick, red] (4.25, 0) rectangle (4.5, 2.197);
+
+    \node[red] at (2.75, 0.8) {$\dotsm$};
+
+    \draw[thick, ->] (-0.1,0) -- (5.2,0) node[right] {$x$};
+    \draw[thick, ->] (0,-0.1) -- (0,4.2) node[above] {$y$};
+
+    \draw[thick, red] (0.5, 0) rectangle (0.75, 0);
+
+    \foreach \x/\lb in {0.5/1, 1/2, 1.5/3, 4.5/$n$}
+      \draw[thick] (\x, -.1) node[below]{\lb} -- (\x, .1);
+
+  \end{tikzpicture}
+\end{figure}
+
+Then we have \footnote{Notice that we have no guarantee on how close the approximation is here.}
+\[
+  \log 2 + \dotsm + \log (n\!-\!1) + \frac{1}{2} \log n \approx
+  \int_{1}^{n} \log x \, \Intd{x} = n \log n - n + 1
+\]
+
+Thus
+\[
+  \log(n!) = \log 2 + \dotsm + \log n \approx n \log n - n + \frac{1}{2} \log n + 1,
+\]
+and hence
+\[
+  n! \approx \eu \sqrt{n} \left(\frac{n}{e}\right)^n
+\]
+The error in the estimation of the integral cause the final
+multiplier in the formula to be $\sqrt{2 \pi}$ instead of $\eu$.
+
+
+\subsection{$2$-Universal Family of Hash Functions}
+
+\subsubsection{Examples of hash function}
+First we give some examples of hash function.
+
+\begin{example} \hfill
+\begin{enumerate}
+  \item $h(k) = a k \pmod{m}$, where $a \in \mathbb{N}$ and $m$ is a prime.
+  \item $h(k) = \lfloor m (k a \mmod 1) \rfloor$, where $a \in \mathbb{R}$, $m \in \mathbb{N}$,
+    and $(x \mmod 1) \defeq x - \floor{x}$.
+\end{enumerate}
+These two hash functions map the keys to $\Set{0, 1, \dots, m-1}$.
+\end{example}
+
+\smallskip
+
+\begin{definition}
+  Let $H$ be a family of hash functions $\Set{ h_1, \dots, h_k }$,
+  where each hash function has the signature $h_i :: U \to \Set{0, 1, \dots, m-1}$.
+
+  $H$ is {\bf $2$-universal} if for any two elements $x, y \in U$ and $x \neq y$, $\Pr\Set{ h(x) = h(y) } \leq 1/m$,
+  where $h$ is uniformly choosed in random.
+
+  Another equivalent definition is
+  the number of $h_i$ satisfying $h_i(x) = h_i(y)$ is no more than $k / m$ for each $x \neq y$.
+\end{definition}
+
+We now give an example of a $2$-universal family of hash functions.
+
+\begin{example}
+  Given $x, y$, take the binary representations
+  $x = x_0 x_1 \dotsm x_r$ and $y = y_0 y_1 \dotsm y_r$.
+
+  Let $a = \langle a_0, \dots, a_r \rangle$ with each $a_i \in \Set{0, 1, \dots, m-1}$.
+  For each $a$, define
+  \[ h_a(x) = (a_0 x_0 + a_1 x_1 + \dots + a_r x_r) \mmod m. \]
+
+  We claim that this is a universal family of hash functions with $\abs{H} = m^{r+1}$.
+
+  \begin{proof}
+    Since $x \neq y$, without lost of generality, assume $x_0 = 0$ and $y_0 = 1$.
+    Then it is easy to see that $f_k \triangleq h_{\langle k, a_1, \dots, a_r \rangle}$
+    satisfies $f_i(x) = f_j(x)$ and $f_i(y) \neq f_j(y)$ for any $0 \leq i, j < m$ and $i \neq j$.
+    So $f_k(y)$ iterate through $0, 1, \dots, m-1$. Thus there are exactly $1$ hash function $f$
+    satisfies $f(x) = f(y)$ among these $m$ hash functions. Hence $\Pr\Set{ h(x) = h(y) } \leq 1/m$.
+  \end{proof}
+
+  Notice that if the key $k$ of each data satisfies $0 \leq k < n$, then taking
+  $r = \ord(\log n)$ is sufficient.
+\end{example}
+
+\subsubsection{Another randomized max-cut algorithm}
+Let $G = (V, E)$ be the problem instance, where $V = \Set{v_0, \dots, v_{n-1}}$
+and $H = \Set{ h_i }$ be a $2$-universal family of hash functions
+with each $h_i :: \Set{0, \dots, n} \to \Set{0, 1}$.
+Pick a hash function $h$ randomly from $H$ uniformly.
+We give a cut $C = (S, T)$, $S \sqcup T = V$ by $S = \Set{ v_i \mid h(i) = 0}$
+and $T = \Set{ v_i \mid h(i) = 1}$.
+
+For each edge $(u, v)$ in the cut of the optimal solution $C_{\text{opt}}$,
+since $u \neq v$, $\Pr\Set{ h(u) \neq h(v)} \geq 1/2$,
+so $\Pr\Set{ (u, v) \in C} \geq 1/2$, thus $\Expect \abs{C} \geq \Expect \abs{C_{\text{opt}}} / 2$,
+which proves this algorithm is a $2$-approximation algorithm.
+
+Notice that we only need $\ord(\log n)$ random bits to choose $h$,
+and is less then the original algorithm, which required $\ord(n)$ random bits.
+
+\subsection{Perfect hashing}
+
+\begin{definition}
+  A {\bf perfect hash function} is a hash function with no collisions.
+\end{definition}
+
+Obviously this is not achievable in general, so we shall assume that
+we have prior knowledge on the keys which would be stored in the hash table,
+and thus we could find a suitable hash function before all the operations come.
+
+\begin{example}
+  We give an example of creating a perfect hash function of $n$ keys.
+  The procedure is listed in the following:
+  \begin{enumerate}
+    \item Choose a hash function $h$ from a $2$-universal family of hash functions,
+      which maps the key to the set $\Set{0, \dots, n-1}$. Collisions are
+      likely to happen here. Let $m_i$ be the number of keys that is mapped to $i$.
+    \item Redo step 1. until $m_1^2 + m_2^2 + \dots + m_n^2 \leq 4n$.
+    \item For each $0 \leq i < n$, let $K_i \defeq \Set{ x \mid h(x) = i }$, then $\abs{K_i} = m_i$.
+      \begin{enumerate}[label=(\arabic*)]
+        \item Choose a hash function $h_i$ from another $2$-universal family of hash functions
+          which maps $K_i$ to the set $\Set{0, \dots, m_i^2-1}$.
+        \item Similarly, redo (1) until no collision happen
+      \end{enumerate}
+  \end{enumerate}
+
+  The final hashing value of a key $x$ is $(h(x), h_{h(x)}(x))$, which
+  could be stored in an array of size $m_1^2 + \dots + m_n^2 = \ord(n)$.
+
+  We shall then prove that the algorithm halts in reasonable time.
+  \begin{proof}
+    In step 1., let $C \defeq \# \Set{ h(x) = h(y) \mid x < y}$ be the number of collisions.
+    Then we know that
+    \[ \Expect C \stackrel{\text{(a)}}{\leq}
+      \sum_{x < y} \Pr \Set{ h(x) = h(y) }
+      \stackrel{\text{(b)}}{\leq} \frac{n (n - 1)}{2} \frac{1}{n} < \frac{n-1}{2} \]
+    Where (a) is due to the union bound. Since $h$ is choosen from a $2$-univeral family
+    of hash functions, $\Pr \Set{ h(x) = h(y) } = 1/n$, and there are $n (n-1)/2$ pairs $(x, y)$,
+    (b) holds.
+
+    Notice that
+    \[ C = \sum_{i = 1}^n \frac{m_i (m_i - 1)}{2} = \frac{1}{2} \sum m_i^2 - \frac{n}{2} \]
+    Hence
+    \[ \Expect \sum m_i^2 \leq 2 \left( \frac{n-1}{2} + \frac{n}{2} \right) \leq 2 n \]
+    Recall the Markov's inequality:
+    \begin{theorem}
+      If $X$ is a random variable with $\Pr\Set{ X \geq 0 } = 1$, then $\Pr \Set{X \geq \alpha \Expect X}
+      \leq 1 / \alpha$.
+    \end{theorem}
+
+    Thus by Markov's inequality, we have $\Pr\Set{ \sum m_i^2 > 4n } \leq 1 / 2$.
+    Hence in average, we only need to redo twice in step 1.
+
+    In step 3-(1), let $C$ be the number of collisions in $j$-th table,
+    which has $m_j$ elements and $m_j^2$ slots.
+    Then 
+    \[ \Expect C \leq  \frac{m_j (m_j - 1)}{2} \frac{1}{m_j^2} < \frac{1}{2} \]
+    So again by Markov's inequality, $\Pr\Set{ \text{A collision occurs} } \leq 1 / 2$.
+    Thus in average, we only need to redo twice for each table.
+  \end{proof}
+\end{example}
+\end{document}
