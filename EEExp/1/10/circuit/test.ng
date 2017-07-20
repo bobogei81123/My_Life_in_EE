@@ -1,0 +1,21 @@
+** TEST
+
+
+Vs 1 0 AC PULSE( 1 -1 0 0 0 0.5m 1m ) 
+
+R6 1 2 10k
+C6 2 0 0.1u
+L6 2 0 0.01012
+
+
+.control
+
+tran 0.01m 160m 150m
+plot v(1) v(2)
+*wrdata d25 v(1) v(2)
+
+*tran 1n 10u
+*plot v(5) v(6)
+
+
+.endc

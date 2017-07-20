@@ -1,0 +1,136 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{hhline}
+\usepackage{unicode-math}
+\usepackage{nicefrac}
+\usepackage[abbreviations, per-mode=symbol]{siunitx}
+\usepackage{comment}
+\usepackage{float}
+\usepackage{subcaption}
+
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage[usenames, dvipsnames]{xcolor}
+\usepackage{colortbl}
+\usepackage{circuitikz}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\Huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\\arabic{subsection}.}{12pt}{}
+\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=24pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\unit}[1]{\:(\text{#1})}
+\newcommand{\img}{\mathsf{i}}
+\newcommand{\ex}{\mathsf{e}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+\DeclareSIUnit \uF {\micro \farad}
+\DeclareSIUnit \mH {\milli \henry}
+
+\newcommand{\tri}{$\rhd$}
+
+\title{ \bf {\huge 電子電路實驗5： Differential Amplifiers }\\ 實驗預報}
+\author{B02901178 江誠敏}
+%\date{2014/09/21}
+
+\begin{document}
+
+\maketitle
+
+\section{Objectives}
+\begin{enumerate}
+  \item  To be familiar with the characteristics of differential amplifiers
+  \item  To comprehend the importance of CMRR (Common Mode Rejection Ratio)
+of an amplifier.  
+\end{enumerate}
+
+
+\section{Procedures}
+\subsection{Differential Mode Small Signal Analysis}
+\begin{enumerate}[itemsep=0pt]
+  \item  Use 10 kΩ variable resistance for $R_{C1}, R_{C2}, R'$, and $R_S1 = R_S2 = 0$ in Fig. 5.
+\item  Provide voltage source $V_{CC} = +12V$, and $V_{SS} = −6V$ to the circuit.
+\item  Provide voltage source $V_{SS} = −6V$ to pin 13 of each chip of CA3046.
+\item Oscilloscope  \tri Press the CH1 and CH2 MENU  \tri  Coupling  \tri  AC.
+\item Oscilloscope  \tri Press the DISPLAY button  \tri  Format  \tri  YT mode.
+\item Oscilloscope  \tri Press the Measure button  \tri  Observe  $V_i  (p-p)$ in CH1.
+\item Use the function generator to provide the input small signal  $V_i$  and
+  make sure that  $V_i  = v_{ac} sin(2 \pi ft)$, $2v_{ac} = 20 mV (p-p)$ , $f = 1 \textasciitilde 5kHz$ is
+measured from the breadboard by using CH1 of oscilloscope to observe.
+\item  Keep the previous adjustment of  $V_i$  constantly, and do not adjust the
+amplitude tuner in function generator any further.
+\item  Oscilloscope  \tri Press the Measure button  \tri  Observe $V_{O1}$ (p-p) and $V_{O2}$ (p-p)
+in CH1 and CH2 at YT mode.
+\item  Adjust the variable resistance of $R'$ so that voltage gain could be as high as
+possible.
+\item  Adjust the variable resistance of $R_{C1}$ and $R_{C2}$ so that $A_{d1}$ voltage gain could
+be equal to A d2 .
+\item  If  $V_o  = 0$, that is, there is no output signal, try to generate the input small
+  signal  $v_i$  as  $v_i  = v_{ac} sin(2\pi ft)$, $2v_ac = 2V$ (p-p) , $f = 1 \textasciitilde 5kHz$, and repeat step
+(10) ~ (11).
+\item  Record $A_d$:
+\item  Function generator  \tri  Press the FUNC button  \tri  Reducing Frequency and
+  observe the voltage gain $A_{V_{in}}$ oscilloscope until $A_V = 0.707 A_d$ .
+\item  Function generator  \tri  Press the FUNC button  \tri  Increasingly adjust the
+  Frequency and observe the gain $A_{V_{in}}$ oscilloscope until $A_V = 0.707 A_d$..
+\item  Record the frequency
+\item  Change the frequency of small-signal input voltage, and record the input
+\end{enumerate}
+\subsection{Common Mode Small Signal Analysis}
+\begin{enumerate}[itemsep=0pt]
+  \item Keep the previous adjustment of $R_{C1}  , R_{C2} \text{ and } R'$ constantly. Use function
+    generator to provide  $v_i  = v_{ac} sin(2 \pi ft)$, $2v_{ac} = \SI{1}\V$ (p-p) , $f = 1 \textasciitilde 5 kHz$.
+  \item  Oscilloscope  \tri Press the Measure button  \tri  Observe $V_{O1}$ (p-p) and $V_{O2}$ (p-p)
+in CH1 and CH2 at YT mode.
+\item  Record $A_{cm}$
+\item  Function generator  \tri  Press the FUNC button  \tri  Reducing Frequency and
+  observe the voltage gain $A_{V_{in}}$ oscilloscope until $A_V \text{(Low-3dB)} = 0.707 A_{cm}$ .
+\item  Function generator  \tri  Press the FUNC button  \tri  Increasingly adjust the
+  Frequency and observe the gain $A_{V_{in}}$ oscilloscope until $A_V \text{(High-3dB)} = 0.707 A_{cm}$ .
+\item  Record the frequency.
+\item  Change the frequency of small-signal input voltage, and record the input
+and output voltage shown in oscilloscope to the following table.
+
+\end{enumerate}
+
+\subsection{Completed Mode Small Signal Analysis}
+\begin{enumerate}[itemsep=0pt]
+  \item  Keep the previous adjustment of $R_{C1}$  , $R_{C2}$  and $R'$ constantly. Use the
+function generator to provide:
+(a)  $V_{id} = v_{ac} sin( \omega t), 2v_{ac} = 20 mV$ (p-p) , and
+(b)  $V_i cm = v_{ac} sin(2 \pi ft), 2v_{ac} = \SI{1}\V$ (p-p) , $f = 1 \textasciitilde 5$ kHz.
+\item  Oscilloscope  \tri Press the Measure button  \tri  Observe $V_{O1}$ (p-p) and $V_{O2}$ (p-p)
+in CH1 and CH2 at YT mode.
+\item  Record $A_d, A_{d1}, A_{d2}, A_{cm}, V_{O1}, V_{O2}$ 
+\item  Function generator  \tri  Press the FUNC button  \tri  Increasingly adjust the
+  Frequency and observe the gain $A_{V_{in}}$ oscilloscope until $A_V \text{ (High-3dB) } = 0.707  A_{cm}$ .
+\item  Record the frequency.
+\item  Change the frequency of small-signal input voltage, and record the input
+and output voltage shown in oscilloscope to the following table.
+\end{enumerate}
+\end{document}
+
+

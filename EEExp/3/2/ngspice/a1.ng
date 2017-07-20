@@ -1,0 +1,39 @@
+** A1
+
+.INCLUDE UA741.301
+
+.SUBCKT HPF 1 2
+
+X1 3 2 5 6 2 UA741
+
+R1 4 2 1k
+R2 3 0 1k
+C1 1 4 0.01u
+C2 4 3 0.01u
+
+.ENDS
+
+.SUBCKT LPF 1 2
+
+X1 3 2 5 6 2 UA741
+
+C1 4 2 0.01u
+C2 3 0 0.01u
+R1 1 4 1k
+R2 4 3 1k
+
+.ENDS
+
+X1 1 2 LPF
+X2 2 3 HPF
+Vsig 1 0 ac SIN(0 0.5 1k)
+
+.control
+
+ac dec 10 100 200k
+plot vdb(3)
+wrdata des vdb(3)
+
+.endc
+
+

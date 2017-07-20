@@ -1,0 +1,29 @@
+** TEST
+
+.INCLUDE UA741.301
+
+X1 2 3 9 10 4 UA741
+X2 0 5 9 10 6 UA741
+X3 0 7 9 10 8 UA741
+
+Vcc 9 0 15
+Vdd 10 0 -15
+Vsig 1 0 ac SIN(0 0.5 1k)
+
+R1 1 2 1k
+R2 3 4 1k
+R3 4 5 1k
+R4 6 7 1k
+R5 2 6 1k
+R6 8 3 1k
+
+C1 5 6 0.01u
+C2 7 8 0.01u
+
+.control
+
+ac dec 10 100 200k
+plot vdb(4) vdb(6) vdb(8)
+wrdata sim vdb(6) vdb(8) vdb(4)
+
+.endc

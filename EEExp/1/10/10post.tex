@@ -1,0 +1,159 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{color}
+\usepackage{unicode-math}
+\usepackage{float}
+\usepackage{hhline}
+\usepackage{comment}
+\usepackage{siunitx}
+\usepackage{csvsimple}
+\usepackage{subcaption}
+
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage[siunitx]{circuitikz}
+\usepackage{wrapfig}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\arabic{subsection}.}{12pt}{}
+%\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=24pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\unit}[1]{\:(\text{#1})}
+\newcommand{\df}[1]{\mathop{}\!\mathrm{d^#1}}
+\newcommand{\img}{\mathrm{i}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+
+\title{ \bf {\Huge 電子電路實驗9：二次線路的頻率響應}\\ 實驗結報}
+\author{B02901178 江誠敏}
+
+\begin{document}
+
+\maketitle
+
+
+\section{實驗結果}
+
+\subsection{固定頻率，調整可變電阻}
+\begin{center}
+  \begin{tabular}{p{3.5cm}p{2.5cm}p{2.5cm}p{2.5cm}}
+    \hline
+    濾波後的頻率倍率 & $v_i$ & $v_o$ & $v_o/v_i$  \\
+    \hhline{====}
+    $\times 1$ & $\SI{1.02}{\V}$ & $\SI{0.898}{\V}$ & $0.880$  \\
+    $\times 3$ & $\SI{960}{\mV}$ & $\SI{220}{\mV}$ & $0.229$  \\
+    $\times 5$ & $\SI{960}{\mV}$ & $\SI{104}{\mV}$ & $0.108$ \\
+    $\times 7$ & $\SI{960}{\mV}$ & $\SI{58.0}{\mV}$ & $0.06$  \\
+    \hline
+  \end{tabular} \\[10pt]
+  \begin{tabular}{p{3.5cm}p{2.5cm}p{2.5cm}p{2.5cm}}
+    \hline
+    濾波後的頻率倍率 & 可變電阻值 & 理論電阻值 & \%誤差 \\
+    \hhline{====}
+    $\times 1$ & $\SI{9395}{\ohm}$ & $\SI{9739}{\ohm}$ & $-3.5 \%$\\
+    $\times 3$ & $\SI{983.3}{\ohm}$ & $\SI{1082.1}{\ohm}$ & $-9.13 \%$\\
+    $\times 5$ & $\SI{349}{\ohm}$ & $\SI{389.56}{\ohm}$ & $-10.41 \%$\\
+    $\times 7$ & $\SI{162.5}{\ohm}$ & $\SI{198.76}{\ohm}$ & $-18.24 \%$\\
+    \hline
+  \end{tabular}
+\end{center}
+
+\subsection{固定可變電阻，調整頻率}
+\begin{center}
+  \begin{tabular}{p{3.5cm}p{2.5cm}p{2.5cm}p{2.5cm}}
+    \hline
+    頻率 & $v_i$ & $v_o$ & $v_o/v_i$ \\
+    \hhline{====}
+    $\SI{333}{\Hz}$ & $\SI{976}{\mV}$ & $\SI{424}{\V}$ & $0.434$  \\
+    $\SI{200}{\Hz}$ & $\SI{1010}{\mV}$ & $\SI{320}{\mV}$ & $0.317$  \\
+    $\SI{142.9}{\Hz}$ & $\SI{1020}{\mV}$ & $\SI{284}{\mV}$ & $0.278$ \\
+    \hline
+  \end{tabular}
+\end{center}
+
+
+\section{結報問題}
+
+\begin{enumerate}[itemsep=20pt, topsep=10pt]
+
+  \item {\large\bf 請討論三角波(Triangular Waves)的諧波分析。} \\[10pt]
+    答：\\
+    不妨假設三角波的波形為 \\
+    \begin{minipage}{0.4\textwidth}
+      \[
+        f(t) = 
+        \begin{dcases}
+          \frac{2t}{\pi}, & \text{if } 0 \leq t \leq \frac{\pi}{2} \\
+          2 - \frac{2t}{\pi}, & \text{if } \frac{\pi}{2} < t \leq \pi  \\
+          -f(t), & \text{if } -\pi < t < 0 
+        \end{dcases}
+      \]
+    \end{minipage}
+    \quad
+    \begin{minipage}{0.4\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \draw[->, black, thick, >=latex] (-3, 0) -- (3, 0);
+        \draw[->, black, thick, >=latex] (0, -3) -- (0, 3);
+        \draw[blue, very thick] (-3.14, 0) -- (-1.57, -1) -- (0, 0) -- (1.57, 1) -- (3.14, 0);
+      \end{tikzpicture}
+    \end{minipage} \\
+    且$f(t + 2 \pi) = f(t)$，令
+    \[
+      f(t) = c_0 + \sum_{k = 1}^{\infty} a_k \sin(kt) + \sum_{k = 1}^{\infty} b_k \cos(kt)  
+    \]
+    注意到$f$是奇函數，$c_0 = 0, b_k = 0 \; \forall k$。
+    \[
+      \int_{-\pi}^{\pi} f(t) \sin(kt) \dI t =  \sum_{k=1}^{\infty}\int_{-\pi}^{\pi} a_k \sin(kt) \dI t = \pi a_k 
+    \]
+    因此
+    \begin{align*}
+      a_k &= \frac{1}{\pi} \int_{-\pi}^{\pi} f(t) \sin(kt) \dI t \\
+          &= \frac{2}{\pi} \int_{0}^{\pi} f(t) \sin(kt) \dI t \\
+          &= \frac{2}{\pi} \left( \int_{0}^{\frac{\pi}{2} } \frac{2t}{\pi}  \sin(kt) \dI t + \int_{\frac{\pi}{2} }^{\pi} \frac{2t}{\pi}  \sin(kt) \dI t \right) \\
+          &= \frac{4}{\pi^2} \left( 
+      \left( \frac{-t}{k} \cos(kt) + \frac{1}{k^2} \sin(kt) \right)_{0}^{\pi/2} + 
+      \left( \frac{-\pi}{k} \cos(kt) + \frac{t}{k} \cos(kt) - \frac{1}{k^2} \sin(kt) \right)_{0}^{\pi/2}
+    \right) \\
+    &= \frac{4}{\pi^2} \frac{2 \sin(k \pi / 2)}{k^2}  \\
+    &=  \begin{dcases}
+    0, & \text{if } k = 2n \\
+    \frac{8}{\pi^2 k^2} , & \text{if } k = 4n + 1 \\
+    \frac{-8}{\pi^2 k^2} , & \text{if } k = 4n + 3 \\
+  \end{dcases}
+\end{align*}
+得出
+\[
+  f(t) = \sum_{n=0}^{\infty} \frac{(-1)^{n} \cdot 8}{\pi^2 (2n+1)^2} 
+\]
+
+
+\end{enumerate}
+
+\section{心得}
+這次是這個學期的最後一個實驗了，其實我是蠻喜歡做實驗的，可以玩很多有趣的儀器。希望下學期可以使用更多沒有玩過的儀器或是元件！
+\end{document}
+

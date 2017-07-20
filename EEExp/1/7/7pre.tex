@@ -1,0 +1,105 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{hhline}
+\usepackage{unicode-math}
+\usepackage{nicefrac}
+\usepackage[abbreviations]{siunitx}
+\usepackage{comment}
+\usepackage{float}
+
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage[usenames, dvipsnames]{xcolor}
+\usepackage{colortbl}
+\usepackage{circuitikz}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\Huge{\fontsize{20}{30}\selectfont}
+
+\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+\titleformat{\subsection}{\large}{\arabic{subsection}.}{12pt}{}
+\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=24pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\unit}[1]{\:(\text{#1})}
+\newcommand{\img}{\mathsf{i}}
+\newcommand{\ex}{\mathsf{e}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+\DeclareSIUnit \uF {\micro \farad}
+\DeclareSIUnit \mH {\milli \henry}
+
+\title{ \bf {\huge 電子電路實驗7：雙極非線性元件特性曲線之簡單測量}\\ 實驗預報}
+\author{B02901178 江誠敏}
+%\date{2014/09/21}
+
+\begin{document}
+
+\maketitle
+
+\section{實驗目的}
+\begin{enumerate}[itemsep=0pt]
+  \item 學習如何使用示波器的 X-Y 模式(X-Y mode)。
+  \item 利用示波器測量一些雙極非線性元件之特性曲線。
+  \item 同軸信號線(cable)、探針(probe)之認識及使用。
+\end{enumerate}
+
+
+\section{實驗步驟}
+將示波器之操作模式設於 X-Y mode。分別以矽二極體、鍺二極體、齊納二極體，以及$\SI{5.1}\kohm, \SI{100}\ohm$電阻，進行下列步驟：
+\begin{enumerate}[itemsep=0pt]
+  \item 將非線性元件如圖 7.1 放於非線性元件位置(注意極性)，電阻放於圖中電阻位置，並適當 地調整兩信號輸入端的增益(gain factor，即調 V/D)鈕，即可由示波器得出該元件之特性
+    ve)。但此時 Y 軸曲線相反，請調整成為 Y 軸方向正確的方式。
+  \item 改變輸入信號的頻率(frequency)，並記錄高頻與低頻的非線性元件特性曲線。
+  \item 改變輸入信號的振幅(amplitude)，並記錄該元件的特性曲線有何變化。注意觀察特性曲線時，亦應注意其反向偏壓(reverse bias)的變化。
+\end{enumerate}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[american voltages, scale=0.8]
+    \draw[color=black, thick]
+    (0, 0) to [V=$V_S$] (0, 6) 
+    (0, 6) to [R] (6, 6) 
+    (6, 6) to [D] (6, 0)
+    (6, 0) to [short] (0, 0)
+    (3, 0) node[ground]{}
+    ;
+  \end{tikzpicture}
+\end{figure}
+
+
+
+\section{預報問題}
+
+\begin{enumerate}[itemsep=20pt, topsep=10pt]
+  \item {\large\bf 如何將示波器之操作模式設定於 X-Y mode？} \\[10pt]
+    跟據我的記憶以及參閱類似型號的manual，似乎是按Display>Format>將V-t mode 改成 X-Y mode. 在以前利薩如圖形時有使用過一次。
+  \item {\large\bf 實驗步驟 2 中，使用示波器的何種功能可將示波器螢幕上方向相反的 Y 軸扳正？
+    } \\[10pt]
+    可在Math>Invert ChX 中將Channel X的訊號取反號。
+
+\end{enumerate}
+
+\end{document}
+
+

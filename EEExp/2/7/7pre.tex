@@ -1,0 +1,93 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{hhline}
+\usepackage{unicode-math}
+\usepackage{nicefrac}
+\usepackage[abbreviations, per-mode=symbol]{siunitx}
+\usepackage{comment}
+\usepackage{float}
+\usepackage{subcaption}
+
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage[usenames, dvipsnames]{xcolor}
+\usepackage{colortbl}
+\usepackage{circuitikz}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\Huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\\arabic{subsection}.}{12pt}{}
+\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=24pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\unit}[1]{\:(\text{#1})}
+\newcommand{\img}{\mathsf{i}}
+\newcommand{\ex}{\mathsf{e}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+\DeclareSIUnit \uF {\micro \farad}
+\DeclareSIUnit \mH {\milli \henry}
+
+\newcommand{\tri}{$\rhd$}
+
+\title{ \bf {\huge 電子電路實驗6： Linear DC Regulator }\\ 實驗預報}
+\author{B02901178 江誠敏}
+%\date{2014/09/21}
+
+\begin{document}
+
+\maketitle
+
+\section{Objectives}
+\begin{enumerate}
+  \item To familiarize with the construction and characteristics of Linear Regulator. 
+  \item To visualize how Zener diode operate and its $I\text{--}V$ characteristics
+\end{enumerate}
+
+
+\section{Procedures}
+\subsection{Differential Mode Small Signal Analysis}
+\begin{enumerate}[itemsep=0pt]
+\item Use $\SI{1}\kohm$ resistance for $R_2$ , $\SI{100}\kohm$ variable resistance for $R_L$,
+  $\SI{10}\kohm$ variable resistor for $R$ , $R_1$ in Fig. 2. 
+\item In order to measure the breakdown voltage of the Zener diode, slowly increase 
+  $V_{DC}$ until the C.C. signal alerts in the power supply.   
+\item Record the $V_{DC}$ value as breakdown voltage $V_r$ when the C.C. signal alerts. 
+\item Record the breakdown voltage $V_r$.
+\item Provide voltage source $+\SI{15}\V$, $\SI{-15}\V$, and $V_{DC}  = \SI{10}\V$ to the circuit. 
+\item No need to use the Oscilloscope and function generator in the experiment 
+\item Adjust the variable resistor $R_a$nd observe how the output voltage will change. 
+\item Adjust the variable resistor $R_1$ and $R$ until the output voltage $V_o = \SI{5}{\V}$. 
+\item Record the value of $R_1, R$. (Usually, $R \leq \SI{500}\ohm$) 
+\item Adjust the variable resistor $R_L$ and observe how the output voltage will change.  
+\item Record the output voltage $V_o$ and $R_L$.
+\item Keep the previous adjustment of $R$ , $R_1$ constantly and adjust $R_L = 50 \text{--} 100 \si{\kohm}$ . 
+\item Adjust the input voltage $V_{DC}$ and observe how the output voltage will change. 
+\item Record the output voltage $V_o$ and $V_{DC}$.
+\end{enumerate}
+
+\end{document}
+
+

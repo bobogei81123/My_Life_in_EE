@@ -1,0 +1,14 @@
+** LRC **
+
+Vs 1 0 PULSE(-5 5 0 0 0 0.5m 1m)
+L1 1 2 10m
+R1 2 3 4k
+C1 3 0 0.01u
+
+.control
+tran 0.1u 10m 8m
+plot v(1), v(1)-v(2), v(2)-v(3), v(3)
+wrdata d3 v(1), v(1)-v(2), v(2)-v(3), v(3)
+
+.endc
+

@@ -1,0 +1,26 @@
+** TEST
+
+.INCLUDE UA741.301
+
+X1 1 2 3 4 5 UA741
+
+V1 1 6 0
+V2 6 0 ac 0.1 sin(0 1 0.1meg)
+*R1 2 0 100
+V3 3 0 15
+V4 4 0 -15
+Vz 5 2 0
+*R2 5 2 4.7k
+*R2 5 2 100
+
+.control
+
+ac dec 10 1 100meg
+plot vdb(5)-vdb(6)
+wrdata d6 vdb(5)-vdb(6)
+
+*tran 1n 10u
+*plot v(5) v(6)
+
+
+.endc

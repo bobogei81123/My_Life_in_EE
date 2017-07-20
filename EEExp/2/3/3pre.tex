@@ -1,0 +1,147 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{hhline}
+\usepackage{unicode-math}
+\usepackage{nicefrac}
+\usepackage[abbreviations, per-mode=symbol]{siunitx}
+\usepackage{comment}
+\usepackage{float}
+\usepackage{subcaption}
+
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage[usenames, dvipsnames]{xcolor}
+\usepackage{colortbl}
+\usepackage{circuitikz}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\Huge{\fontsize{20}{30}\selectfont}
+
+\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+\titleformat{\subsection}{\large}{\arabic{subsection}.}{12pt}{}
+\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=24pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\unit}[1]{\:(\text{#1})}
+\newcommand{\img}{\mathsf{i}}
+\newcommand{\ex}{\mathsf{e}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+\DeclareSIUnit \uF {\micro \farad}
+\DeclareSIUnit \mH {\milli \henry}
+
+\newcommand{\tri}{$\rhd$}
+
+\title{ \bf {\huge 電子電路實驗3：VTC of CMOS Amplifier Circuits}\\ 實驗預報}
+\author{B02901178 江誠敏}
+%\date{2014/09/21}
+
+\begin{document}
+
+\maketitle
+
+\section{Objectives}
+\begin{enumerate}
+  \item To familiarize with the measurement of VTC (Voltage Transfer Curve) for
+    CMOS amplifier circuits.
+  \item The effects of resistance between gate and source terminal for the VTC of
+    CMOS inverter.
+  \item Application of CMOS inverter and amplifier.
+\end{enumerate}
+
+
+\section{Procedures}
+\begin{enumerate}[itemsep=0pt, label=\alph*.]
+  \item {\large CMOS amplifier as an inverter} 
+    \begin{enumerate}[label=(\arabic*)]
+      \item In Fig. 1, supply voltage source $V_{DD} = +\SI{8}\V$ to the circuit.
+      \item Use function generator to generate $v_i = V_{i(dc)} + v_{i(ac)} \sin(2 \pi ft), V_{i(dc)} = \SI{4}\V,
+        v_{i(ac)} = \SI{4}\V, f = \SI{1}{\kHz}$. Provide the input small signal $V_i$ to the breadboard.
+      \item Make sure that the $v_i$ is measured from the breadboard by using the
+        Function generator  \tri Press the \texttt{FUNC} button \tri Set $\texttt{FREQ} = \SI{1}{\kHz}$, \texttt{SIN}
+        \texttt{wave}  \tri  \texttt{ATTN} \texttt{0dB}  \tri  \texttt{SUB} \texttt{FUNC}  \tri  \texttt{OFFSET ON}  
+        \tri \texttt{Adjust} \texttt{DC/OFFSET} and set dc offset value $V_{i(dc)} = \SI{4}\V$.
+      \item \texttt{Oscilloscope}  \tri Press the \texttt{CH1} and \texttt{CH2} \texttt{MENU}  \tri  \texttt{Coupling} \tri DC .
+      \item \texttt{Oscilloscope}  \tri Press the \texttt{DISPLAY} button  \tri  \texttt{Format}  \tri \texttt{XY} \texttt{mode} , the
+        diagram will be the same as that shown in Fig. 2.
+      \item Adjust the $\texttt{VOLTS/DIV}_{\texttt{in}}$ \texttt{CH1} and \texttt{CH2} so that the transition region of
+        the diagram is obvious enough to determine the voltage gain.
+      \item Record the voltage gain (Reference value $= −\SI{20}{\volt\per\volt}$) by
+        observing the slope of the VTC in the transition region (the
+        differentiation of input and output voltage value) shown in the curve at \texttt{XY}
+        \texttt{mode}.
+      \item Change the input voltage signal, and observe whether the shape of the
+        diagram in \texttt{XY mode} is consistent.
+      \item Record the value of input voltage source as it change.
+    \end{enumerate}
+  \item {\large CMOS analog circuit experiment} 
+    \begin{enumerate}[label=(\arabic*)]
+      \item In Fig. 3, use $R = \SI{20}\kohm, \SI{510}\kohm, \SI{1}\Mohm, \SI{3.9}{\kohm}, \text{ and } \SI{10}\Mohm$, respectively.
+      \item Supply voltage source $V_{DD} = +\SI{8}\V$ to the circuit.
+      \item Use function generator to generate $v_i = V_{i(dc)} + v_{i(ac)} \sin(2 \pi ft), V_{i(dc)} = \SI{4}\V,
+        v_{i(ac)} = \SI{4}\V, f = \SI{1}{\kHz}$. Provide the input small signal $V_i$ to the breadboard.
+      \item Make sure that the $v_i$ is measured from the breadboard by using the
+        probe from CH1 in oscilloscope.
+      \item Function generator  \tri Press the \texttt{FUNC} button  \tri $\texttt{FREQ} = \SI{1}{\kHz}$, \texttt{SIN}
+        wave  \tri  \texttt{ATTN 0dB}  \tri  \texttt{SUB FUNC}  \tri  \texttt{OFFSET} \texttt{ON}  \tri Adjust
+        \texttt{DC/OFFSET} and set dc offset value $V_{i(dc)} = \SI{4}\V$.
+        Push the \texttt{DISPLAY} button  \tri  \texttt{Format}  \tri  \texttt{XY mode} , the diagram will be
+        the same as that shown in Fig. 2.
+      \item Adjust the \texttt{VOLTS/DIV} in \texttt{CH1} and \texttt{CH2} so that the transition region of
+        the diagram is obvious enough to determine the voltage gain.
+      \item Record the voltage gain $A_v$ in the follow table by observing the
+        differentiation of input and output voltage value shown in the curve at \texttt{XY
+        mode}.
+        (Referent value = constantly $−\SI{20}{\volt \per \volt}$)
+      \item Change the input voltage source $V_{DD}$ , and observe whether the shape of the
+        diagram in XY mode is consistent.
+      \item Record the value of input voltage source as it change:
+    \end{enumerate}
+  \item {\large CMOS analog amplifier circuit experiment}
+    \begin{enumerate}[label=(\arabic*)]
+      \item Supply voltage source $V_{DD} = +\SI{8}\V$ to the circuit.
+      \item Use function generator to generate $v_i = V_{i(dc)} + v_{i(ac)} sin(2 \pi ft), v_{i(ac)} = \SI{4}\V, f
+        = 1kHz$. Provide the input small signal $V_i$ to the breadboard.
+      \item Function generator  \tri  \texttt{SUB FUNC}  \tri  \texttt{OFFSET OFF}.
+      \item Make sure that the $v_i$ is measured from the breadboard
+        by using the
+        probe from CH1 in oscilloscope.
+      \item Use voltage power supplier to supply DC voltage $V_{i(dc)} = \SI{4}\V$.
+      \item Please beware whether the DC voltage and Small-Signal Voltage (SSV)
+        supplement are properly connected in the circuit. (DC → SSV →
+        ground. Do you know why?)
+      \item Adjust the $v_{i(ac)}$ and $V_{i(dc)}$ so that $v_{o(ac)}$ can be achieved to the highest value
+        and not be curtailed.
+      \item Push the \texttt{DISPLAY} button  \tri  \texttt{Format}  \tri  \texttt{YT mode}  \tri  Press \texttt{MEASURE}
+        button.
+      \item Record the value in the table as follow.
+      \item Make sure that the output amplitude achieves to the maximum and the $V_{i(dc)}$
+        is well selected so that the output waveform is symmetry between positive
+        half cycle and the negative half cycle.
+
+    \end{enumerate}
+
+
+\end{document}
+
+

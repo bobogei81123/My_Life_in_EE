@@ -1,0 +1,153 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{hhline}
+\usepackage{unicode-math}
+\usepackage{nicefrac}
+\usepackage[abbreviations, per-mode=symbol]{siunitx}
+\usepackage{comment}
+\usepackage{float}
+\usepackage{subcaption}
+
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage[usenames, dvipsnames]{xcolor}
+\usepackage{colortbl}
+\usepackage{circuitikz}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\Huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\\arabic{subsection}.}{12pt}{}
+\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=24pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\unit}[1]{\:(\text{#1})}
+\newcommand{\img}{\mathsf{i}}
+\newcommand{\ex}{\mathsf{e}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+\DeclareSIUnit \uF {\micro \farad}
+\DeclareSIUnit \mH {\milli \henry}
+
+\newcommand{\tri}{$\rhd$}
+
+\title{ \bf {\huge 電子電路實驗7： Vibrator}\\ 實驗預報}
+\author{B02901178 江誠敏}
+%\date{2014/09/21}
+
+\begin{document}
+
+\maketitle
+
+\section{Objectives}
+\begin{enumerate}
+  \item To familiarize various kind of multivibra
+    tors, including bistable, monostable and 
+    unstable multivibrators. 
+\end{enumerate}
+
+
+\section{Procedures}
+\subsection{Multivibrator using the Crystal oscillator}
+\begin{enumerate}[itemsep=0pt]
+  \item Supply voltage signal $V_{CC} = \SI{5}\V$ to pin 14 of 74LS00 IC and short
+    pin 7 to the ground.
+  \item Attach \texttt{CH1} probe of oscilloscope in the node of the output
+    of second \texttt{NAND} gate.
+  \item Observe whether the frequency of the measured wave is 
+    sinusoidal with frequency almost same as that of 
+    piezoelectric crystal (\SI{3.5}\MHz). Record the 
+    frequency $f_0$.
+\end{enumerate}
+
+\subsection{Circuits of Sparkling lamp}
+\begin{enumerate}[itemsep=0pt]
+  \item Supply voltage $V_{CC} = \SI{12}\V$.
+  \item Apply the values of $R = \SI{220}\ohm, C_1 = C_2 = \SI{47}\uF, 
+    R_{B1} = R_{B2} = \SI{100}\kohm, R_{C1} = R_{C2} \approx \SI{0.5}\kohm$
+  \item Oscilloscope \tri Press the \texttt{CH1} and \texttt{CH2} Menu
+    \tri \texttt{Coupling} \tri \texttt{DC}.
+  \item Adjust $R_{B1}$ and $R_{B2}$ to make the lamp be able
+    to sparkle and make the oscillatory frequency of the lamp
+    as ideally as you wish.
+  \item Record the value of oscillatory frequency $f_0$.
+  \item Use the \texttt{Cursors} menu button to measure
+    and record the value of $T_H, T_L, \text{Duty cycle }$, 
+    $R_{C1}, R_{C2}, R_{B1}, R_{B2}$.
+\end{enumerate}
+
+\subsection{An astable multivibrator using the LM555 IC}
+
+\begin{enumerate}[itemsep=0pt]
+  \item supply voltage $V_{CC} = \SI{5}\V$. Apply the values
+    $R_A = R_B = \SI{10}\kohm \text{ and } C = \SI{1}\nF$.
+  \item Adjust $R_A, R_B$ to fulfill the condition of $f_0 = \SI{100}\kHz$, 
+    Duty cycle $= 90\%$ and $T_L = \SI{1}\us$.
+  \item Attach \texttt{CH1} and \texttt{CH2} probes of oscilloscope to
+    pin 3 and pin 6, respectively, and observe the measured waveform
+    in \texttt{CH1} and \texttt{CH2}.
+  \item Use the \texttt{Cursors} menu button to measure and record the
+    value of $T_L, \texttt{ Duty cycle }$.
+  \item Record $f_0, R_A, R_B$.
+  \item Change the supply voltage $V_{CC} = \SI{10}\V, \SI{15}\V$ and
+    repeat the process.
+\end{enumerate}
+
+\subsection{The series of 555 Circuits.}
+\subsubsection{Circuit implementation}
+\begin{enumerate}[itemsep=0pt]
+\item Supply voltage $V_{CC} = \SI{5}\V, I_{SET} = \SI{0.5}\A$.
+\item Do not connect \SI{8}{\ohm} speaker in the following steps.
+\item Use $\SI{10}\kohm$ for $R_A, R_B, R_C, R_D$.
+\item Attach \texttt{CH1} and \texttt{CH2} probes of 
+  oscilloscope to pin 3 of $A_1$ and $A-2$ respecively.
+\item Observe the measured wveform in \texttt{CH1} and \texttt{CH2}.
+\end{enumerate}
+\subsubsection{Frequency Adjustment}
+\begin{enumerate}[itemsep=0pt]
+\item Adjust $R_A$ to have $f_1 = \SI{300}\Hz \textasciitilde \SI{700}\Hz$ and 
+  $R_B$ to have Duty cycle $= 50\%$.
+\item Adjust $R_C$ to have $f_2 = \SI{0.1}\Hz \textasciitilde \SI{10}\Hz$ and 
+  $R_D$ to have Duty cycle $= 50\%$.
+\end{enumerate}
+\subsubsection{Alarm Bell Adjustment}
+\begin{enumerate}
+\item Connect $\SI{8}\ohm$ speaker.
+\item Adjust $R_A, R_C$ to have an appropriate sound.
+\end{enumerate}
+
+\subsubsection{Measurement}
+\begin{enumerate}
+\item Record $f_1, f_2, R_A, R_B, R_C, R_D$.
+\end{enumerate}
+
+\subsubsection{Speaker Replacement}
+\begin{enumerate}
+\item Replace the $\SI{8}\ohm$ speaker with LED, observe 
+  whether the LED twinkles.
+\end{enumerate}
+
+\end{document}
+
+

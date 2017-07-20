@@ -1,0 +1,124 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{color}
+\usepackage{unicode-math}
+\usepackage{float}
+\usepackage{hhline}
+\usepackage{comment}
+\usepackage{siunitx}
+\usepackage{csvsimple}
+
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage[siunitx]{circuitikz}
+\usepackage{wrapfig}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\arabic{subsection}.}{12pt}{}
+%\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=24pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\unit}[1]{\:(\text{#1})}
+\newcommand{\df}[1]{\mathop{}\!\mathrm{d^#1}}
+\newcommand{\img}{\mathrm{i}}
+
+\title{ \bf {\Huge 電子電路實驗四：相位測量}\\ 實驗結報}
+\author{B02901178 江誠敏}
+\date{2014/10/07} 
+
+\begin{document}
+
+\maketitle
+
+\section{實驗結果}
+本實驗的電路圖如下：\\
+\begin{center}
+\begin{tikzpicture}[american voltages, scale=.8]
+	\draw[color=black, thick]
+	(0, 0) to [V] (0, 6) {}
+	(0, 6) to [R, l=1<\kilo\ohm>, v=$V_R$] (6, 6) {}
+	(6, 6) to [C, l=0.1<\micro\farad>, v=$V_C$] (6, 0) {}
+	(6, 0) to [short] (0, 0) {}
+	(3, 0) node[ground] {}
+	;
+\end{tikzpicture}
+\end{center}
+
+
+\subsection{利薩如圖形法}
+\begin{center}
+	\begin{tabular}{p{2cm}p{2cm}p{2cm}p{2.5cm}p{2.5cm}p{2cm}}
+	\hline
+	頻率 & $y$極值 & $y$截距 & 量測相位差 & 理論值 & 相對誤差 \\
+	\hline
+	\hline
+	\csvreader[head to column names, late after line=\\\hline]{tab1.csv}{}%
+	{\cola&\colb&\colc&\ang{\cold}&\ang{\cole}&\colf\%}
+\end{tabular}
+\end{center}
+
+
+\subsection{雙軌跡直接測量法}
+
+\begin{center}
+	\begin{tabular}{p{2cm}p{2cm}p{2cm}p{2.5cm}p{2.5cm}p{2cm}}
+	\hline
+	頻率 & 時間差 & 量測相位差 & 理論值 & 相對誤差 \\
+	\hline
+	\hline
+	\csvreader[head to column names, late after line=\\\hline]{tab2.csv}{}%
+	{\cola&\colb\:(\si{\micro\second})&\ang{\colc}&\ang{\cold}&\cole\%}
+\end{tabular}
+\end{center}
+
+
+\section{結報問題}
+
+\begin{enumerate}[itemsep=20pt, topsep=10pt]
+	\item {\large\bf 當 X-Y mode 時，Lissajous Figures Method 圖形：} 
+		\begin{enumerate}[label=(\alph*)]
+			\item {\large\bf 試述軌跡方向與相位差之關係？} \\[5pt]
+		答： 令$\Delta \phi = \phi_x - \phi_y$，也就是說如果$\Delta \phi> 0$，$x$領先$y$，則$x$會先達到最大值，接者$y$才會，因此軌跡方向會是逆時鐘方向，反之如果$y$領先$x$，則軌跡以順時針方向轉動。
+			\item {\large\bf 什麼樣的情況會造成圖形不成封閉曲線？}\\[5pt]
+				答： 圖形封閉的話有一點會在兩個時間被經過。假設$x(t) = \sin(\omega_x t + \phi_x) , y(t) = \sin(\omega_y t + \phi_y)$，因此如果在時間$t_1, t_2$時在同一點，則$\Delta t = t_1 - t_2$必需要是$2 \pi / \omega_x, 2 \pi / \omega_y$的整數倍，因此$\omega_x / \omega_y$必需是有理數，並且如果$\omega_x / \omega_y = a/b$，取$\Delta t = 2 \pi a / \omega_x$即可，因此圖形不成封閉曲線若且唯若兩頻率比不為有理數。
+			\item {\large\bf 什麼樣的情況會造成圖形出現有交叉點？}\\[5pt]
+				答： 如果頻率相等的時後顯然圖形是一個橢圓，不會有交叉點。現在不失一般性假設$\omega_x > \omega_y$，且$x(t) = \cos(\omega_x t +\phi), y(t) = \cos(\omega_y t)$，取$ t_1 = \pi / \omega_x, t_2 = -\pi / \omega_x$，可以知道$x(t_1) = x(t_2)$因為這兩點的相位是$2 \pi \omega_x / \omega_x = 2 \pi$，而$y(t_1) = \cos(\omega t1) = \cos(\omega -t1) = \cos(\omega t2) = y(t_2)$，但$y'(t_1) \neq y'(t_2)$，因此這點是個交叉點而非下個周期同相位的點。總結以上只要頻率不相等，就會有交叉點。
+		\end{enumerate}
+	\item {\large\bf 如何由 Dual-Trace Method 看出螢幕上兩波形為超前或落後(Lead/Lag)？}\\[10pt]
+		答：取兩訊號相鄰的兩個波峰，容易知道較左側的在比較早的時間就達到波峰，因此左側的領先。
+	\item {\large\bf 試述當電容改成電感時有何差異？}
+		答：電容換成電感時，阻抗從$\dfrac{1}{\img \omega C} \rightarrow \img \omega L$，因此電感的電壓會領先，並且隨著$\omega$上升，電感對電源電壓的相位差下降。
+		
+	\item {\large\bf 根據結果，Phase Measurement 以何方法為佳？}
+		答：以誤差來看，顯然Dual Trace Method較好一些。而我認為跟實驗的儀器有關，因為本實驗的示波器在XY Mode下不能使用Cursor測量，只能用肉眼估計，造成不小的誤差。
+	\item {\large\bf 信號產生器的 DC Offset 之用法為何？又 Attenuator 呢？}
+		答：DC Offect會給交流訊號一個直流的偏移，比如說本來交流訊號是從$-5\si{\volt} \sim +5\si{\volt}$，如果DC Offset調至$2 \si{\volt}$則輸出訊號會變成$-3\si{\volt} \sim +7 \si{\volt}$。而Attenuator則是衰減器，如果被打開後訊號將會被衰減成$10$倍。
+\end{enumerate}
+
+\section{心得}
+這次的實驗還算簡單，只要線路不要接錯應該都可以做蠻快的。只是一開始打開示波器的時後別人的menu都有XY Mode，我的居然沒有，大概是前一個人有用其他選單(似乎會停在最後一個使用的menu上)，好在把儀器上的按鈕全按一輪終於按到了。
+
+\end{document}
+

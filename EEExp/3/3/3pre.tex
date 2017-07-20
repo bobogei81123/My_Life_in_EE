@@ -1,0 +1,176 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{hhline}
+\usepackage{unicode-math}
+\usepackage{nicefrac}
+\usepackage[abbreviations, per-mode=symbol]{siunitx}
+\usepackage{comment}
+\usepackage{float}
+\usepackage{subcaption}
+
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage[usenames, dvipsnames]{xcolor}
+\usepackage{colortbl}
+\usepackage{circuitikz}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\Huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\\arabic{subsection}.}{12pt}{}
+\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=24pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\unit}[1]{\:(\text{#1})}
+\newcommand{\img}{\mathsf{i}}
+\newcommand{\ex}{\mathsf{e}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+\DeclareSIUnit \uF {\micro \farad}
+\DeclareSIUnit \mH {\milli \henry}
+
+\newcommand{\tri}{$\rhd$}
+
+\title{ \bf {\huge 電子電路實驗3,4： CMOS Operational Amplifier}\\ 實驗預報}
+\author{B02901178 江誠敏}
+%\date{2014/09/21}
+
+\begin{document}
+
+\maketitle
+
+\section{Objectives}
+\begin{enumerate}
+  \item To make sure all the MOS of the circuit are able to enter saturation region
+     so that the circuit can be applied to be an operational amplifier. 
+  \item To comprehend the method of eliminating the Crossover Distortion of a class-B output stage. 
+\end{enumerate}
+
+
+\section{Procedures}
+\subsection{DC Analysis}
+\subsubsection{DC Analysis of CD4007}
+\begin{enumerate}[itemsep=0pt]
+  \item  The condition of entering saturation region of NMOS: 
+    $V_{GD} \leq V_T (\SI{1.8}\V)$. 
+  \item  The condition of entering saturation region of PMOS: 
+    $V_{GD} \geq V_T (\SI{-1.8}\V)$. 
+  \item Supply voltage $-V_{SS} = \SI{-8}\V \text{ and } V_{DD} = +\SI{8}\V$ to the circuit.
+  \item  Provide voltage source $V_{CC} = +15V$, and $-V_{CC} = −15V$ to the circuit.
+  \item Use digital multi-meter to confirm whether all of the MOS components 
+    are able to enter saturation region as adjusting VR $\SI{1}\kohm$.
+\end{enumerate}
+
+\subsubsection{Detail procedure of DC Analysis 
+of the Two-stage OP-Amp circuit }
+\begin{enumerate}[itemsep=0pt]
+  \item  adjust VR $R_2 = \SI{10}\kohm$ and check whether $(Q_5 , Q_7 , Q_8)$ are all 
+    able to enter saturation region, that is, $V_{GD5,7,8} \geq V_T$ 
+      (–1.8V). If one of them is not so, change the chip
+       of CD4007 \#A and recheck again. 
+  \item  Use multi-meter to measure $V_{GD5},V_{GD7},V_{GD8}$.
+  \item  adjust VR $R_2 = \SI{10}\kohm$ and check whether $(Q_1, Q_2)$ are all 
+    able to enter saturation region, that is, $V_{GD1,2} \geq V_T$ 
+      (–1.8V). If one of them is not so, change the chip
+      of CD4007 \#B and recheck again. 
+  \item  Use multi-meter to measure $V_{GD1},V_{GD2}$.
+  \item  In Fig.5, Use heck whether $(Q_3, Q_4)$ are all 
+    able to enter saturation region, that is, $V_{GD3,4} \geq V_T$ 
+      (–1.8V). If one of them is not so, change the chip
+       of CD4007 \#C and recheck again. 
+  \item  Use multi-meter to measure $V_{GD3},V_{GD4}$.
+\end{enumerate}
+
+\subsubsection{DC Analysis of the Two-stage OP-Amp circuit}
+
+\begin{enumerate}[itemsep=0pt]
+  \item In Fig. 6, adjust VR ($R_3$) $\SI{1}\kohm$ and use multi-meter to measure 
+     $V_A$ and $V_E$ , and check whether $V_E$ is adjustable. If it not so
+       , trouble shoot the circuit. 
+       Check whether there is any wrong layout in your breadboard and 
+       whether the VR ($R_3$) is functional by multimeter. 
+  \item Record $V_A, V_E$.
+\end{enumerate}
+
+\subsubsection{Circuit implementation}
+
+\begin{enumerate}[itemsep=0pt]
+  \item In Fig. 2, adjust VR ($R_3$) $\SI{1}\kohm$ and use multi-meter to measure 
+     $V_A , V_D , V_E, V_F$
+\end{enumerate}
+
+\subsection{Small-signal Analysis}
+\subsubsection{Voltage Gain}
+\begin{enumerate}[itemsep=0pt]
+  \item Adjust VR ($R_3$) in Fig. 3 to have 
+    $V_F \approx 0$.
+  \item In Fig 4, apply the input small signal $V_i$ to the breadboard
+    by using function generator to generate $v_i = v_{ac} \sin(2\pi f t),
+    2v_{ac} = 20mV_{p-p}, f= \SI{1}\kHz$.
+  \item Make sure that the $v_i$ is measured from the breadboard by using
+    the probe from \texttt{CH1} in oscilloscope.
+  \item Oscilloscope \tri \texttt{YT mode}. 
+  \item Adjust VR ($R_3$) $\SI{1}\kohm$ in Fig. 2-2 to have maximum small-signal voltage 
+     gain $V_F/V_i$ . 
+  \item Keep the previous adjustment of $R_3$ constantly. 
+  \item Record the voltage gain $A_M$.
+  \item Record the $V_F, R_3$.
+  \item Confirm whether the voltage gain is the same as the slope of teh
+    curve at transition region measured in the step 6 at Exp 3.
+  \item Increase/Decrease $V_i$ until the waveform of $V_F$ just distort.
+  \item Record the peak-to-peak value of $V_i$.
+\end{enumerate}
+
+\subsubsection{Frequency Response}
+\begin{enumerate}[itemsep=0pt]
+  \item Set $v_i = v_{ac} \sin (2 \pi f t) , 2 v_{ac} = \SI{20}\mV_{p-p}, f = \SI{1}\kHz$.
+    \item Function generator \tri Adjust Frequency and observe the voltage gain $A_v$ in 
+      oscilloscope until $A_v = \sqrt{2} A_M$.
+    \item Record the frequency $f_{3db}$.
+    \item Change the frequency of input voltage source, and
+      record the input and output voltage shown in oscilloscope.
+\end{enumerate}
+
+\subsubsection{Internal frequency compensation}
+\begin{enumerate}[itemsep=0pt]
+  \item Use $R_2 = \SI{100}\kohm, C_2 = \SI{10}\pF$ in to 
+    implement the compensation circuit in Fig. 5.
+  \item Record the voltage gain $A_{M,2}$ , dynamic range $V_i$
+    , and frequency $f_{3dM,2}$. 
+\end{enumerate}
+
+\subsubsection{Feedback network compensation}
+\begin{enumerate}[itemsep=0pt]
+  \item Use $R_2 = \SI{100}\kohm, C_2 = \SI{10}\pF$ in to 
+    implement the compensation circuit in Fig. 3.
+  \item In Fig. 6, apply the input small signal $V_i$ to 
+    the breadboard by using function generator to generate
+    $v_i = v_{ac} \sin ( 2 \pi f_t) , 2 v_{ac} =
+    \SI{100}\mV_{p_p} , f = \SI{1}\kHz$.
+  \item Record the voltage gain $A_{M,2}$ , dynamic range $V_i$
+    , and frequency $f_{3dM,2}$. 
+\end{enumerate}
+\end{document}
+
+

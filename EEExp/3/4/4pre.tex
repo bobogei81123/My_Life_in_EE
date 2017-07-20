@@ -1,0 +1,144 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{hhline}
+\usepackage{unicode-math}
+\usepackage{nicefrac}
+\usepackage[abbreviations, per-mode=symbol]{siunitx}
+\usepackage{comment}
+\usepackage{float}
+\usepackage{subcaption}
+
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage[usenames, dvipsnames]{xcolor}
+\usepackage{colortbl}
+\usepackage{circuitikz}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\Huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\\arabic{subsection}.}{12pt}{}
+\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=24pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\unit}[1]{\:(\text{#1})}
+\newcommand{\img}{\mathsf{i}}
+\newcommand{\ex}{\mathsf{e}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+\DeclareSIUnit \uF {\micro \farad}
+\DeclareSIUnit \mH {\milli \henry}
+
+\newcommand{\tri}{$\rhd$}
+
+\title{ \bf {\huge 電子電路實驗5： Multi-Pole Feedback Network OP-Amp Circuit}\\ 實驗預報}
+\author{B02901178 江誠敏}
+%\date{2014/09/21}
+
+\begin{document}
+
+\maketitle
+
+\section{Objectives}
+\begin{enumerate}
+  \item To analyze the theory of feedback network in the multi-pole OP-Amp circuit.
+  \item To discuss the issue of stability for the feedback amplifier.
+  \item To understand the physical meaning of sinusoidal vibration.
+\end{enumerate}
+
+
+\section{Procedures}
+\subsection{DC Functional Confirmation of $A_1$}
+\begin{enumerate}[itemsep=0pt]
+  \item Reference pin voltage for $A_1$, check $V_{pin7}, V_{pin4}, V_{pin2}, V_{pin3}, V_{pin6}$.
+  \item Record these values.
+\end{enumerate}
+
+\subsection{DC Functional Confirmation $A_2$}
+\begin{enumerate}[itemsep=0pt]
+  \item Use $R = \SI{10}\kohm, r = \SI{100}\ohm, C_1 = \SI{0.1}\uF$ for $A_2$.
+  \item Supply voltage source $V_{CC} = +\SI{15}\V \text{, and } -V_{CC} = \SI{-15}\V$ to the
+    circuit.
+  \item Reference pin voltage for $A_2$, check $V_{pin7}, V_{pin4}, V_{pin2}, V_{pin3}, V_{pin6}$.
+  \item Record these values.
+\end{enumerate}
+
+\subsection{Small Signal Analysis}
+\begin{enumerate}[itemsep=0pt]
+  \item Use $R = \SI{10}\kohm, r = \SI{100}\ohm, C_1 = \SI{0.1}\uF$ for $A_2$.
+  \item Supply voltage source $V_{CC} = +\SI{15}\V \text{, and } -V_{CC} = \SI{-15}\V$ to the
+    circuit.
+  \item Apply the input small signal $V_i$ to the breadboard by using function generator
+    to generate $v_i = v_{ac} \sin(2 \pi f t), 2 v_{ac} = \SI{100}\mV_{(p-p)}, f = \SI{100}\Hz$.
+  \item Make sure that the $v_i$ is measured from the breadboard by using the probe from $\texttt{CH1}$
+    in oscilloscope.
+  \item oscilloscope \tri Press the \texttt{CH1} and \texttt{CH2} \texttt{MENU} \tri \texttt{Coupling}
+    \tri \texttt{AC}.
+  \item Observe $V_{i(p-p)}$ and $V_{o(p-p)}$ in \texttt{CH1} and \texttt{CH2}, respectively.
+  \item Keep the previous adjustment of $V_i$ constantly.
+  \item Record the voltage gain $A_M$ in the oscilloscope.
+  \item Function generator \tri Adjust Frequency and observe the voltage gain $A_V$ in
+    oscilloscope until $A_v = 0.707 A_M$.
+  \item Record the frequency $f_{3dB}$.
+\end{enumerate}
+
+\subsection{DC Functional Confirmation of $A_3$}
+\begin{enumerate}[itemsep=0pt]
+  \item Short terminal \texttt{D} to the ground.
+  \item Reference pin voltage for $A_3$, check $V_{pin7}, V_{pin4}, V_{pin2}, V_{pin3}, V_{pin6}$.
+  \item Record these values.
+\end{enumerate}
+
+\subsection{DC Functional Confirmation of $A_4$}
+\begin{enumerate}[itemsep=0pt]
+  \item Short terminal \texttt{E} to the ground.
+  \item Reference pin voltage for $A_4$, check $V_{pin7}, V_{pin4}, V_{pin2}, V_{pin3}, V_{pin6}$.
+  \item Record these values.
+\end{enumerate}
+
+\subsection{Initial state of the feedback network circuit}
+\begin{enumerate}[itemsep=0pt]
+  \item Use $R = \SI{10}\kohm, r = \SI{100}\ohm, C_1 = C_2 = C_3 \SI{0.1}\uF, VR = \SI{10}\kohm$.
+  \item adjust $VR$ to have $R_{p1} = \SI{0}\ohm, R_{p2} = \SI{10}\kohm$.
+  \item Apply the input signal $v_i$ to the breadboard by using function generator to generate
+    $v_i = v_{ac} \operatorname{\text{square}}(2 \pi f t), 2 v_{ac} = \SI{5}\V_{(p-p)}, f = 0 \textasciitilde 10 \si{\Hz}$.
+    circuit.
+  \item Make sure that the $v_i$ is {\bf measured from the breadboard} by using the probe
+    from \texttt{CH1} in oscilloscope.
+  \item Oscilloscope \tri Press the \texttt{CH1} and \texttt{CH2} \texttt{MENU} \tri \texttt{Coupling} \tri \texttt{DC}.
+  \item Observe whether the waveform shown in \texttt{CH1} and \texttt{CH2} distort.
+\end{enumerate}
+
+\subsection{Vibration observation of the circuit}
+\begin{enumerate}[itemsep=0pt]
+  \item Keep the previous adjustment in step 7 constantly.
+  \item Observe the waveform of $V_{o(p-p)}$ in \texttt{CH2} when slowly increasing the value
+    of $R_{p1}$ until the sinusoidal vibration occur.
+  \item As the sinusoidal vibration occur, record $V_{S(p-p)},V_{J(p-p)},V_{o(p-p)}, f_o, R_{p1}, R_{p2}$.
+  \item During the adjustment of appearing sin-vibration, observe whether the 
+    waveform of $V_{o(p-p)}$ occur damping phenomenon.
+\end{enumerate}
+\end{document}
+
+

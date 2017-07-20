@@ -1,0 +1,106 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{color}
+\usepackage{unicode-math}
+\usepackage{float}
+\usepackage{subfig}
+\usepackage{hhline}
+\usepackage{comment}
+\usepackage{siunitx}
+\usepackage{csvsimple}
+\usepackage{subcaption}
+
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage[siunitx]{circuitikz}
+\usepackage{wrapfig}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+\setmainfont{Linux Libertine O}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\arabic{subsection}.}{12pt}{}
+%\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=24pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\unit}[1]{\:(\text{#1})}
+\newcommand{\df}[1]{\mathop{}\!\mathrm{d^#1}}
+\newcommand{\img}{\mathrm{i}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+
+\title{ \bf {\Huge 電子電路實驗5： Oscillators}\\ 實驗結報}
+\author{B02901178 江誠敏}
+
+\begin{document}
+
+\maketitle
+
+
+\section{實驗結果}
+\subsection{Sinusoidal oscillators}
+\subsubsection{Maximum amplitude}
+\begin{center}
+\begin{tabular}{p{3cm}p{3cm}}
+	\hline
+  Item & Value\\
+	\hhline{==}
+  $V_{o(p-p)}$ & $\SI{25.1}\V$ \\
+  $f$ & $\SI{561}\Hz$ \\
+  $R_{1}$ & $\SI{33}\kohm$ \\
+	\hline
+\end{tabular}
+\end{center}
+
+\subsubsection{Minimum amplitude}
+\begin{center}
+\begin{tabular}{p{3cm}p{3cm}}
+	\hline
+  Item & Value\\
+	\hhline{==}
+  $V_{o(p-p)}$ & $\SI{182}\mV$ \\
+  $f$ & $\SI{556}\Hz$ \\
+  $R_{1}$ & $\SI{675}\ohm$ \\
+	\hline
+\end{tabular}
+\end{center}
+
+\subsection{Triangular oscillators}
+\begin{center}
+\begin{tabular}{p{3cm}p{3cm}}
+	\hline
+  Item & Value\\
+	\hhline{==}
+  $V_{o(p-p)}$ & $\SI{15.8}\V$ \\
+  $f$ & $\SI{5020}\Hz$ \\
+	\hline
+\end{tabular}
+\end{center}
+
+\section{心得}
+不知道為什麼，總感覺電電實驗三的電路好像一個實驗比一個實驗簡單啊…
+記得實驗一、二每個人都是接的一把鼻涕一把眼淚，現在做的快的好像
+一個小時就做完了。希望期末考也考個簡單的吧…
+\end{document}
+

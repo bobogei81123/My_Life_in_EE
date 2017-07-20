@@ -1,0 +1,24 @@
+** TEST
+
+.INCLUDE UA741.301
+*.INCLUDE lm741.ng
+*.INCLUDE smith.ng
+
+*X1 1 2 3 4 5 LM741/NS
+*X1 1 2 3 4 5 ua741
+X1 1 2 3 4 5 UA741
+
+V1 1 0 0
+V2 6 0 ac 1 sin(0 1 10k)
+R3 2 6 100
+V3 3 0 15
+V4 4 0 -15
+R1 5 0 100
+R2 5 2 100 
+
+.control
+
+ac dec 10 1 100meg
+plot vdb(5)
+
+.endc

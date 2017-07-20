@@ -1,0 +1,114 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{hhline}
+\usepackage{unicode-math}
+\usepackage{nicefrac}
+\usepackage[abbreviations, per-mode=symbol]{siunitx}
+\usepackage{comment}
+\usepackage{float}
+\usepackage{subcaption}
+
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage[usenames, dvipsnames]{xcolor}
+\usepackage{colortbl}
+\usepackage{circuitikz}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\Huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\\arabic{subsection}.}{12pt}{}
+\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=24pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\unit}[1]{\:(\text{#1})}
+\newcommand{\img}{\mathsf{i}}
+\newcommand{\ex}{\mathsf{e}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+\DeclareSIUnit \uF {\micro \farad}
+\DeclareSIUnit \mH {\milli \henry}
+
+\newcommand{\tri}{$\rhd$}
+
+\title{ \bf {\huge 電子電路實驗4： Single-Stage BJT Amplifiers }\\ 實驗預報}
+\author{B02901178 江誠敏}
+%\date{2014/09/21}
+
+\begin{document}
+
+\maketitle
+
+\section{Objectives}
+\begin{enumerate}
+  \item To analyze the dc bias from the device characteristic, and derive device
+    parameters for BJT.
+  \item Design the CE (Common Emitter, CE) amplifier by using the small-signal
+        model.
+  \item Measuring the fundamental characteristic, gain, bandwidth and resistance of
+        BJT and confirm the measured data with those in 2. 
+\end{enumerate}
+
+
+\section{Procedures}
+\subsection{Small-signal analysis}
+\begin{enumerate}[itemsep=0pt]
+  \item In Fig. 2, use $\SI{10}{\kohm}$ variable resistance for $R_1 , R_2 , R_C , R_E , R_S = 0, R_L = \infty$ . 
+  \item Supply DC voltage source $V_{CC} = +\SI{9}\V$ to the circuit.
+  \item  Provide the input small signal $V_i$ to the breadboard by using function generator to generate $V_i
+    = v_{ac} \sin(2 \pi f t), 2 v_{ac} = \SI{20}\mV $, $f = 10 \~{} 20 \si{\kHz}$.
+  \item  Make sure that the $v_i$ is measured from the breadboard by using the probe from CH1
+  in oscilloscope.
+\item  Function generator \tri  Press the \texttt{FUNC} button \tri  Set \texttt{FREQ} $ = 10 \~{} 20 \si{kHz}$,
+  \texttt{SIN} wave \tri  \texttt{ATTN} $\SI{40}{\dB}$.  
+\item  Oscilloscope \tri  Press the \texttt{CH1}  and \texttt{CH2} \texttt{MENU} \tri  \texttt{Coupling} \tri 
+  \texttt{AC} .  
+\item  Oscilloscope \tri  Press the \texttt{Measure} button \tri  Observe $V_{(p-p)}$ in \texttt{CH1} and \texttt{CH2} .
+  \item  Adjust the variable resistance of $R_1 , R_2 , R_C \text{ and } R_E$ so that voltage gain could be reached to
+    $A_M = \SI{100}{\volt\per\volt}$.
+  \item  Record the voltage gain: $\si{\volt\per\volt}$ by observing the differentiation
+    of input and output voltage peak-to-peak value shown in the curve at \texttt{YT} mode.
+  \item 
+    Function generator \tri  Press the \texttt{FUNC} button \tri  Adjust Frequency and observe the voltage gain $A_V$
+  in oscilloscope until $A_V = 0.707  A_M$ .
+  \item Record the frequency: $f_{L(a)}$
+  \item  Using the principle of major pole, change the value of $C_2$ until $f_L = \SI{100}\Hz$. 
+  \item Record the value of $C_2$.
+  \item Change the frequency of input voltage signal, and record the input and output voltage shown in oscillos cope to the following table
+Keep the previous adjustment consta nt, and DO NOT disconnect the signal input from functional generator.
+  \item 
+    Use multi-(RLC) meter to measure the following values: $R_{B1}, R_{B2}, R_C, R_E, V_E, V_C, V_B$, $I_E, I_C,I_B = I_E-I_C, \beta$. 
+\end{enumerate}
+\subsection{Measuring small-signal input and output resistance}
+\begin{enumerate}[itemsep=0pt]
+  \item In Fig. 3, use $\SI{10}\kohm$ variable resistance for $R_V$ .
+  \item Adjust $R_V$ so that the measured peak-to-peak voltage value in “oscilloscope node” of Fig. 3 is half of $V_i$ .
+  \item Record the value of $R_V = R_i$.
+  \item In Fig. 4, use $\SI{10}\kohm$ variable resistance for $R_V$ .
+  \item Adjust $R_V$ so that the measured peak-to-peak voltage value in “oscilloscope node” of Fig. 4 is half of $V_O$ .
+  \item Record the value of $R_V = R_O$
+\end{enumerate}
+\end{document}
+
+

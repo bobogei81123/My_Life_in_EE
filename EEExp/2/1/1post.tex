@@ -1,0 +1,146 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{color}
+\usepackage{unicode-math}
+\usepackage{float}
+\usepackage{hhline}
+\usepackage{comment}
+\usepackage[abbreviations]{siunitx}
+\usepackage{csvsimple}
+\usepackage{subcaption}
+
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage[siunitx]{circuitikz}
+\usepackage{wrapfig}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\arabic{subsection}.}{12pt}{}
+%\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=24pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\unit}[1]{\:(\text{#1})}
+\newcommand{\df}[1]{\mathop{}\!\mathrm{d^#1}}
+\newcommand{\img}{\mathrm{i}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+
+\title{ \bf {\Huge 電子電路實驗1：Operational Amplifier Circuits}\\ 實驗結報}
+\author{B02901178 江誠敏}
+
+\begin{document}
+
+\maketitle
+
+
+\section{實驗結果}
+
+\subsection{Pin Voltage}
+\begin{center}
+  \begin{tabular}{p{2cm}p{3.5cm}}
+    \hline
+    Pin & Voltage \\
+    \hhline{====}
+    $4$ & $\SI{-15.010}\V$  \\
+    $7$ & $\SI{15.013}\V$  \\
+    $2$ & $\SI{0.00}\V$  \\
+    $3$ & $\SI{0.00}\V$  \\
+    $6$ & $\SI{0.0006}\V$  \\
+    \hline
+  \end{tabular} \\[10pt]
+\end{center}
+
+\subsection{Inverting configuration}
+\subsubsection{ $R_2 = \SI{1}\kohm$ }
+\begin{center}
+  \begin{tabular}{p{3.5cm}p{2.5cm}p{2.5cm}p{2.5cm}}
+    \hline
+    Frequency & $v_i$ & $v_o$ & $v_o/v_i$ \\
+    \hhline{====}
+    $\SI{1}{\kHz}$ & $\SI{160}{\mV}$ & $\SI{1.4}{\V}$ & $8.75$  \\
+    $\SI{10}{\kHz}$ & $\SI{160}{\mV}$ & $\SI{1.38}{\V}$ & $8.625$  \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\subsubsection{ $R_2 = \SI{4.7}\kohm$ }
+\begin{center}
+  \begin{tabular}{p{3.5cm}p{2.5cm}p{2.5cm}p{2.5cm}}
+    \hline
+    Frequency & $v_i$ & $v_o$ & $v_o/v_i$ \\
+    \hhline{====}
+    $\SI{1}{\kHz}$ & $\SI{145}{\mV}$ & $\SI{6.88}{\V}$ & $47.49$  \\
+    $\SI{10}{\kHz}$ & $\SI{148}{\mV}$ & $\SI{6.64}{\V}$ & $44.86$  \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\subsection{Non-inverting configuration}
+
+\subsubsection{ $R_2 = \SI{1}\kohm$ }
+\begin{center}
+  \begin{tabular}{p{3.5cm}p{2.5cm}p{2.5cm}p{2.5cm}}
+    \hline
+    Frequency & $v_i$ & $v_o$ & $v_o/v_i$ \\
+    \hhline{====}
+    $\SI{1}{\kHz}$ & $\SI{160}{\mV}$ & $\SI{1.681}{\V}$ & $10.51$  \\
+    $\SI{10}{\kHz}$ & $\SI{160}{\mV}$ & $\SI{1.681}{\V}$ & $10.51$  \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\subsubsection{ $R_2 = \SI{4.7}\kohm$ }
+\begin{center}
+  \begin{tabular}{p{3.5cm}p{2.5cm}p{2.5cm}p{2.5cm}}
+    \hline
+    Frequency & $v_i$ & $v_o$ & $v_o/v_i$ \\
+    \hhline{====}
+    $\SI{1}{\kHz}$ & $\SI{172}{\mV}$ & $\SI{7.12}{\V}$ & $41.40$  \\
+    $\SI{10}{\kHz}$ & $\SI{180}{\mV}$ & $\SI{6.88}{\V}$ & $38.22$  \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\subsection{Voltage Follower}
+
+\begin{center}
+  \begin{tabular}{p{3.5cm}p{2.5cm}p{2.5cm}p{2.5cm}}
+    \hline
+    Frequency & $v_i$ & $v_o$ & $v_o/v_i$ \\
+    \hhline{====}
+    $\SI{1}{\kHz}$ & $\SI{2.16}{\V}$ & $\SI{2.24}{\V}$ & $1.04$  \\
+    $\SI{10}{\kHz}$ & $\SI{2.20}{\V}$ & $\SI{2.24}{\V}$ & $1.02$  \\
+    \hline
+  \end{tabular}
+\end{center}
+
+
+\section{心得}
+新的學期開始，電子電路實驗也換了新教室。沒想到一進教室，明明都還沒有開始上課，教室裡就已人山人海
+，而且有好的儀器的位置都已經被搶光了！所以我們一群人只好被流放邊疆，到儀器比較爛的位置上。
+結果那個示波器還真的蠻慘的，Autoset 後波形都還會超出範圍，然後動不動就有儀器整個當機。這個故事
+告訴我們第一堂課最好早一點到，不然整學期都會很慘！
+\end{document}
+

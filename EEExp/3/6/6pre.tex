@@ -1,0 +1,106 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{hhline}
+\usepackage{unicode-math}
+\usepackage{nicefrac}
+\usepackage[abbreviations, per-mode=symbol]{siunitx}
+\usepackage{comment}
+\usepackage{float}
+\usepackage{subcaption}
+
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage[usenames, dvipsnames]{xcolor}
+\usepackage{colortbl}
+\usepackage{circuitikz}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\Huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\\arabic{subsection}.}{12pt}{}
+\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=24pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\unit}[1]{\:(\text{#1})}
+\newcommand{\img}{\mathsf{i}}
+\newcommand{\ex}{\mathsf{e}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+\DeclareSIUnit \uF {\micro \farad}
+\DeclareSIUnit \mH {\milli \henry}
+
+\newcommand{\tri}{$\rhd$}
+
+\title{ \bf {\huge 電子電路實驗6： ADC/DAC}\\ 實驗預報}
+\author{B02901178 江誠敏}
+%\date{2014/09/21}
+
+\begin{document}
+
+\maketitle
+
+\section{Objectives}
+\begin{enumerate}
+  \item To study another group of analog IC circuits 
+    of great importance, data converters. 
+\end{enumerate}
+
+
+\section{Procedures}
+\subsection{Measure the voltage as full load.}
+\begin{enumerate}[itemsep=0pt]
+  \item Supply voltage signal $V_{in} = \SI{0}\V$ and $V_R$.
+  \item Slowly increase $V_R$ from $2.5\SI{0}\V \text{ to } \SI{5}\V$.
+    \texttt{Format} \tri \texttt{YT mode}.
+  \item Adjust $V_R$ as the digital output just equals to \texttt{11111111}.
+  \item Record $V_R$.
+\end{enumerate}
+
+\subsection{Measure Analog voltage value to Digital output.}
+\begin{enumerate}[itemsep=0pt]
+  \item Set $V_R = \SI{2.5}\V \text{ and } V_{in} = \SI{0}\V \text{ to } \SI{2.5}\V$.
+  \item Slowly increase $V_{in}$ from $0$ to $\SI{5}\V$, and record 
+    $V_{in}$.
+\end{enumerate}
+
+\subsection{DAC0800 Testing circuit}
+
+\begin{enumerate}[itemsep=0pt]
+  \item In Fig. 2, supply $V_{DD} = \SI{5}\V, V_{ref} = \SI{5}\V$ for
+    DAC circuit and $V_{\pm} = \pm\SI{15}\V$ for $\mu$A741 OP Amp.
+  \item Input \texttt{11111111} to the digital input terminals.
+  \item Adjust VR $ = \SI{10}\kohm$ to have $V_{out} = \SI{5}\V$.
+    Record the value of VR and $V_{out}$.
+\end{enumerate}
+
+\subsection{Connection of both circuit}
+\begin{enumerate}[itemsep=0pt]
+  \item Connect DB7 to B1, DB6 to B2, ... and DB0 to B8.
+  \item Supply voltage $V_R = \SI{2.5}\V$ and slowly increase $V_{in}$ from 
+    $0$ to $\SI{5}\V$. Record $V_{in}$ and $V_{out}$.
+\end{enumerate}
+
+\end{document}
+
+

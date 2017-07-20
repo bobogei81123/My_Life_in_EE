@@ -1,0 +1,13 @@
+
+** LRC **
+
+Vs 1 0 AC 1 SIN(1 0 10k)
+L1 2 0 10m
+C1 2 0 0.01u
+R1 1 2 2k
+
+.control
+ac dec 50 200 200k
+plot vdb(2)-vdb(1)
+wrdata d33 vdb(2)-vdb(1)
+.endc

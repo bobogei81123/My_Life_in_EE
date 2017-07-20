@@ -1,0 +1,134 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{color}
+\usepackage{unicode-math}
+\usepackage{float}
+\usepackage{hhline}
+\usepackage{comment}
+
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage[siunitx]{circuitikz}
+\usepackage{wrapfig}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\arabic{subsection}.}{12pt}{}
+%\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=24pt
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\unit}[1]{\:(\text{#1})}
+\newcommand{\df}[1]{\mathop{}\!\mathrm{d^#1}}
+
+\title{ \bf {\Huge 電子電路實驗三：類比電表之內電阻及擴大測量範圍之方法}\\ 實驗結報}
+\author{B02901178 江誠敏}
+\date{2014/10/07} 
+
+\begin{document}
+
+\maketitle
+
+\section{實驗結果}
+以下把用數位電表電阻檔位直接量測類比電表各檔位的電阻值當成理論值，因其量測的誤差較小。
+\subsection{量測伏特計之內電阻}
+\begin{comment}
+本實驗的電路圖如下：\\
+\begin{center}
+\begin{tikzpicture}[american voltages, scale=.8]
+	\draw[color=black, thick]
+	(0, 0) to [V] (0, 6) {}
+	(0, 6) to [short] (6, 6) {}
+	(6, 6) to [voltmeter] (6, 3) {}
+	(6, 3) to [vR] (6, 0)
+	(6, 3) to [short] (3, 3)
+	(3, 3) to [cspst, /tikz/circuitikz/bipoles/length=2.5cm] (3, 0)
+	(6, 0) to [short] (0, 0)
+	(3, 0) node[ground]{}
+	;
+\end{tikzpicture}
+\end{center}
+\end{comment}
+
+
+\begin{center}
+	\begin{tabular}{p{2.5cm}p{2cm}p{2cm}p{2.5cm}p{2.5cm}p{2cm}}
+	\hline
+	伏特計檔位 & 量測值1 & 量測值2 & 量測平均值 & 理論值 & 相對誤差 \\
+	\hhline{======}
+	$2.5\unit{V}$ & $46.2 \:(\text{k}\Omega)$ & $32.6 \:(\text{k}\Omega)$ & $39.4 \:(\text{k}\Omega)$ & $50.5 \:(\text{k}\Omega) $ & $-22.0\%$ \\
+	\hline
+	$10\unit{V}$ & $215.0 \:(\text{k}\Omega)$ & $178.0 \:(\text{k}\Omega)$ & $196 \:(\text{k}\Omega)$ & $200.0 \:(\text{k}\Omega) $ & $-2\%$ \\
+	\hline
+	$50\unit{V}$ & $1.045 \:(\text{M}\Omega)$ & $0.95 \:(\text{M}\Omega)$ & $0.998 \:(\text{M}\Omega)$ & $1.0 \:(\text{M}\Omega) $ & $-0.2\%$ \\
+	\hline
+\end{tabular}
+\end{center}
+
+\subsection{量測安培計之內電阻}
+
+\begin{center}
+	\begin{tabular}{p{2.5cm}p{2cm}p{2cm}p{2.5cm}p{2.5cm}p{2cm}}
+	\hline
+	安培計檔位 & 量測值1 & 量測值2 & 量測平均值 & 理論值 & 相對誤差 \\
+	\hhline{======}
+	$2.5\unit{mA}$ & $110 \:(\Omega)$ & $108 \:(\Omega)$ & $109 \:(\Omega)$ & $106.3 \:(\Omega) $ & $2.54\%$ \\
+	\hline
+	$25\unit{mA}$ & $17.4 \:(\Omega)$ & $16.4 \:(\Omega)$ & $16.9 \:(\Omega)$ & $16.7 \:(\Omega) $ & $1.20\%$ \\
+	\hline
+	$250\unit{mA}$ & $7.3 \:(\Omega)$ & $7.1 \:(\Omega)$ & $7.2 \:(\Omega)$ & $7.59 \:(\Omega) $ & $-5.13\%$ \\
+	\hline
+\end{tabular}
+\end{center}
+
+
+\section{結報問題}
+
+\begin{enumerate}[itemsep=20pt, topsep=10pt]
+	\item {\large\bf Voltmeter各檔之內電阻是否符合$20\:\text{k}\Omega/\text{V}$(大型類比電表)或者$4\:\text{k}\Omega/\text{V}$(小型類比電表)之公式？而ammeter又為何？} \\[10pt]
+		答：從實驗結果可以看出Voltmeter各檔位$V$的電阻$R$大致上有$R \approx V \cdot 20\:\text{k}\Omega/\text{V}$，符合大型類比電表的公式。至於ammeter的電阻似乎與檔位沒有簡單的線性或反比關係。但是可以看出檔位越大，電阻越小。
+	\item {\large\bf Voltmeter與ammeter之內電阻何者大？為什麼？}\\[10pt]
+		答：從實驗結果明顯可以看出Voltmeter的內電阻遠大於ammeter，原因也很簡單，所有測量工具都應該盡量不影響原本的電路，否則測量的結果不會準確。而伏特計會與待測元件並聯，伏特計必須要像「斷路」，否則根據電流的分流定律，如果伏特計的電阻不大，部分的電流會改為經過伏特計，因此伏特計的電阻必須極大。安培計則剛好相反，會跟待測物串聯，要盡量像一個「短路」，否則會吃掉待測元件的電壓差，因此安培計的電阻要越小越好。
+	\item {\large \bf 對analog multimeter：}
+		\begin{enumerate}[label=(\alph*)]
+			\item {\large\bf 電池耗盡仍可用否？} \\[5pt]
+				答：測量電流、電壓時電池耗盡仍然可用，因為這些測量只需被動的量測流過電表的電流，不需主動提供能量。但是如果是測量電阻就無法在電池秏盡時測量了，因為測量電阻必須從電表內提供待測電阻一電位差，再透過測量電流得知。
+			\item {\large\bf 零位調整鈕(ADJ)如何使用？}\\[5pt]
+				答：在測量前先確定指針在左邊$0$刻度的位置，如果不是，旋轉零位調整鈕直到指針歸零為止。另外有些電表還有$0\Omega$調整鈕，用來校正電阻的測量，方法是在一電阻測量檔位下，把兩探棒接在一起，旋轉調整鈕直到指針對齊右邊的$0$刻度為止。
+			\item {\large\bf 不知待測物之概值，應如何處置？} \\[5pt]
+				答：如果不知待測物之概值，不論測量電壓、電流，都應該從高檔位開始測量(電阻則相反，應從低檔位開始)，接著再往低檔位調整，不要讓測量值超出最大刻度，否則很可能使電表或待測物燒壞。
+			\item {\large\bf 測電阻時，指針應位於中央或滿刻度較佳？測電壓、電流呢？} \\[5pt]
+				答：測量電阻時，指針應位於中央較佳。原因是電阻的刻度似乎在中央處，指針偏移所造成的相對誤差較小。而電壓、電流因刻度是線性的，所以在接近滿刻度量測的相對誤差較小。
+			\item {\large\bf 如何預防電流輸入過大燒毀保險絲(Fuse，規格 0.5A)？} \\[5pt]
+				答：在測量前應做概算，避免電流輸入過大。電源供應器應設定電流上限，而測量時也應從高檔位開始測量。
+		\end{enumerate}
+
+	\item {\large\bf 當可變電阻突有一陣異味，即表示負荷功率過大而燒壞，如何預防？} \\[10pt]
+		答：由$W = V^2 / R$可以知道電阻大則功率小，因此可變電阻應該先調至最大值，等電源輸入開啟時再慢慢往下調。另外也應設定電源的電流輸出上限，使流經電阻的電流不致於導致電阻燒壞。
+\end{enumerate}
+
+\section{心得}
+這次的實驗危機重重，不時就可以聞到電阻燒焦的味道或是聽到有人大喊「我的電阻燒壞了」之類的。我自己在操作可變電阻時，本來以為$5 \unit{V}$很小，不致於燒壞，沒想到實驗中可變電阻越來越燙，嚇的我趕緊把電源關掉。後來做結報問題時才想到應該設定電流上限來預防這個問題，以後做實驗應該要更注意一些實驗安全的小細節，不然把貴重的儀器燒壞就慘了！
+
+\end{document}
+
