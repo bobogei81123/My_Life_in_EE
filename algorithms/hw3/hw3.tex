@@ -1,0 +1,309 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{color, float, hhline}
+\usepackage{scalerel}
+%\setmonofont{Source Code Pro}
+
+\usepackage[abbreviations, per-mode=symbol]{siunitx}
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\setlist{itemsep=0pt, topsep=0pt}
+\usepackage{tikz}
+\usepackage{csquotes}
+\usepackage{circuitikz}
+\usepackage{footnote}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+\makesavenoteenv{table}
+\makesavenoteenv{tabular}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+\AtBeginDocument{\mathcode`\_=\string"715F }
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\arabic{subsection}.}{12pt}{}
+%\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=0pt
+\parskip=0.5em
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle} % inner product
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclareMathOperator{\adj}{adj}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\csch}{csch}
+\DeclareMathOperator{\arcsec}{arcsec}
+\DeclareMathOperator{\arccot}{arccot}
+\DeclareMathOperator{\arccsc}{arccsc}
+\DeclareMathOperator{\arccosh}{arccosh}
+\DeclareMathOperator{\arcsinh}{arcsinh}
+\DeclareMathOperator{\arctanh}{arctanh}
+\DeclareMathOperator{\arcsech}{arcsech}
+\DeclareMathOperator{\arccsch}{arccsch}
+\DeclareMathOperator{\arccoth}{arccoth}
+%\underset{x}{\operatorname{argmin}} 
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\newcommand{\np}[1]{\\[{#1}] \indent}
+\newcommand{\transpose}[1]{{#1}^\mathrm{T}}
+%%%% Geometry Symbol %%%%
+\newcommand{\degree}{^\circ}
+\newcommand{\Arc}[1]{\wideparen{{#1}}}
+\newcommand{\Line}[1]{\overleftrightarrow{{#1}}}
+\newcommand{\Ray}[1]{\overrightarrow{{#1}}}
+\newcommand{\Segment}[1]{\overline{{#1}}}
+\DeclareMathOperator*{\Bigcdot}{\scalerel*{\cdot}{\bigodot}}
+
+\newcommand{\opord}{\operatorname{\mathcal{O}}}
+\newcommand{\ord}[1]{\opord\left(#1\right)}
+
+\newcommand{\img}{\mathsf{i}}
+\newcommand{\ex}{\mathsf{e}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+\setlength{\droptitle}{-1.5cm} %title 與上緣的間距
+\newtheorem{lemma}{Lemma}
+
+\title{Algorithm HW\#3}
+\author{B02901178 江誠敏}
+%\DeclareMathOperator{\lowb}{lowerBound}
+
+\begin{document}
+\maketitle
+Collaborators: None
+
+\section{Problem 1.}
+We define our day structure to be a pair of Fibonacci heap $(G, H)$ such that 
+\begin{enumerate}
+  \item $G$ is a max Fibonacci heap.
+  \item $H$ is a min Fibonacci heap. 
+  \item The size of $G, H$ satisfied $\abs{G} = \abs{H}$ or $\abs{G} = \abs{H} + 1$.
+  \item For all $g \in G, h \in H$, $g \leq h$.
+\end{enumerate}
+Let $n$ be the number of elements, i.e., $n = \abs{G} + \abs{H}$,
+$g^*$ be the maximum of $G$, and $h^*$ be the minimum of $H$. It is easy to see that
+if $k = \ceil{n/2}$, $g^*$ is the $k$-th smallest element, and $h^*$ is the $k+1$-th
+smallest element, so
+\begin{enumerate}
+  \item If $2 \mid n$, then $(g^* + h^*) / 2$ is the median. (Or we shall define $g^*$ to
+    be the median in this case.)
+  \item If $2 \nmid n$, then $g^*$ is the median.
+\end{enumerate}
+Now recall that the Fibonacci heap has the preformances list in below.
+\begin{lemma}
+  In a Fibonacci heap, the following operations cost
+  \begin{itemize}[itemsep=-0.2cm]
+    \item {\tt insert}: $\ord{1}$.
+    \item {\tt extract\_min}: $\ord{\log n}$.
+    \item {\tt delete}: $\ord{\log n}$.
+    \item {\tt merge}: $\ord{1}$.
+  \end{itemize}
+\end{lemma}
+
+We define a new procedure {\tt adjust} as following.
+\begin{itemize}
+  \item If $\abs{G} = \abs{H}$ or $\abs{G} = \abs{H} + 1$, do nothing.
+  \item If $\abs{G} < \abs{H}$, preform {\tt extract\_min} on $H$ and get $x$,
+    then preform {\tt insert} $x$ on $G$. After the procedure, $\abs{G} \gets \abs{G} + 1,
+    \abs{H} \gets \abs{H} - 1$.
+  \item If $\abs{G} > \abs{H} + 1$, preform {\tt extract\_min} on $G$ and get $x$,
+    then preform {\tt insert} $x$ on $G$. After the procedure, $\abs{G} \gets \abs{G} - 1,
+    \abs{H} \gets \abs{H} + 1$.
+\end{itemize}
+Notice that each {\tt adjust} cost $\ord{\log n}$. And after the procedure
+$\big| \abs{G} - \abs{H} \big|$ decreases until $\abs{G} = \abs{H}$ or $\abs{G} = \abs{H} + 1$.
+
+Then we give the procedure of the operations.
+\begin{itemize}
+  \item $\mathtt{ins}(x)$: If $k \leq g^*$ then $\mathtt{insert}(G, x)$, else $\mathtt{insert}(H, x)$.
+    The cost is $\ord{1}$.
+  \item $\mathtt{del}(x)$: If $x \in G$ then $\mathtt{delete}(G, x)$, else $\mathtt{delete}(H, x)$.
+    The cost is $\ord{log n}$.
+  \item $\texttt{extract\_median}$: Simply delete $g^*$. It cost $\ord{\log n}$.
+  \item $\texttt{union}$: Let $(G_1, H_1), (G_2, H_2)$ be the two we shall union. By the
+    statement we only need to merge them if there median are the same. Let $g^*$ be their
+    median, then we know that $x \in G_1 \cup G_2 \implies x \leq g^*$. So we could
+    simply call $G' \gets \texttt{merge}(G_1, G_2), H' \gets \texttt{merge}(H_1, H_2)$.
+    And $(G', H')$ is the desired result. The cost is $\ord{1}$ since they are fibonacci heaps.
+\end{itemize}
+Let $(G', H')$ be what we get after a single operation. Since $\big| \abs{G} - \abs{H} \big| \leq 1$
+before the operation, and each operation will delete/insert at most $1$ element in $G$ or in $H$.
+So $\big| \abs{G'} - \abs{H'} \big| \leq 2$.
+(In the \texttt{union} operation, $\big| \abs{G_1} - \abs{H_1} \big| \leq 1$ and
+$\big| \abs{G_2} - \abs{H_2} \big| \leq 1$ so still $\big| \abs{G'} - \abs{H'} \big| \leq 2$.)
+Hence after at most $2$ time of {\tt adjust}, which cost $\ord{\log n}$, the two heap
+``recovered'', that is, $\abs{G'} = \abs{H'}$ or $\abs{G'} = \abs{H'} + 1$ again.
+Hence each operation cost $\ord{\log n}$.
+
+\section{Problem 2.}
+We know that ``create a new array with double size $2n$, transfer the old $n$ items''
+takes linear time, so let $\beta$ be the constant such that the operation above
+cost no more than $\beta n$.
+
+Let $n$ be the current size of the array, and $m$ is the current number of elements inside
+the dynamic array. We shall define the potential function to be $\Phi = \beta (2m - n + 1)$.
+
+Notice that since if $m \geq 1$, then $n \leq 2m$ by statement since every time we enlarge the array
+size to at most twice the number of elements when the array is full. And if $m = 0$ then $n = 1$ and
+$2m - n + 1 = 0$, hence $\Phi \geq 0$.
+
+Now we analyze the amortized cost. 
+\begin{itemize}
+  \item Insertion with no resizing cost $\ord{1}$, 
+    and the potential difference is \\
+    \[ \Phi' - \Phi = \beta (2(m+1) - n + 1) - \beta (2m - n + 1) = 2\beta. \]
+    Hence the amortized cost is $\hat{c} = \ord{1} + 2\beta = \ord{1}$.
+
+  \item Insertion with resizing cost $\beta n + \ord{1}$, 
+    and the potential difference is \\
+    \[ \Phi' - \Phi = \beta (2(m+1) - 2n + 1) - \beta (2m - n + 1) = 2\beta - \beta n. \]
+    Hence the amortized cost is $\hat{c} = \beta n + \ord{1} + 2\beta - \beta n = \ord{1} + 2\beta = \ord{1}$.
+\end{itemize}
+So we conclude that the amortized cost is $\ord{1}$.
+
+\section{Problem 3}
+We first state a lemma.
+\begin{lemma}
+  Given a undirected graph $G = (V, E)$. Finding all vertices that could be reach from
+  a vertex $s$ could be done in $\ord{V + E}$ time.
+\end{lemma}
+\begin{proof}
+  Simply runs any linear traversal algorithm such as \texttt{DFS} start from $s$,
+  which runs in $\ord{V + E}$ time. The set of all vertices which is visited in the process
+  is the answer.
+\end{proof}
+
+Now construct a new graph $G' = (V', E')$ from $G$ by the following rules.
+\begin{itemize}
+  \item $V' = \big\{ v'_{i, k} : 1 \leq i \leq \abs{V'}, 0 \leq k \leq 2 \big\}$.
+  \item If $(v_i, v_j)$ is an edge in $G$ with cost $c$, then
+    $(v'_{i, k}, v'_{j, k'}) \in E'$ where $k' = (k + c) \mod 3$, for $k = \{1, 2, 3\}$.
+    We say that these three edges correspond to the edge $(v_i, v_j)$ in $G$.
+\end{itemize}
+We could see that every path from $s \triangleq v_i$ to $v_j$ correspond to a path from
+$s' \triangleq v_{i, 0}$ to $v_{j, k}$ for a $k$, and vice versa. Also, if $c_1, c_2, \cdots, c_m$
+is the cost of the edge in the path, and let $c = \sum c_i$, then 
+$k \equiv 0 + c_1 + c_2 + \cdots + c_m \equiv c \pmod{3}$ by definition. So if
+$c$ is a multiple of $3$, $k = 0$. Hence we turn the problem to finding which
+vertices $\{v_{j, 0}\}$ could be reached from $s' = v_{i, 0}$. Since $G'$ has
+$3\abs{V}$ vertices and $3\abs{E}$ edges, the algorithm runs in
+$\ord{3 \abs{V} + 3\abs{E}} = \ord{V + E}$ time.
+
+\section{Problem 4}
+Let $G = (V, E)$ be a directed graph, 
+where $V = \{ v_0, v_1, \cdots, v_n \}, E = \{ (v_0, v_i) : 1 \leq i \leq n \}
+\cup \{ (v_i, v_j) : \text{course } j \text{ requires course } i \, \}$.
+The statement ``you can complete all courses in some orderings'' guarantees
+that the induced subgraph $V \setminus \{ v_0 \}$ is a DAG, and after adding $v_0$ by our
+construction the graph is still a DAG. So a topological ordering exists (which could be calculate
+in $\ord{V + E}$).
+And thus we could define
+\[ d(v_i) = \max_{(v_j, v_i) \in E} d(v_j) + 1, \quad d(v_0) = 0. \]
+The function $d$ is well define, and could be calculate in $\ord{V + E} = \ord{V}$
+(since the indegree of each vertices is less then $3 + 1 = 4$, \footnote{The $1$
+  is from $v_0$.} thus $\abs{E} \leq 4 \abs{V}$.), since we only need
+to calculate them by definition in the topological order, and calculate
+one node cost $\ord{\deg v_i + 1}$.
+
+\begin{lemma}
+  The solution of the problem, $m^*$, equals $m \triangleq \max\limits_{v_i \in V} d(v_i)$.
+\end{lemma}
+\begin{proof}
+  First we proof that $m^* \leq m$ by giving a solution with size $m$. \\
+  Let $A_k = \{ v_i : d(v_i) = k \}$. Then in the $k$-th semester we take all
+  the courses in $A_k$. The configuration is consistent, since
+  \[ d(v_i) = \max\limits_{(v_j, v_i) \in E} d(v_j) + 1 \implies
+  d(v_i) > d(v_j),\; \forall (v_j, v_i) \in E. \]
+  So for a course in $A_k$, all its prerequisites $v_j$ is in $A_{k'}$ with $k' < k$,
+  which we've already taken. And since $m \triangleq \max d(v_i)$, we only needs $m$
+  semester. Hence $m^* \leq m$.
+
+  Now, let us proof that there is a path $v_0, v_1, v_2, \cdots, v_k$ with $k = m$
+  by induction. Choose $v_k$ so that $d(v_k) = 1$. By definition, exists $v^*$ such that
+  $d(v^*) = k-1$ and $(v^*, v_k) \in E$. By induction there is a path
+  $v_0, v_1, v_2, \cdots, v_{k-1} \triangleq v^*$, and thus we could extend it to a path
+  $v_0, v_1, \cdots, v_{k-1}, v_k$.
+
+  Now in this path, $v_2$ requires $v_1$, $v_3$ requires $v_2$, ..., $v_k$ requires $v_{k-1}$
+  and hence we need at least $k$ semester to finish course $v_k$. Hence $m^* \geq m$ and we
+  conclude $m^* = m$.
+\end{proof}
+
+By lemma, since we could compute all $d(v_i)$ in $\ord{V}$ time, and finding the maximum
+cost $\ord{V}$ time. So the time complexity is $\ord{V} = \ord{n}$.
+
+\section{Problem 5}
+Let $p(h, w)$ be the shortest path from $u$ to $w$ using at most $h$ edges.
+Then $p(h, w)$ is either
+\begin{itemize}
+  \item Contains less then $h$ edges, then $p(h, w) = p(h-1, w)$.
+  \item Contains exactly $h$ edges, then $p(h, w) = \langle u , v_1,
+    \cdots, v_{h-1}, w \rangle$, with some $v_{h-1}$ satisfied $(v_{h-1}, w) \in E$ and
+    $\langle u, v_1, \cdots, v_{h-1} \rangle = p(h-1, v_{h-1})$.
+\end{itemize}
+If we let $f(h, w)$ be the length of the shortest path from $u$ to $w$ using at most $h$
+edges , then according to the above, we could write down the recursive formula by
+\[ f(h, w) = \min_{(w', w) \in E} f(h-1, w') + c(w', w) \]
+Where $c(x, y)$ is the cost of the edge from $x$ to $y$.
+And we know that $f(0, u) = 0$, $f(0, w) = \infty, \forall w \neq u$.
+
+Notice that the recursive formula above is well ordered, since $(h, w)$ uses only
+$(h-1, \cdot)$ and eventually $h-1 = 0$ which falls into the base case. So we could
+use dynamic programming to calculate all the $f(h, w)$ for all $0 \leq h \leq k, w \in V$.
+Calculating each $f(h, w)$ costs $\ord{\deg w + 1}$, \footnote{The $1$ is just because even when
+  $\deg w = 0$, we would still visit $w$ which cost a constant time}
+so if we fix $h$ and calculate all $f(h, w)$
+for all $w$ costs $\sum_{w \in V} \ord{\deg w + 1} = \ord{E + V}$. Hence calculate all the values
+cost $\ord{E+V} \cdot k = \ord{k(E + V)}$. By memorizing which $w'$ is the optimal one for $f(h, w)$
+(i.e., $w' = \argmin f(h-1, w') + c(w', w)$), we could recover the path $p(h, w)$ for an
+$(h, w)$ in $\ord{k}$ time.  So the total run-time is still $\ord{k(E + V)}$.
+
+Finally, by definition, the solution is simply $p(v, k)$ (or $f(v, k)$ if you just need the length). 
+
+\section{Problem 6}
+Since the graph is a DAG, it has a topological order $v_1, v_2, \cdots, v_n$ 
+which could be calculated in $\ord{V+E}$ time. The topological order satisfied 
+there all the edges $(e_i, e_j) \in E$ satisfied $i < j$. Assume $u \triangleq v_k$.
+We use $\langle a_1, a_2, \cdots, a_m \rangle$ to be the path
+$v_{a_1}, v_{a_2}, \cdots, v_{a_m}$. Consider the longest path 
+$\langle k, a_2, a_2, \cdots, a_{m-1}, j \rangle$ from $u$ to $v_j$. Then we know that
+$\langle k, a_2, a_2, \cdots, a_{m-1} \rangle$ must be a longest path from $k$ to $v_{a_{m-1}}$
+and $(v_{a_{m-1}}, v_j) \in E$. So let $f(v_j)$ be the length of the longest path from $u$ to $v_j$,
+then we could write the recursive formula as following, if $v_j \neq u$
+\[
+  f(v_j) = 
+\begin{cases}
+  \max\limits_{(v_{j'}, v_j) \in E} f(v_{j'}) + c(v_{j'}, v_j)  & \text{if exists } v_{j'} \text{ satisfied } 
+  (v_{j'}, v_j) \in E \\
+  \ \ \infty & \text{otherwise}
+\end{cases}
+\]
+
+Where $c(x, y)$ is the cost of the edge from $x$ to $y$, and $f(u) = 0$.
+Now, calculate $f(v_j)$ in topological order, then when calculating $f(v_j)$,
+all the $f(v_{j'})$ with $(v_{j'}, v_j) \in E$ is calculated since $j' < j$.
+Hence the recursive formula is well ordered. Calculating one node cost $\ord{\deg v_j + 1}$,
+and hence the total cost is $\sum \ord{\deg v_j + 1} = \ord{V + E}$.
+
+The length of the longest path from $u$ to $v$ is then $f(v)$.
+Similar to Problem 5., we could memorize $\argmax\limits_{v_{j'}} f(v_{j'}) + c(v_{j'}, v_j)$ for
+each vertex $v_j$. Then backtrace from $v \triangleq v_{k'}$, we could recover the longest
+path from $u$ to $v$ in no more than $\ord{V}$ time. So the total run-time is $\ord{V + E}$.
+
+\end{document}
+

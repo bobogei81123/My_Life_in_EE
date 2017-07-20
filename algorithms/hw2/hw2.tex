@@ -1,0 +1,491 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[hmargin=2.5cm, vmargin=2cm]{geometry}
+\usepackage{amsthm, amssymb, mathtools, yhmath, graphicx}
+\usepackage{fontspec, type1cm, titlesec, titling, fancyhdr, tabularx}
+\usepackage{color, float, hhline}
+\usepackage{scalerel}
+
+\usepackage[abbreviations, per-mode=symbol]{siunitx}
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{csquotes}
+\usepackage{circuitikz}
+\usepackage{footnote}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+\makesavenoteenv{table}
+\makesavenoteenv{tabular}
+%\setCJKmainfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKsansfont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+%\setCJKmonofont[BoldFont=cwTex Q Hei]{cwTex Q Ming}
+\setCJKmainfont[BoldFont=cwTeX Q Hei]{cwTeX Q Ming}
+\AtBeginDocument{\mathcode`\_=\string"715F }
+
+\def\normalsize{\fontsize{12}{18}\selectfont}
+\def\large{\fontsize{14}{21}\selectfont}
+\def\Large{\fontsize{16}{24}\selectfont}
+\def\LARGE{\fontsize{18}{27}\selectfont}
+\def\huge{\fontsize{20}{30}\selectfont}
+
+%\titleformat{\section}{\bf\Large}{\arabic{section}}{24pt}{}
+%\titleformat{\subsection}{\large}{\arabic{subsection}.}{12pt}{}
+%\titlespacing*{\subsection}{0pt}{0pt}{1.5ex}
+
+\parindent=0pt
+\parskip=0.5em
+
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle} % inner product
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclareMathOperator{\adj}{adj}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\csch}{csch}
+\DeclareMathOperator{\arcsec}{arcsec}
+\DeclareMathOperator{\arccot}{arccot}
+\DeclareMathOperator{\arccsc}{arccsc}
+\DeclareMathOperator{\arccosh}{arccosh}
+\DeclareMathOperator{\arcsinh}{arcsinh}
+\DeclareMathOperator{\arctanh}{arctanh}
+\DeclareMathOperator{\arcsech}{arcsech}
+\DeclareMathOperator{\arccsch}{arccsch}
+\DeclareMathOperator{\arccoth}{arccoth}
+\newcommand{\np}[1]{\\[{#1}] \indent}
+\newcommand{\transpose}[1]{{#1}^\mathrm{T}}
+%%%% Geometry Symbol %%%%
+\newcommand{\degree}{^\circ}
+\newcommand{\Arc}[1]{\wideparen{{#1}}}
+\newcommand{\Line}[1]{\overleftrightarrow{{#1}}}
+\newcommand{\Ray}[1]{\overrightarrow{{#1}}}
+\newcommand{\Segment}[1]{\overline{{#1}}}
+\DeclareMathOperator*{\Bigcdot}{\scalerel*{\cdot}{\bigodot}}
+
+\newcommand{\opord}{\operatorname{\mathcal{O}}}
+\newcommand{\ord}[1]{\opord\left(#1\right)}
+
+\newcommand{\img}{\mathsf{i}}
+\newcommand{\ex}{\mathsf{e}}
+\newcommand{\dD}{\mathrm{d}}
+\newcommand{\dI}{\,\mathrm{d}}
+\setlength{\droptitle}{-1.5cm} %title 與上緣的間距
+\newtheorem{lemma}{Lemma}
+
+\title{Algorithm HW\#1}
+\author{B02901178 江誠敏}
+%\DeclareMathOperator{\lowb}{lowerBound}
+
+\begin{document}
+\maketitle
+%Collaborators: B02901044 陳俞兆
+\section{Problem 1.}
+I think the problem is not so well-defined since for an algorithm, 
+these properties may depend on the implementations (e.g. Which item to choose when merging
+two sorted list in merge sort if the first element of two lists are equal). We shall assume
+that the ``most common'' implementations are used.
+
+
+\begin{table}[h]
+  \centering
+  \begin{tabular}{lcccc}
+    &
+    \multicolumn{1}{m{3cm}}{\centering Worst-case time complexity} &
+    \multicolumn{1}{m{3cm}}{\centering Stable?} &
+    \multicolumn{1}{m{3cm}}{\centering Time complexity on sorted} &
+    \multicolumn{1}{m{3cm}}{\centering Time complexity on reversed} \\
+    \hline
+    Bubble sort & $\Theta(n^2)$ & Yes & $\Theta(n^2)$ & $\Theta(n^2)$ \\
+    Merge sort & $\Theta(n \log n)$ & Yes & $\Theta(n \log n)$ & $\Theta(n \log n)$ \\
+    Insertion sort & $\Theta(n^2)$ & Yes & $\Theta(n)$ & $\Theta(n^2)$ \\ 
+    Quick sort & $\Theta(n^2) \ \footnotemark $ & No\footnotemark/Yes\footnotemark
+    & $\Theta(n^2)$ & $\Theta(n^2)$ \\ 
+    Heap sort & $\Theta(n \log n)$ & No & $\Theta(n \log n)$ & $\Theta(n \log n)$
+  \end{tabular}
+\end{table}
+\footnotetext[1]{Assume that the median of medians method isn't used}
+\footnotetext[2]{If Lomuto's method is used}
+\footnotetext{If Hoare's method is used, which is mentioned in class}
+
+\section{Problem 2.}
+
+\newcommand{\lowb}{\mathtt{lower\char`_bound}}
+\begin{lemma}[Binary search] \label{le:lowb}
+  Let $C = (c_i)$ be an sorted array (i.e. $c_1 \leq c_2 \leq \cdots \leq c_n$). Then the function 
+  \( \lowb(x) := \min\limits_{c_i \in C, c_i \geq x} c_i \) could be compute in $\ord{\log n}$.
+\end{lemma}
+\begin{proof}
+Let $\hat{c} = \lowb(x)$. Consider $m = \floor{n/2}$ and let $L = (c_1, c_2, \cdots, c_m)$, 
+$R = (c_{m+1}, c_{m+2}, \cdots, c_n)$. \\
+If $c_m \geq x$, then $c_m \leq \hat{c}$ hence $c_m \in L$.
+if $c_m < x$, then $c_m < x \leq \hat{c} \implies c_m < \hat{c}$, so $\hat{c}$ is in $R$.
+Then we could recursive preform the algorithm on $L$ or $R$ since they are also sorted array 
+until there is only one elements in the sequence. Assuming random access model, The time complexity is
+\[ T(n) = T(\ceil{n/2}) + \ord{1} \implies T(n) = \ord{\log n} \]
+\end{proof}
+
+Let $b_i := -(a_i + i)$. Notice that we shall not pre-calculate these $b_i$s (or it would cost $\ord{n}$), 
+but lazily evaluate them. That is, we shall evaluate $b_i$ only when needed (in the binary search coroutine).
+
+Since $a_i > a_{i+1}$ and $a_i, a_{i+1}$ are integers, so $a_i \geq a_{i+1} + 1$. Hence
+\[ b_i = -(a_i + i) \leq -a_{i+1} - 1 - i = -(a_{i+1} - (i+1)) = b_{i+1} \]
+,thus $b_1 \leq b_2 \leq \cdots \leq b_n$ and we could preform binary search.
+
+Then \[ a_i + i = n \iff -b_i = n \iff b_i = -n. \]
+And notice that $\exists i: b_i = -n \iff \lowb(-n) = -n$. By Lemma~\ref{le:lowb}, $\lowb(-n)$ could be 
+calculated in $\ord{\log n}$, hence the above described an algorithm that runs in $\ord{\log n}$.
+
+\section{Problem 3}
+We shall assume that $n, k$ are powers of $2$.
+
+\begin{enumerate}
+  \item 
+Let $m = n/2, h = k/2$. Since $\abs{\{i: 1 \leq i \leq h\}} = h = k/2$, 
+so $\bigcup\limits_{i \leq h} g_i$ are the shorter half and 
+$\bigcup\limits_{i > h} g_i$ are the taller half of the children, since each $g_i$ has the same size and 
+every child in $g_i$ are taller than every child in group $g_j$ for all $i > j$ by definition.
+Hence
+\begin{align*}
+  \bigcup_{i \leq h} g_i &= \{a_i: a_i \text{ is in the smaller half of } A = (a_i)\} \\
+  &= \left\{ a_i : a_i \leq \hat{a} \right\}
+\end{align*}
+Where $\hat{a}$ is the $h$-th smallest element in $A = (a_i)$. Using the order statistic algorithm with 
+medians of medians mention in class, $\hat{a}$ could be calculated in $\ord{n}$. Then partition the 
+children into two groups
+\[ L = \bigcup_{i \leq h} g_i = \left\{ a_i : a_i \leq \hat{a} \right\}, \quad 
+R = \bigcup_{i > h} g_i = \left\{ a_i : a_i > \hat{a} \right\}.\]
+which could be done in $\ord{n}$ time once we know $\hat{a}$. Then we turn the problem into two subproblems ``Spliting $L, R$ into $h$ equal-sized groups $g_{Li}, g_{Ri}$ respectively, satisfying $g_{Li} < g_{Lj}$ and 
+$g_{Ri} < g_{Rj} \  \forall i > j$'' that is same as the original problem, 
+and then $(g_{L1}, g_{L2}, \cdots, g_{Lh}, g_{R1}, g_{R2}, \cdots, g_{Rh})$
+would be the solution to the original problem. The time complexity is
+\[ T(n, k) = 2T( n/2, k/2 ) + \ord{n} \implies T(n, k) = \ord{n \log k}\]
+
+Where the complexity is calculated using recursion tree \footnote{The graph is modified from 
+  \url{http://www.texample.net/tikz/examples/merge-sort-recursion-tree/}}.
+  \begin{figure}[H]
+    \begin{tikzpicture}[level/.style={sibling distance=60mm/#1}]
+      \node [circle] (z){$n$}
+      child {node [circle] (a) {$\frac{n}{2}$}
+        child {node [circle] (b) {$\frac{n}{2^2}$}
+          child {node {$\vdots$}
+            child {node [circle] (d) {$\frac{n}{2^{\log k}}$}}
+            child {node [circle] (e) {$\frac{n}{2^{\log k}}$}}
+          } 
+          child {node {$\vdots$}}
+        }
+        child {node [circle] (g) {$\frac{n}{2^2}$}
+          child {node {$\vdots$}}
+          child {node {$\vdots$}}
+        }
+      }
+      child {node [circle] (j) {$\frac{n}{2}$}
+        child {node [circle] (k) {$\frac{n}{2^2}$}
+          child {node {$\vdots$}}
+          child {node {$\vdots$}}
+        }
+        child {node [circle] (l) {$\frac{n}{2^2}$}
+          child {node {$\vdots$}}
+          child {node (c){$\vdots$}
+            child {node [circle] (o) {$\frac{n}{2^{\log k}}$}}
+            child {node [circle] (p) {$\frac{n}{2^{\log k}}$}
+              child [grow=right] {node (q) {$=$} edge from parent[draw=none]
+                child [grow=right] {node (q) {$\opord_{\log k}(n)$} edge from parent[draw=none]
+                  child [grow=up] {node (r) {$\vdots$} edge from parent[draw=none]
+                    child [grow=up] {node (s) {$\opord_2(n)$} edge from parent[draw=none]
+                      child [grow=up] {node (t) {$\opord_1(n)$} edge from parent[draw=none]
+                        child [grow=up] {node (u) {$\opord_0(n)$} edge from parent[draw=none]}
+                      }
+                    }
+                  }
+                  child [grow=down] {node (v) {$\opord(n \log k)$}edge from parent[draw=none]}
+                }
+              }
+            }
+          }
+        }
+      };
+      \path (a) -- (j) node [midway] {+};
+      \path (b) -- (g) node [midway] {+};
+      \path (k) -- (l) node [midway] {+};
+      \path (k) -- (g) node [midway] {+};
+      \path (d) -- (e) node [midway] {+};
+      \path (o) -- (p) node [midway] {+};
+      \path (o) -- (e) node (x) [midway] {$\cdots$}
+      child [grow=down] {
+        node (y) {$\opord\left(\displaystyle\sum_{i = 0}^{\log k} 2^i \cdot \frac{n}{2^i}\right)$}
+        edge from parent[draw=none]
+      };
+      \path (q) -- (r) node [midway] {+};
+      \path (s) -- (r) node [midway] {+};
+      \path (s) -- (t) node [midway] {+};
+      \path (s) -- (l) node [midway] {=};
+      \path (t) -- (u) node [midway] {+};
+      \path (z) -- (u) node [midway] {=};
+      \path (j) -- (t) node [midway] {=};
+      \path (y) -- (x) node [midway] {$\Downarrow$};
+      \path (v) -- (y)
+      node (w) [midway] {$\opord\left(\displaystyle\sum_{i = 0}^{\log k} n\right) = \opord(n \cdot k)$};
+      \path (q) -- (v) node [midway] {=};
+      \path (e) -- (x) node [midway] {+};
+      \path (o) -- (x) node [midway] {+};
+      \path (y) -- (w) node [midway] {$=$};
+      \path (v) -- (w) node [midway] {$\Leftrightarrow$};
+      \path (r) -- (c) node [midway] {$\cdots$};
+    \end{tikzpicture}
+  \end{figure}
+
+\item We shall site the Stirling's formula first.
+  \begin{lemma}[Stirling's formula]
+    \[ \log_2 n! = n \log_2 n - O(n) \]
+  \end{lemma}
+
+  Assume that the algorithm uses $m$ comparisons. There are exactly 
+  \[ P = \frac{n!}{(n/k)!^k} \]
+  possibility to group children into $k$ equal sized group. And if every
+  child in group $g_i$ is taller than every child in group $g_j$ for every $i > j$, 
+  then $g_1$ should contains the first $k$ shortest children, $g_2$ should contains the 
+  $k+1$ to $2k$-th shortest children ... So the group each child belongs is decided, and hence 
+  exactly one of the $P$ possibilities
+  satisfied the constraint. Thus the algorithm cound be view as a function 
+  $f(\alpha_1, \alpha_2, \cdots, \alpha_m)$ which base on the true/false result of comparisons, 
+  the algorithm has to decide a answer among $p$ possiblities. The size of the domain of $f$ is 
+  $2^m$ and the size of the image is $P$, since the size of the domain should be larger than
+  the size of the image, 
+  \[ 2^m \geq P \implies m \geq \log n! - k \log (n/k)! \]
+  And 
+  \begin{align*}
+    m &\geq \log n! - k \log (n/k)! = n \log n - O(n) - k \frac{n}{k} \log (n/k) + k O(n/k) \\
+    &= n \log n - n \log (n/k) \pm O(n) = n \log k \pm O(n) = \ord{n \log k}
+  \end{align*}
+  Hence the time complexity is in $\Omega(n \log k)$.
+
+%\item Let $T(n, k)$ be the time complexity of this problem. After running an algorithm 
+  %which solve this problem. If we then sort (the children in) each group using merge sort, then 
+  %we've actually sorted all the elements (children by height). Sort every groups cost $\ord{n \log (n/k)}$ 
+  %since each group have size $n/k$ and there are $k$ groups, and sorting $m$ elements using merge
+  %sort cost $\ord{m \log m}$, so
+  %\[k \cdot \ord{(n/k) \log (n/k)} = \ord{n \log (n/k)} \]
+  %Hence we obtain an comparison sorting algorithm that runs in $\ord{T(n, k) + n \log (n/k)}$ times.
+  %But comparison sorting algorithm has a lower bound $\ord{n \log n}$. Hence 
+  %\[ T(n, k) \succeq \ord{n \log n - n \log (n/k)} = \ord{n \log k} \implies T(n, k) \in \Omega(n \log k).\]
+
+\end{enumerate}
+\section{Problem 4}
+\begin{enumerate}
+  \item No. For example let $M_1 = (s_1, t_1) = (0, 10), M_2 = (9, 14), M_3 = (13, 23)$. 
+    The length of the meeting is $10, 5, 10$ respectively. The algorithm would choose $M_2$ first.
+    But then $M_2$ is conflict with $M_1, M_3$, so the algorithm stops and give the solution
+    $S = \{M_2\}$. But $\hat{S} = \{M_1, M_3\}$ is a valid solution which is better. 
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[scale=0.4]
+        \draw[very thick] (0, 0) -- node[below]{$M_1$} (10, 0);
+        \draw[very thick] (0, 0.3) -- (0, -0.3);
+        \draw[very thick] (10, 0.3) -- (10, -0.3);
+
+        \draw[very thick] (9, 0.6) -- node[above]{$M_2$} (14, 0.6);
+        \draw[very thick] (9, 0.9) -- (9, 0.3);
+        \draw[very thick] (14, 0.9) -- (14, 0.3);
+
+        \draw[very thick] (13, 0) -- node[below]{$M_3$} (23, 0);
+        \draw[very thick] (13, 0.3) -- (13, -0.3);
+        \draw[very thick] (23, 0.3) -- (23, -0.3);
+      \end{tikzpicture}
+    \end{figure}
+  \item No. Let $M_1 = M_2 = (0, 3)$, $M_3 = M_4 = (2, 5)$, $M_5 = (4, 7)$, $M_6 = (6, 9)$, 
+    $M_7 = (8, 11)$, $M_8 = M_9 = (10, 13)$, $M_{10} = M_{11} = (12, 15)$. Then every 
+    meeting is conflict with $3$ other meetings except $M_6$, which only conflict with $2$ mettings.
+    So the algorithm would choose $M_6$ and remove $M_5, M_7$. The algorithm would eventually give 
+    a solution $S = \{M_\alpha, M_6, M_\beta\}$ where $\alpha \in \{1, 2, 3, 4\}, \beta \in \{8, 9, 10, 11\}$.
+    But $\hat{S} = \{M_1, M_5, M_7, M_{10}\}$ is a better solution.
+
+    \begin{figure}[H]
+      \centering
+      \begin{tikzpicture}[scale=0.6]
+        \draw[very thick] (0, 0) -- node[below]{$M_1, M_2$} (3, 0);
+        \draw[very thick] (0, 0.3) -- (0, -0.3);
+        \draw[very thick] (3, 0.3) -- (3, -0.3);
+
+        \draw[very thick] (2, 0.6) -- node[above]{$M_3, M_4$} (5, 0.6);
+        \draw[very thick] (2, 0.9) -- (2, 0.3);
+        \draw[very thick] (5, 0.9) -- (5, 0.3);
+
+        \draw[very thick] (4, 0) -- node[below]{$M_5$} (7, 0);
+        \draw[very thick] (4, 0.3) -- (4, -0.3);
+        \draw[very thick] (7, 0.3) -- (7, -0.3);
+
+        \draw[very thick] (6, 0.6) -- node[above]{$M_6$} (9, 0.6);
+        \draw[very thick] (6, 0.9) -- (6, 0.3);
+        \draw[very thick] (9, 0.9) -- (9, 0.3);
+
+        \draw[very thick] (8, 0) -- node[below]{$M_7$} (11, 0);
+        \draw[very thick] (8, 0.3) -- (8, -0.3);
+        \draw[very thick] (11, 0.3) -- (11, -0.3);
+
+        \draw[very thick] (10, 0.6) -- node[above]{$M_8, M_9$} (13, 0.6);
+        \draw[very thick] (10, 0.9) -- (10, 0.3);
+        \draw[very thick] (13, 0.9) -- (13, 0.3);
+
+        \draw[very thick] (12, 0) -- node[below]{$M_{10}, M_{11}$} (15, 0);
+        \draw[very thick] (12, 0.3) -- (12, -0.3);
+        \draw[very thick] (15, 0.3) -- (15, -0.3);
+      \end{tikzpicture}
+    \end{figure}
+  \item 
+    Let $\mathcal{M} = \{M_1, M_2, \cdots, M_n\}$. For a set of meetings $S$, Define $f(S) = M_i$ such that $M_i$ has the 
+    smallest $t_i$ in $S$.
+
+    \begin{lemma}
+      There is an optimize solution with $f(\mathcal{M})$ chosen.
+    \end{lemma}%
+    \begin{proof}
+      Let $S$ be an optimal solution. If $f(\mathcal{M}) \in S$ then we're done. Otherwise let 
+      $\hat{M} = (\hat{s}, \hat{t}) = f(S)$. Notice that $\forall M = (s, t) \in S, M \neq \hat{M}$ 
+      we have $s \geq \hat{t}$, or else by the minimalty of $\hat{M}$ we have $s < \hat{t} \leq t$ and 
+      $M$ would conflict with $\hat{M}$. 
+      By the minimalty of $(s', t') = f(\mathcal{M})$, we have $t \geq \hat{t} \geq s$, so $f(\mathcal{M})$
+      would not conflict with any meeting in $S$ except $\hat{M}$.
+      So consider $S' = S \setminus \{\hat{M}\} \cup \{f(\mathcal{M})\}$. 
+      Then $\abs{S'} = \abs{S}$ is also an optimal solution with $f(\mathcal{M})$ in it.
+    \end{proof}
+
+    By the lemma, we could greedily pick the meeting $M$ with earilest ending time $t_i$ and add it to the
+    solution set $S$. Then we remove all meetings that is conflict with $M$, and repeat the process until
+    there is no other meetings left. The final solution set we get is an optimal solution. The algorithm
+    could be implement easily to run in $\ord{n^2}$ by iterate through meetings and find the one with minimum $t_i$
+    each time, or even $\ord{n \log n}$ if we sort the meetings by ending time.
+\end{enumerate}
+
+\section{Problem 5}
+\begin{enumerate}
+  \item Let $f(k, s, c)$ be the maximum number of event that can be held in parallel 
+    consider only the events in $A_i = \{a_1, a_2, \cdots, a_i\}$, requires help of no more than 
+    $s$ students, and cost no more than $c$ dollars.
+
+    Then $f(0, \Bigcdot, \Bigcdot) = 0$. For $k \geq 1$, we could write the recursive 
+    formula of $f(k, s, c)$ by consider whether or not $a_k$ is chosen.
+    \begin{itemize}
+      \item If $a_k$ is not chosen, then it is equivalent to consider only the events in $A_{k-1}$.
+        so $f(k, s, c) = f(k-1, s, c)$.
+      \item If $a_k$ is chosen, which requires that $s \geq s_i, c \geq c_i$.
+        Then after choosing $a_k$, we could only choose the events in $A_{k-1}$ and 
+        requires no more than $s-s_i$ students and with cost no more than $c-c_i$.
+        So $f(k, s, c) = f(k-1, s-s_i, c-c_i) + 1$.
+    \end{itemize}
+    Hence 
+    \[
+      f(k, s, c) = 
+      \begin{cases}
+        0 & \quad \text{if } k = 0 \\
+        f(k-1, s, c) & \quad \text{if } s < s_i \text{ or } c < c_i \\
+        \max\left( f(k-1, s, c), f(k-1, s-s_i, c-c_i)+1 \right) & \quad \text{Otherwise } \\
+      \end{cases}
+    \]
+    And the solution of the answer is $f(n, n, n^2)$.
+    Notice that the recursive formula is well defined since $f(k, \Bigcdot, \Bigcdot)$ use 
+    only values of $f(k-1, \Bigcdot, \Bigcdot)$, and $f(0, \Bigcdot, \Bigcdot) \equiv 0$ is defined, 
+    so the recursion would terminate.
+
+    Now, by preforming Top-Down memorization (or Bottom-Up table filling). We could turn the
+    recursion into dynamic programming. The number of states is $\abs{\text{dom } f} = n \cdot n \cdot n^2 = \ord{n^4}$.
+    Each of the states depend on at most $2 = \ord{1}$ states. So the complexity of
+    dynamic programming is $\ord{n^4} \ord{1} = \ord{n^4}$.
+
+  \item First we proof some lemmas.
+    \begin{lemma} \label{lm:tree}
+      If $G = (V, E)$ is an simple undirected graph and $V = \{v_1, v_2, \cdots, v_n\}$. Let $\pi(v_i) = i$ be
+      the index mapping, and if for all $i \geq 2$, there is exactly one edge $(u, v_i)$ adjacent to $v_i$
+      satisfied $\pi(u) < i$, then $G$ is a tree.
+    \end{lemma}
+    \begin{proof}
+      Let $p(v), v \neq v_i$ be the vertex adjacent to $v$ such that $\pi(p(v)) < \pi(v)$. Then $v$ is connected
+      to $p^k(v)$ for all $k \geq 0$. But since $\pi(p(u)) < \pi(u)$ and $\abs{V}$ finite, there is a $k$ such that 
+      $\pi(p^k(v)) = 1 \implies p^k(v) = v_1$ and thus every vertex is connected to $v_1$.
+
+      Now we shall proof that $G$ doesn't contain loop, or else assume $u_1, u_2, \cdots, u_m$ forms a loop.
+      Since $G$ simple, $m \geq 3$. Let $u$ be the one with smallest $\pi$ (i.e., $\pi(u) < \pi(u_i), \forall u \neq u_i$).
+      Then $u$ is adjacent with two vertices $w$ each having $\pi(u) < \pi(w)$, which leads to an contradiction.
+
+      Hence $G$ is a connected graph without loop, and thus $G$ is a tree.
+    \end{proof}
+
+    \begin{lemma} \label{lm:bt}
+      If $G = (V, E)$, $V = \{a_1, a_2, \cdots, a_n\}$, and $E = \{(i, \floor{i/2}): i \geq 2\}$. 
+      Then $G$ is a binary tree.
+    \end{lemma}
+    \begin{proof}
+      Since for all $i \geq 2$, $a_{\floor{i/2}}$ is the only one which is adjacent to $i$ and 
+      have index smaller than $i$, and $G$ is obviously simple. So by Lemma~\ref{lm:tree}, $G$ is a tree.
+
+      Notice that for all $x \geq 1$, there are exactly $2$ integer with $\floor{y} = x$, namely
+      $y = 2x$ and $y = 2x+1$. So if we pick $a_1$ as root, each vertex $a_i$ has at most two children, 
+      $a_{2i}$ and $a_{2i+1}$. And each vertex $a_i, i \geq 2$ has a father $a_{\floor{i/2}}$.
+      Hence $G$ is a binary tree.
+    \end{proof}
+
+    Now by Lemma~\ref{lm:bt}, The events $a_i$ and dependencies $(a_i, a_{\floor{i/2}})$ forms a binary tree.
+    Let $A_k$ be the meetings that is in the subtree of $a_k$. Define $f(k, s, c)$ be the maximum number of 
+    event that can be held in parallel consider only the events in $A_i$,
+    requires help of no more than $s$ students, and cost no more than $c$ dollars. Also define $g(k, s, c)$
+    to be the same as $f$ except that we specified that $a_k$ could not be chosen. That is, $g(k, s, c)$ is the 
+    maximum number of events could be hold with all the constraints satisfied and with $a_k$ not chosen.
+    
+    If $a_k$ is a leaf, then 
+    \begin{align*}
+      f(k, s, c) &= 
+      \begin{cases}
+        1 & \quad \text{if } s \geq s_i \text{ and } c \geq c_i \\
+        0 & \quad \text{otherwise}
+      \end{cases} \\
+      g(k, s, c) &= 0
+    \end{align*}
+
+    If $a_k$ has a single child $a_j$, then
+    \begin{align*}
+      f(k, s, c) &= 
+      \begin{cases}
+        \max\left( g(j, s, c) + 1, f(j, s, c) \right) & \quad \text{if } s \geq s_i \text{ and } c \geq c_i \\
+        f(j, s, c) & \quad \text{otherwise}
+      \end{cases} \\
+      g(k, s, c) &= f(j, s, c)
+    \end{align*}
+    Since we can't choose $a_j$ if we choose $a_k$.
+
+    If $a_k$ has a two children $a_{2k}, a_{2k+1}$, then things get complicated. Notice that 
+    binary tree didn't have loops, so any event in $A_{2k}$ would not conflict with any event in $A_{2k+1}$.
+    Hence the optimize solution consider only events in $A_{2k}$ won't conflict with the 
+    optimize solution consider only events in $A_{2k+1}$, excepts that they may conflict with $a_k$.
+    So we should consider two cases, whether $a_k$ is chosen or not. Also we don't know how many students 
+    $s', s''$ and how much money $c', c''$ do the optimal solution in events in $A_{2k}$ or $A_{2k+1}$.
+    So we should enumerate through every possible pair $(s', c'), (s'', c'')$. Hence the recursive formula is
+    \begin{align*}
+      f(k, s, c) &= 
+      \begin{cases}
+        \max\left(\max\limits_{\substack{s'+s'' = s-s_i \\ c'+c'' = c-c_i}} 
+          g(2k, s', c') + g(2k+1, s'', c'') + 1,\right.  \\ 
+        \quad \left.\max\limits_{\substack{s'+s'' = s \\ c'+c'' = c}} 
+          \ f(2k, s', c') + f(2k+1, s'', c'') \right) \quad \hfill \text{if } s \geq s_i \text{ and } c \geq c_i \\
+        \max\limits_{\substack{s'+s'' = s \\ c'+c'' = c}} 
+          \ f(2k, s', c') + f(2k+1, s'', c'') \hfill \text{otherwise}
+      \end{cases} \\
+      g(k, s, c) &= \max\limits_{\substack{s'+s'' = s \\ c'+c'' = c}} 
+          \ f(2k, s', c') + f(2k+1, s'', c'')
+    \end{align*}
+
+    The recursive formula is well defined since $f(k, \Bigcdot, \Bigcdot), g(k, \Bigcdot, \Bigcdot)$ 
+    depend on $2k, 2k+1$ only and the 
+    recursion eventually reach $k'$ where $a_{k'}$ is a leaf and then terminate. 
+    Finally the solution is $f(1, n, n^2)$ since $A_1$ contains all the events.
+
+    Again, by preforming Top-Down memorization (or Bottom-Up table filling). We could turn the
+    recursion into dynamic programming. The number of states is $\abs{\text{dom } f} + \abs{\text{dom } g} 
+    = 2n \cdot n \cdot n^2 = \ord{n^4}$.
+    Each of the states depend on at most $2 \cdot n \cdot n^2 = \ord{n^3}$ states since there are at most
+    $n$ pairs with $s' + s'' = s_i$ and $n^2$ pairs with $c' + c'' = c_i$. So the complexity of
+    dynamic programming is $\ord{n^4} \ord{n^3} = \ord{n^7}$.
+
+\end{enumerate}
+
+\end{document}
+
